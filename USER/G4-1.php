@@ -31,9 +31,7 @@
                     <th>土</th>
                 </tr>
             </thead>
-            <tbody id="firstDay">
-                <!-- カレンダーの日付が入る -->
-            </tbody>
+            
         </table>
         <button class="add-btn">＋</button>
     </div>
