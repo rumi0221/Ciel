@@ -31,7 +31,7 @@
                     <th>土</th>
                 </tr>
             </thead>
-            <tbody id="calendar-body">
+            <tbody id="firstDay">
                 <!-- カレンダーの日付が入る -->
             </tbody>
         </table>
