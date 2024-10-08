@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カレンダー</title>
     <link rel="stylesheet" href="./css/G4-1.css">
+    
 
 </head>
 <body>
     <header>
-        <h1>Ciel</h1>
+       
+        <div class="icon">
+        <img src="img/Ciel logo.png">
+        </div>
         <nav>
             <button class="menu-icon">≡</button>
         </nav>
