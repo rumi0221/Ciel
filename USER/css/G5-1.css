@@ -1,0 +1,76 @@
+.header{
+    position: fixed; /* ヘッダーを固定する */
+    top: 0; /* 上部から配置の基準位置を決める */
+    left: 0; /* 左から配置の基準位置を決める */
+    width: 100%; /* ヘッダーの横幅を指定する */
+    /* height: 35px; ヘッダーの高さを指定する */
+    padding: 10px; /* ヘッダーの余白を指定する(上下左右) */
+}
+
+.logo{
+    margin: auto;
+    display: block;
+    width: 20%;
+    height: 20%;
+    margin-left: 500px;
+    margin-bottom: 500px;
+}
+
+.main {
+    width: 100%;
+    max-width: 700px;
+    margin: 0px auto; 
+    padding: 200px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    } 
+
+  .profile{
+
+  }
+
+  .footer{
+    position: fixed; /* フッターを固定する */
+bottom: 0; /* 上部から配置の基準位置を決める */
+left: 0; /* 左から配置の基準位置を決める */
+width: 100%; /* フッターの横幅を指定する */
+height: 35px; /* フッターの高さを指定する */
+padding:10px; /* フッター内側の余白を指定する(上下左右) */
+  }
+
+
+/* body{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0; 
+  }
+  
+  .main {
+    width: 100%;
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+.logo{
+    margin: auto;
+    display: block;
+    width: 20%;
+    height: 20%;
+    margin-left: 270px;
+    margin-bottom: 500px;
+}
+
+.menu-bar{
+    width: 100%;
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+    margin-left: 260px;
+} */
