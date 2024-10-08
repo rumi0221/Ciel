@@ -38,6 +38,6 @@
         <button class="add-btn">＋</button>
     </div>
 
-    <script src="script.js"></script>
+    <script src="G4-1.js"></script>
 </body>
 </html>
