@@ -23,6 +23,8 @@
         <div class="month">
             <h2>2024年10月</h2>
         </div>
+        <button id="prevMonth">前の月</button>
+        <button id="nextMonth">次の月</button>
         <table>
             <thead>
                 <tr>
@@ -37,6 +39,9 @@
             </thead>
             
         </table>
+        <div id="yearCalendar"></div>
+        <input type="text" id="todoInput" placeholder="ToDoを追加">
+        <ul id="todoList"></ul>
         <button class="add-btn">＋</button>
     </div>
 

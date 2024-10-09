@@ -1,59 +1,104 @@
-function createCalendar(year, month) {
-    const calendarBody = document.querySelector("#calendar tbody");
-    const yearMonth = document.getElementById("yearMonth");
+const calendarEl = document.getElementById('calendar');
+const date = new Date();
+const currentYear = date.getFullYear();
+const currentMonth = date.getMonth();
+const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-    yearMonth.textContent = `${year}年${month + 1}月`;
+// カレンダーのHTML構造を生成
+let calendarHtml = '<table><thead><tr>';
+for (let i = 0; i < 7; i++) {
+  calendarHtml += `<th>${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i]}</th>`;
+}
+calendarHtml += '</tr></thead><tbody><tr>';
 
-    // 今月の最初の日を取得
-    const firstDay = new Date(year, month, 1);
-    // 今月の日数を取得
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    // 最初の日の曜日
-    const startDay = firstDay.getDay();
-
-    // カレンダーの行を初期化
-    let row = document.createElement("tr");
-
-    // 最初の日の前を空白にする
-    for (let i = 0; i < startDay; i++) {
-        const cell = document.createElement("td");
-        row.appendChild(cell);
+for (let i = 1; i <= daysInMonth; i++) {
+  const dayOfWeek = new Date(currentYear, currentMonth, i).getDay();
+  if (i === 1) {
+    calendarHtml += '<tr>';
+    for (let j = 0; j < dayOfWeek; j++) {
+      calendarHtml += '<td></td>';
     }
-
-    // 各日をカレンダーに挿入
-    for (let day = 1; day <= daysInMonth; day++) {
-        const cell = document.createElement("td");
-        cell.textContent = day;
-
-        // 日曜日のクラスを追加
-        if ((startDay + day - 1) % 7 === 0) {
-            cell.classList.add("sunday");
-        }
-
-        // 土曜日のクラスを追加
-        if ((startDay + day) % 7 === 6) {
-            cell.classList.add("saturday");
-        }
-
-        row.appendChild(cell);
-
-        // 週が終わったら新しい行を追加
-        if ((startDay + day) % 7 === 0) {
-            calendarBody.appendChild(row);
-            row = document.createElement("tr");
-        }
+  }
+  calendarHtml += `<td>${i}</td>`;
+  if (dayOfWeek === 6) {
+    calendarHtml += '</tr>';
+    if (i < daysInMonth) {
+      calendarHtml += '<tr>';
     }
-
-    // 残った日を空白で埋める
-    if (row.children.length > 0) {
-        while (row.children.length < 7) {
-            const cell = document.createElement("td");
-            row.appendChild(cell);
-        }
-        calendarBody.appendChild(row);
+  } else if (i === daysInMonth) {
+    for (let j = dayOfWeek + 1; j <= 6; j++) {
+      calendarHtml += '<td></td>';
     }
+    calendarHtml += '</tr>';
+  }
+}
+calendarHtml += '</tbody></table>';
+calendarEl.innerHTML = calendarHtml;
+
+const prevMonthBtn = document.getElementById('prevMonth');
+const nextMonthBtn = document.getElementById('nextMonth');
+let currentDisplayedMonth = currentMonth;
+
+function generateCalendar(year, month) {
+  // カレンダー生成処理（サンプルコード1の内容を関数にまとめる）
 }
 
-const today = new Date();
-createCalendar(today.getFullYear(), today.getMonth());
+prevMonthBtn.addEventListener('click', () => {
+  currentDisplayedMonth--;
+  if (currentDisplayedMonth < 0) {
+    currentDisplayedMonth = 11;
+    currentYear--;
+  }
+  generateCalendar(currentYear, currentDisplayedMonth);
+});
+
+nextMonthBtn.addEventListener('click', () => {
+  currentDisplayedMonth++;
+  if (currentDisplayedMonth > 11) {
+    currentDisplayedMonth = 0;
+    currentYear++;
+  }
+  generateCalendar(currentYear, currentDisplayedMonth);
+});
+
+function generateCalendar(date) {
+    // 既存のコード
+  
+    for (let i = 0; i < 42; i++) {
+      // 既存のコード
+  
+      if (day.getDay() === 0 || day.getDay() === 6) {
+        dayCell.classList.add('weekend');
+      }
+  
+      // 既存のコード
+    }
+  }
+
+  const yearCalendarEl = document.getElementById('yearCalendar');
+
+function generateYearCalendar(year) {
+  yearCalendarEl.innerHTML = '';
+
+  for (let i = 0; i < 12; i++) {
+    const monthCalendar = document.createElement('div');
+    const monthDate = new Date(year, i, 1);
+    generateCalendar(monthDate, monthCalendar);
+    yearCalendarEl.appendChild(monthCalendar);
+  }
+}
+
+generateYearCalendar(new Date().getFullYear());
+
+const todoInput = document.getElementById('todoInput');
+const todoList = document.getElementById('todoList');
+
+todoInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.value.trim() !== '') {
+    const listItem = document.createElement('li');
+    listItem.textContent = e.target.value;
+    todoList.appendChild(listItem);
+    e.target.value = '';
+  }
+});
+
