@@ -16,9 +16,9 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    font-size: 24px;
-    font-weight: bold;
+img {
+    width: 60px;
+    height: 40px;
 }
 
 .menu-icon {
