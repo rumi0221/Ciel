@@ -5,30 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/G5-2.css">
-    <title>設定画面</title>
+    <title>プロフィール設定画面</title>
 </head>
 <body>
     <!-- header挿入 -->
         <header class="header">
-          <button type="submit">←</button>
+          <button type="submit" class="headerbutton">←</button>
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
-            <form action="G5-2.php" method="POST">
-              <input type="submit" value="更新">
-            </form>
+            <!-- <form action="G5-2.php" method="POST">
+              <input type="submit" value="更新" class="headersubmit">
+            </form> -->
         </header>
     <div class="main">
-    <!-- profile -->
-        <div class="profile">
+    <!-- profile　 -->
+        <!--　<div class="profile">
             <form action="G5-2.php" method="POST">
                 <table>
                     
                     <input type="hidden" name="user_id" value="' , $user_id ,'">
-                    <tr><td>user ：</td><td></td></tr>                            
-                    <tr><td>email：</td><td></td></tr>
+                    <tr><td>user 　　：</td><td><input type="text" name="user_name"></td></tr>                            
+                    <tr><td>email　　：</td><td><input type="email" name="user_mail"></td></tr>
+                    <tr><td>password：</td><td><input type="password" name="user_pass"></td></tr>
                     
                 </table> 
                 </form>
-        </div>
+        </div> -->
+
+        <form action="G5-2.php" method="POST"></form>
+        <div class="profile">
+              <table>
+                  <input type="hidden" name="user_id" value="' , $user_id ,'">
+                  <tr><td>user 　　：</td><td><input type="text" name="user_name"></td></tr>                            
+                  <tr><td>email　　：</td><td><input type="email" name="user_mail"></td></tr>
+                  <tr><td>password：</td><td><input type="password" name="user_pass"></td></tr>
+              </table> 
+      </div> 
+      <div class="profilebutton">
+        <input type="submit" value="更新" class="headersubmit">
+      </div>
+    </form>
+
     <!-- footer挿入 -->
         <footer class="footer">
             <div class="menu-bar">

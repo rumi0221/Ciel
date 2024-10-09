@@ -10,6 +10,14 @@
     padding: 0 0;
     text-align: center;
     z-index: 1000; /* ヘッダーが常に最前面に表示されるようにする */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button.headerbutton {
+  background-color: #FFF;
+  border: none;
 }
 
 .logo {
@@ -17,12 +25,23 @@
   height: auto;
 }
 
+/* input.headersubmit {
+  border: none;
+  background-color: #FFF;
+} */
+
+input.headersubmit {
+  border: none;
+  background-color: #FFF;
+  margin-left: 330px;
+}
+
 /* メインコンテンツのスタイル */
 .main {
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
-  padding: 150px 20px 140px;
+  padding: 150px 20px 230px;
   background-color: #FFCDEB;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
