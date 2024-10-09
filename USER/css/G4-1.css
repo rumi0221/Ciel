@@ -1,39 +1,57 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* カレンダー全体のスタイル */
+.calendar-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: 'Helvetica', sans-serif;
+  text-align: center;
 }
 
-body {
-    font-family: Arial, sans-serif;
-  }
-  
-  .calendar {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    border: 1px solid #000;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  thead th {
-    background-color: #f4f4f4;
-  }
-  
-  tbody td {
-    background-color: #fff;
-  }
-  
-  tbody td:nth-child(1) {
-    color: red; /* 日曜日を赤にする */
-  }
-  
+/* 月と年のスタイル */
+.calendar-header {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* 曜日と日付のテーブル */
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+  width: 14.2%;
+  height: 50px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+/* 曜日のスタイル */
+.calendar-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+/* 日曜日を赤く表示 */
+.calendar-table th:nth-child(1),
+.calendar-table td:nth-child(1) {
+  color: red;
+}
+
+/* プラスボタンのスタイル */
+.add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #e0b3ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
