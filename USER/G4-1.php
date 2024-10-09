@@ -87,7 +87,6 @@
             </tbody>
         </table>
         <div id="yearCalendar"></div>
-        <input type="text" id="todoInput" placeholder="ToDoを追加">
         <ul id="todoList"></ul>
         <button class="add-btn">＋</button>
     </div>
