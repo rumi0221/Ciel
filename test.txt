@@ -173,7 +173,7 @@ td .tag {
     </style>
 </head>
 <body>
-    <h1>ヤフーカレンダー風カレンダー</h1>
+    <h1>カレンダー</h1>
     <div id="calendar"></div>
 
     <script>
