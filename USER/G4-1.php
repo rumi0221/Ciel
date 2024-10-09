@@ -87,7 +87,7 @@
             </tbody>
         </table>
         <div id="yearCalendar"></div>
-        <ul id="todoList"></ul>
+    
         <button class="add-btn">＋</button>
     </div>
 
