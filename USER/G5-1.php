@@ -1,11 +1,11 @@
 <?php session_start();?>
 <?php
-    const SERVER = 'mysql301.phy.lolipop.lan';
-    const DBNAME = 'LAA1517478-3rd';
-    const USER = 'LAA1517478';
-    const PASS = '3rd1004';
+   const SERVER = 'mysql310.phy.lolipop.lan';
+   const DBNAME = 'LAA1517478-3rd';
+   const USER = 'LAA1517478';
+   const PASS = '3rd1004';
 
-    $connect = 'mysql:host='.SERVER.';dbname='.DBNAME.';charset=utf8';
+   $connect = 'mysql:host='.SERVER.';dbname='.DBNAME.';charset=utf8';
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -33,12 +33,12 @@
         $error = true;
         $errorMessage = "エラーが発生しました: " . $e->getMessage();
     }
-    if ($error) {
-        echo "<p>" . $errorMessage . "</p>";
-        header("Location: G1-1.php");
-        exit;
+    // if ($error) {
+    //     echo "<p>" . $errorMessage . "</p>";
+    //     header("Location: G1-1.php");
+    //     exit;
 
-    }
+    // }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -50,35 +50,38 @@
     <title>設定画面</title>
 </head>
 <body>
-    <div class="main"><!-- 画面全体のレイアウト用 -->
     <!-- header挿入 -->
-        <header>
+        <header class="header">
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
         </header>
+    <div class="main">
     <!-- profile -->
         <div class="profile">
             <form action="G5-2.php" method="POST">
-            <table>
+                <table>
                 <?php    
-                    echo '<tbody>';
-                    echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
-                    echo '<tr>','<td>user ：</td>','<td>',$result['user_name'],'</td>','</tr>';                            
-                    echo '<tr>','<td>email：</td>','<td>',$result['user_mail'],'</td>','</tr>';
-                    echo'</tbody>';
-                ?>
-            </table> 
-            </form>
+                       echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
+                        echo '<tr>','<td>user ：</td>','<td>',$result['user_name'],'</td>','</tr>';
+                        echo '<tr>','<td>email：</td>','<td>',$result['user_mail'],'</td>','</tr>';            
+                    ?>
+                </table> 
+                <button type="submit">profile update-></button>
+                </form>
         </div>
     <!-- tag -->
         <div class="tag">
-
+          <form action="G5-3.php" method="POST">  
+            tag<br>                          
+            <button type="submit">rename a tag-></button>
+            </form>
         </div>
+    </div>
     <!-- footer挿入 -->
-        <footer>
+        <footer class="footer">
             <?php
                 require 'menu.php';
             ?>
         </footer>
-    </div>
+    
 </body>
 </html>
