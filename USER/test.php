@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/menu.css">
-    <title>ToDo画面</title>
+    <title>Drag & Drop with Editable Text</title>
     <style>
         ul {
             list-style-type: none;
@@ -16,9 +14,6 @@
             background-color: #f0f0f0;
             cursor: pointer;
         }
-        .hide-checkbox {
-            display: none;
-        }
         .draggable {
             background-color: #e0e0e0;
             padding: 8px;
@@ -27,26 +22,20 @@
     </style>
 </head>
 <body>
-    <img class="logo" src="img/Ciel logo.png" >
 
-    <button id="toggleMode">並び替えモード</button>
-    <ul id="sortable-list">
-        <li data-id="1"><input type="checkbox" class="hide-checkbox"> 文1</li>
-        <li data-id="2"><input type="checkbox" class="hide-checkbox"> 文2</li>
-        <li data-id="3"><input type="checkbox" class="hide-checkbox"> 文3</li>
-    </ul>
+<button id="toggleMode">並び替えモード</button>
+<ul id="sortable-list">
+    <li data-id="1"><input type="checkbox" class="checkbox" style="display:none;"> 文1</li>
+    <li data-id="2"><input type="checkbox" class="checkbox" style="display:none;"> 文2</li>
+    <li data-id="3"><input type="checkbox" class="checkbox" style="display:none;"> 文3</li>
+</ul>
 
-    <!-- テキストボックスと追加ボタンのフォーム -->
-    <form id="todo-form">
-        <input type="text" id="todo-input" placeholder="新しい項目を追加">
-        <button type="submit">追加</button>
-    </form>
+<!-- テキストボックスと追加ボタンのフォーム -->
+<form id="todo-form">
+    <input type="text" id="todo-input" placeholder="新しい項目を追加">
+    <button type="submit">追加</button>
+</form>
 
-    <div id="output"></div>
-
-
-<footer><?php include 'menu.php';?></footer>
-</body>
 <script>
     const toggleModeButton = document.getElementById('toggleMode');
     const sortableList = document.getElementById('sortable-list');
@@ -57,7 +46,7 @@
     // 並び替えモードのトグル
     toggleModeButton.addEventListener('click', () => {
         isEditMode = !isEditMode;
-        const checkboxes = document.querySelectorAll('.hide-checkbox');
+        const checkboxes = document.querySelectorAll('.checkbox');
         checkboxes.forEach(checkbox => {
             checkbox.style.display = isEditMode ? 'none' : 'inline-block';
         });
@@ -127,21 +116,47 @@
         sortableList.querySelectorAll('li').forEach(li => {
             li.addEventListener('click', function (e) {
                 if (isEditMode) {
-                    let text = li.textContent.trim();
+                    let text = li.childNodes[1].textContent.trim(); // テキストを取得
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = text;
-                    li.innerHTML = '';
+                    li.innerHTML = ''; // liの内容をクリア
                     li.appendChild(input);
                     input.focus();
+                    // チェックボックスを非表示にする
+                    const checkbox = li.querySelector('.checkbox');
+                    checkbox.style.display = 'none';
 
                     // 編集終了
                     input.addEventListener('blur', function () {
-                        li.innerHTML = `<input type="checkbox" class="hide-checkbox"> ${input.value}`;
+                        updateListItem(li, input.value);
+                    });
+
+                    // エンターキーで編集を確定
+                    input.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter') {
+                            event.preventDefault(); // ページリロードを防ぐ
+                            updateListItem(li, input.value);
+                        }
+                    });
+
+                    // Escキーで編集をキャンセル
+                    input.addEventListener('keydown', function (event) {
+                        if (event.key === 'Escape') {
+                            updateListItem(li, text); // 元のテキストに戻す
+                        }
                     });
                 }
             });
         });
+    }
+
+    // リストアイテムを更新する関数
+    function updateListItem(li, newText) {
+        li.innerHTML = `<input type="checkbox" class="checkbox" style="display:none;"> ${newText}`;
+        // チェックボックスを非表示にする
+        const checkbox = li.querySelector('.checkbox');
+        checkbox.style.display = 'none';
     }
 
     // フォームから入力されたテキストをチェックボックスとしてリストに追加
@@ -150,7 +165,7 @@
         const newItemText = todoInput.value.trim();
         if (newItemText !== "") {
             const newItem = document.createElement('li');
-            newItem.innerHTML = `<input type="checkbox" class="hide-checkbox"> ${newItemText}`;
+            newItem.innerHTML = `<input type="checkbox" class="checkbox" style="display:none;"> ${newItemText}`;
             sortableList.appendChild(newItem);
             todoInput.value = "";  // フォームをクリア
             if (isEditMode) {
@@ -161,6 +176,7 @@
 
     // 初期状態の並び替え機能の有効化
     enableDragAndDrop();
-
 </script>
+
+</body>
 </html>
