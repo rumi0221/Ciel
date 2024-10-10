@@ -1,4 +1,3 @@
-<?php session_start();?>
 <?php
    const SERVER = 'mysql310.phy.lolipop.lan';
    const DBNAME = 'LAA1517478-3rd';
@@ -70,53 +69,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="stylesheet" href="css/G5-1.css">
-    <title>設定画面</title>
+    <link rel="stylesheet" href="css/G5-3.css">
+    <title>プロフィール設定画面</title>
 </head>
 <body>
     <!-- header挿入 -->
         <header class="header">
+          <button type="button" onclick="history.back()" class="headerbutton">←</button>
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+            <input type="submit" value="更新" form="update" class="headersubmit">
         </header>
     <div class="main">
-    <!-- profile -->
-        <div class="profile">
-            <form action="G5-2.php" method="POST">
-                <table>
-                <?php    
-                       echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
-                        echo '<tr>','<td>user ：</td>','<td>',$result['user_name'],'</td>','</tr>';
-                        echo '<tr>','<td>email：</td>','<td>',$result['user_mail'],'</td>','</tr>';            
-                    ?>
-                </table> 
-                <button type="submit">profile update-></button>
-                </form>
-        </div>
-    <!-- tag -->
+    <!-- tag　 -->
+        <form action="G5-3.php" method="POST" id="update"></form>
         <div class="tag">
-          <form action="G5-3.php" method="POST">  
-            <?php
+        <?php
             echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
             echo "<div style='display: flex; flex-wrap: wrap;'>";
             foreach ($colorresult as $colorresult) {
-                    
                     if($colorresult === false){
                         echo 'データなし';
                     }else{
-                        echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 30px; height: 30px; border-radius: 50%; margin: 5px;'></span>";
+                        echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 30px; height: 30px; border-radius: 50%; margin: 5px;'></div>",'<input type="text" name="tag_name" value="', htmlspecialchars($result['tag_name']) ;
                     }
                 }
-                echo "</div>"; // flexbox用のdivを閉じる
-            ?>                   
-            <button type="submit">rename a tag-></button>
-            </form>
-        </div>
-    </div>
+                echo "</div>";
+            ?>
+          </div>
+    </form>
+
     <!-- footer挿入 -->
         <footer class="footer">
-            <?php
-                require 'menu.php';
-            ?>
+        <?php
+            require 'menu.php';
+          ?>
         </footer>
     
 </body>

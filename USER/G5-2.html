@@ -1,3 +1,5 @@
+<!--プロフィールのupdateとG5-1に遷移-->
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,11 +12,12 @@
 <body>
     <!-- header挿入 -->
         <header class="header">
-          <button type="submit" class="headerbutton">←</button>
+          <button type="button" onclick="history.back()" class="headerbutton">←</button>
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
             <!-- <form action="G5-2.php" method="POST">
               <input type="submit" value="更新" class="headersubmit">
             </form> -->
+            <input type="submit" value="更新" form="update" class="headersubmit">
         </header>
     <div class="main">
     <!-- profile　 -->
@@ -31,7 +34,7 @@
                 </form>
         </div> -->
 
-        <form action="G5-2.php" method="POST"></form>
+        <form action="G5-2.php" method="POST" id="update"></form>
         <div class="profile">
               <table>
                   <input type="hidden" name="user_id" value="' , $user_id ,'">
@@ -40,9 +43,7 @@
                   <tr><td>password：</td><td><input type="password" name="user_pass"></td></tr>
               </table> 
       </div> 
-      <div class="profilebutton">
-        <input type="submit" value="更新" class="headersubmit">
-      </div>
+      <!--  <input type="submit" form="update" value="更新" class="headersubmit"> -->
     </form>
 
     <!-- footer挿入 -->
