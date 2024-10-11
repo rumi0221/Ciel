@@ -22,7 +22,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // メールアドレスの存在チェック
-    $stmt = $dbh->prepare("SELECT COUNT(*) FROM User WHERE user_mail = :user_mail");
+    $stmt = $dbh->prepare("SELECT COUNT(*) FROM Users WHERE user_mail = :user_mail");
     $stmt->bindParam(':user_mail', $user_mail);
     $stmt->execute();
     $count = $stmt->fetchColumn();
@@ -31,14 +31,14 @@ try {
         $message = "このメールアドレスは既に登録されています。";
     } else {
         // データベースにデータを挿入
-        $stmt = $dbh->prepare("INSERT INTO User (user_name, user_mail, user_pass) VALUES (:user_name, :user_mail, :user_pass)");
+        $stmt = $dbh->prepare("INSERT INTO Users (user_name, user_mail, user_pass) VALUES (:user_name, :user_mail, :user_pass)");
         $stmt->bindParam(':user_name', $user_name);
         $stmt->bindParam(':user_mail', $user_mail);
         $stmt->bindParam(':user_pass', $hashedPass);
         $stmt->execute();
 
         // 登録が完了したらユーザー情報を取得してセッションに保存
-        $stmt = $dbh->prepare("SELECT * FROM User WHERE user_mail = :user_mail");
+        $stmt = $dbh->prepare("SELECT * FROM Users WHERE user_mail = :user_mail");
         $stmt->bindParam(':user_mail', $user_mail);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);

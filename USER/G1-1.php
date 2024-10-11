@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dbh = new PDO($dsn, $user, $password);
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $dbh->prepare("SELECT * FROM User WHERE user_name = :user_name");
+        $stmt = $dbh->prepare("SELECT * FROM Users WHERE user_name = :user_name");
         $stmt->bindParam(':user_name', $user_name);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
