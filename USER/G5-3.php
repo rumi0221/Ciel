@@ -17,6 +17,7 @@
     // $error = false; 
     // $errorMessage = ""; 
 
+    //カラーのselect
     try{
         // idの取得
         // $user = $_SESSION['user'];
@@ -33,13 +34,13 @@
         $colorstmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $colorstmt->execute();
         $colorresult = $colorstmt->fetch(PDO::FETCH_ASSOC);
-        // if文を追加して、falseの場合に別のクエリを実行
+        
         if ($colorresult === false) {
         // データが見つからない場合、新しいSQLクエリを実行
             $colorsql = 'SELECT * FROM Tags LIMIT 12';
             $colorstmt = $db->prepare($colorsql);
             $colorstmt->execute();
-            $colorresult = $colorstmt->fetchAll(PDO::FETCH_ASSOC); // 複数の行を取得する場合
+            $colorresult = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
 
             if ($colorresult === false) {
             // 新しいクエリも失敗した場合のエラーハンドリング
