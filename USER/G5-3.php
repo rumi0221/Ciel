@@ -23,21 +23,21 @@
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        //usertag取得
-        $colorsql='select Tags.color from Tags inner join Usertags on Tags.tag_id = Usertags.tag_id inner join Users on Usertags.user_id = :user_id LIMIT 12';
+        //tagcolor取得
+        $colorsql='select * from Tags inner join Usertags on Tags.tag_id = Usertags.tag_id inner join Users on Usertags.user_id = :user_id LIMIT 12';
         $colorstmt = $db->prepare($colorsql);
         $colorstmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $colorstmt->execute();
-        $colorresult = $colorstmt->fetch(PDO::FETCH_ASSOC);
+        $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($colorresult === false) {
+        if ($colorresults === false) {
         // データが見つからない場合、新しいSQLクエリを実行
             $colorsql = 'SELECT * FROM Tags LIMIT 12';
             $colorstmt = $db->prepare($colorsql);
             $colorstmt->execute();
-            $colorresult = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
+            $colorresults = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($colorresult === false) {
+            if ($colorresults === false) {
             // 新しいクエリも失敗した場合のエラーハンドリング
                 echo "データ取得に失敗しました。";
             }
@@ -45,7 +45,7 @@
         } else {
         // 最初のクエリが成功した場合の処理
             echo "Usertagsと結合されたデータを取得しました。";
-            print_r($colorresult); // デバッグ用にデータを表示
+            print_r($colorresults); // デバッグ用にデータを表示
         }
 
     }catch(PDOException $e){
@@ -81,15 +81,18 @@
         <div class="tag">
         <?php
             echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
-            echo "<div style='display: flex; flex-wrap: wrap;'>";
-            foreach ($colorresult as $colorresult) {
+            // echo "<div style='display: flex; flex-wrap: wrap;'>";
+            foreach ($colorresults as $colorresult) {
                     if($colorresult === false){
                         echo 'データなし';
                     }else{
-                        echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 30px; height: 30px; border-radius: 50%; margin: 5px;'></div>",'<input type="text" name="tag_name" value="', htmlspecialchars($result['tag_name']) ;
+                        echo "<div style='display: flex; flex-wrap: wrap;'>";
+                        echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
+                        echo '<input type="text" name="tag_name" value="', htmlspecialchars($colorresult['tag_name']),'">';
+                        echo "</div>";
                     }
                 }
-                echo "</div>";
+                // echo "</div>";
             ?>
           </div>
     </form>
