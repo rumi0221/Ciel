@@ -62,6 +62,11 @@ input.headersubmit {
   color: #000;
 }
 
+.fa {
+  border: none;
+  background-color: #FFD9E8;
+}
+
 /* .profile form button {
   background: none;
   border: none;

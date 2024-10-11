@@ -37,6 +37,11 @@ try {
         $stmt->bindParam(':user_pass', $hashedPass);
         $stmt->execute();
 
+        //Tagsテーブルのselect
+
+        //usertagsテーブルのinsert
+
+
         // 登録が完了したらユーザー情報を取得してセッションに保存
         $stmt = $dbh->prepare("SELECT * FROM Users WHERE user_mail = :user_mail");
         $stmt->bindParam(':user_mail', $user_mail);
