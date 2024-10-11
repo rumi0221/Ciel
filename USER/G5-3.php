@@ -1,10 +1,5 @@
 <?php
-   const SERVER = 'mysql310.phy.lolipop.lan';
-   const DBNAME = 'LAA1517478-3rd';
-   const USER = 'LAA1517478';
-   const PASS = '3rd1004';
-
-   $connect = 'mysql:host='.SERVER.';dbname='.DBNAME.';charset=utf8';
+   require 'db-connect.php';
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -17,7 +12,29 @@
     // $error = false; 
     // $errorMessage = ""; 
 
-    //カラーのselect
+    //update(新規登録時insertされる)
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_flg'])){
+        $user_id = $_POST['user_id'];
+        $tag_name = $_POST['tag_name']; 
+        $usertag_id = $_POST['usertag_id']; 
+    
+        try{
+            $sql = 'update Usertags set tag_name=:tag_name where usertag_id=:usertag_id';
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':tag_name', $tag_name, PDO::PARAM_STR);
+            $stmt->bindParam(':usertag_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            header("Location: G5-1.php");
+            exit;
+        } catch(PDOException $e) {
+            $error = true;
+            $errorMessage = "エラーが発生しました: " . $e->getMessage();
+        } catch(IconException $e) {
+            $error = true;
+            $errorMessage = "エラーが発生しました: " . $e->getMessage();
+        }
+    }
+    //select
     try{
         // idの取得
         // $user = $_SESSION['user'];
@@ -29,28 +46,30 @@
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         //usertag取得
-        $colorsql='select Tags.color from Tags inner join Usertags on Tags.tag_id = Usertags.tag_id inner join Users on Usertags.user_id = :user_id LIMIT 12';
-        $colorstmt = $db->prepare($colorsql);
-        $colorstmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $colorstmt->execute();
-        $colorresult = $colorstmt->fetch(PDO::FETCH_ASSOC);
+        $colorsql='select * from Usertags where user_id = :user_id';
+        $usertag = $db->prepare($colorsql);
+        $usertag->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $usertag->execute();
+        $usertags = $usertag->fetch(PDO::FETCH_ASSOC);
         
-        if ($colorresult === false) {
-        // データが見つからない場合、新しいSQLクエリを実行
+        if ($usertags === false) {
+        // データが見つからない場合、新しいSQL実行
             $colorsql = 'SELECT * FROM Tags LIMIT 12';
             $colorstmt = $db->prepare($colorsql);
             $colorstmt->execute();
-            $colorresult = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
+            $colorresults = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($colorresult === false) {
-            // 新しいクエリも失敗した場合のエラーハンドリング
+            if ($colorresults === false) {
+            // 失敗した場合のエラーハンドリング
                 echo "データ取得に失敗しました。";
             }
 
         } else {
         // 最初のクエリが成功した場合の処理
-            echo "Usertagsと結合されたデータを取得しました。";
-            print_r($colorresult); // デバッグ用にデータを表示
+            $colorsql = 'SELECT * FROM Tags LIMIT 12';
+            $colorstmt = $db->prepare($colorsql);
+            $colorstmt->execute();
+            $colorresults = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
     }catch(PDOException $e){
@@ -86,15 +105,25 @@
         <div class="tag">
         <?php
             echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
-            echo "<div style='display: flex; flex-wrap: wrap;'>";
-            foreach ($colorresult as $colorresult) {
-                    if($colorresult === false){
-                        echo 'データなし';
-                    }else{
-                        echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 30px; height: 30px; border-radius: 50%; margin: 5px;'></div>",'<input type="text" name="tag_name" value="', htmlspecialchars($result['tag_name']) ;
-                    }
+            echo '<input type="hidden" name="user_flg" value="true">';
+            if($usertags){
+                foreach ($colorresults as $index => $colorresult) {
+                    $usertag = $usertags[$index];
+                    echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
+                    echo "<div style='display: flex; flex-wrap: wrap;'>";
+                    echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
+                    echo '<input type="text" name="tag_name" value="', htmlspecialchars($usertag['tag_name']),'">';
+                    echo "</div>";
                 }
-                echo "</div>";
+            }else{
+                foreach ($colorresults as $colorresult) {
+                    echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
+                    echo "<div style='display: flex; flex-wrap: wrap;'>";
+                    echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
+                    echo '<input type="text" name="tag_name" value="', htmlspecialchars($colorresult['tag_name']),'">';
+                    echo "</div>";
+                }
+            }  
             ?>
           </div>
     </form>
