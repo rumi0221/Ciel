@@ -9,10 +9,17 @@
     <link rel="stylesheet" href="css/menu.css">
     <title>ToDo画面</title>
     <style>
+        html, body {
+            margin: 0; /* デフォルトのマージンをリセット */
+            padding: 0; /* デフォルトのパディングをリセット */
+            height: 100%; /* 高さを100%に設定 */
+        }
+
         ul {
             list-style-type: none;
             padding: 0; /* パディングをリセット */
         }
+        
         li {
             padding: 8px;
             margin-bottom: 4px;
@@ -21,12 +28,56 @@
             align-items: center; /* 縦中央揃え */
             text-align: left; /* テキストを左寄せ */
         }
+
+        .background {
+            background-color: #E1DBFF;
+            width: 100%; /* 100%に設定 */
+            height: 100%; /* 100%に設定 */
+            overflow: auto; /* 必要に応じてスクロールを追加 */
+        }
+
         /* todo追加のテキストボックスと編集ボタンの配置固定 */
-        .todoinput {
-            position: fixed;
-            bottom: 7em;
-            left: 7em;
+        .tododiv {
+            display: flex;
+            justify-content: center; /* 横方向に中央揃え */
+            align-items: center;     /* 縦方向に中央揃え */
+            gap: 10px;               /* 要素間に余白を設定 */
+            position: fixed;         /* 位置を固定 */
+            bottom: 100px;            /* フッターのすぐ上に配置（必要に応じて調整） */
+            left: 0;
+            right: 0;
+            z-index: 1000;           /* 他の要素より上に表示 */
+            background-color: none; /* 背景色を設定 */
+            padding: 10px;           /* 周囲に余白を追加 */
             
+            
+        }
+        
+        .todo-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .todo-inp {
+            height: 3em;
+            width: 20em;
+            border-radius: 5px;
+        }
+
+        .todo-btn {
+            /* display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px;
+                background-color: #FFF;
+                border-radius: 10px; */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background-color: #FFF;
+            border-radius: 10px;
         }
         /* 通常モードのスタイル */
         .normal-mode {
@@ -55,31 +106,32 @@
 <body>
     <img class="logo" src="img/Ciel logo.png" >
 
-    <button id="toggleMode">並び替えモード</button>
-    <ul id="sortable-list">
-        <li class="normal-mode" data-id="1">
-            <input type="checkbox" class="hide-checkbox"> 文1 
-            <button class="delete-button">削除</button>
-        </li>
-        <li class="normal-mode" data-id="2">
-            <input type="checkbox" class="hide-checkbox"> 文2 
-            <button class="delete-button">削除</button>
-        </li>
-        <li class="normal-mode" data-id="3">
-            <input type="checkbox" class="hide-checkbox"> 文3 
-            <button class="delete-button">削除</button>
-        </li>
-    </ul>
+    <div class="background">
+        <ul id="sortable-list">
+            <li class="normal-mode" data-id="1">
+                <input type="checkbox" class="hide-checkbox"> 文1 
+                <button class="delete-button">削除</button>
+            </li>
+            <li class="normal-mode" data-id="2">
+                <input type="checkbox" class="hide-checkbox"> 文2 
+                <button class="delete-button">削除</button>
+            </li>
+            <li class="normal-mode" data-id="3">
+                <input type="checkbox" class="hide-checkbox"> 文3 
+                <button class="delete-button">削除</button>
+            </li>
+        </ul>
 
-    <!-- テキストボックスと追加ボタンのフォーム -->
-    <div class="todoinput">
-    <form id="todo-form">
-        <input type="text" id="todo-input" placeholder="新しい項目を追加">
-        <button type="submit">追加</button>
-    </form>
+        <!-- テキストボックスと追加ボタンのフォーム -->
+        <div class="tododiv">
+        <form id="todo-form" class="todo-form">
+            <input type="text" class="todo-inp" id="todo-input" placeholder="TODOを追加する">
+            <button class="todo-btn" id="toggleMode"><img src="img/edit.png" style="height:30px; width:30px;"></button>
+        </form>
+        </div>
+
+        <div id="output"></div>
     </div>
-
-    <div id="output"></div>
 
 <footer><?php include 'menu.php';?></footer>
 </body>
@@ -92,33 +144,38 @@
 
     // 並び替えモードのトグル
     toggleModeButton.addEventListener('click', () => {
-        isEditMode = !isEditMode;
-        const checkboxes = document.querySelectorAll('.hide-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.style.display = isEditMode ? 'none' : 'inline-block';
-        });
+    isEditMode = !isEditMode;
+    const checkboxes = document.querySelectorAll('.hide-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.style.display = isEditMode ? 'none' : 'inline-block';
+    });
 
-        // テキストボックスと追加ボタンの表示切り替え
-        todoForm.style.display = isEditMode ? 'none' : 'flex';  // 非表示にする
+    // テキストボックスのみ非表示にする
+    todoInput.style.display = isEditMode ? 'none' : 'inline-block';  // テキストボックスを非表示にする
 
-        toggleModeButton.textContent = isEditMode ? '完了' : '並び替えモード';
+    // ボタンのアイコンを変更
+    const buttonIcon = toggleModeButton.querySelector('img');
+    buttonIcon.src = isEditMode ? 'img/edit.png' : 'img/edit.png';
 
-        sortableList.querySelectorAll('li').forEach(li => {
-            if (isEditMode) {
-                li.classList.add('edit-mode'); // 並び替えモードのスタイルを追加
-                li.classList.remove('normal-mode'); // 通常モードのスタイルを削除
-                li.querySelector('.delete-button').style.display = 'block'; // 削除ボタンを表示
-            } else {
-                li.classList.add('normal-mode'); // 通常モードのスタイルを追加
-                li.classList.remove('edit-mode'); // 並び替えモードのスタイルを削除
-                li.querySelector('.delete-button').style.display = 'none'; // 削除ボタンを非表示
-            }
-        });
-
+    // リストのスタイル切り替え
+    sortableList.querySelectorAll('li').forEach(li => {
         if (isEditMode) {
-            enableDragAndDrop();
+            li.classList.add('edit-mode'); // 並び替えモードのスタイルを追加
+            li.classList.remove('normal-mode'); // 通常モードのスタイルを削除
+            li.querySelector('.delete-button').style.display = 'block'; // 削除ボタンを表示
+        } else {
+            li.classList.add('normal-mode'); // 通常モードのスタイルを追加
+            li.classList.remove('edit-mode'); // 並び替えモードのスタイルを削除
+            li.querySelector('.delete-button').style.display = 'none'; // 削除ボタンを非表示
         }
     });
+
+    if (isEditMode) {
+        enableDragAndDrop();
+    }
+});
+
+
 
     // 並び替えの有効化（タッチ対応）
     function enableDragAndDrop() {
