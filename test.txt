@@ -1,226 +1,208 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const calendarBody = document.getElementById('calendar-body');
-    const daysInMonth = 30; // 9月の日数（例）
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カレンダー</title>
+    <link rel="stylesheet" href="./css/G4-1.css">
     
-    // ダミーデータ（タグを表示する日付とタグ名）
-    const tags = {
-        11: 'タグ名',
-        23: 'タグ名',
-        29: 'タグ名'
-    };
 
-    // カレンダーの日付を生成
-    for (let i = 1; i <= daysInMonth; i++) {
-        let td = document.createElement('td');
-        td.innerHTML = i;
-        
-        // タグを表示する場合
-        if (tags[i]) {
-            let tag = document.createElement('div');
-            tag.classList.add('tag');
-            tag.textContent = tags[i];
-            td.appendChild(tag);
-        }
-
-        // カレンダーに日付を追加
-        let row;
-        if (i % 7 === 1) {  // 新しい行を追加
-            row = document.createElement('tr');
-            calendarBody.appendChild(row);
-        }
-        row = calendarBody.querySelector('tr:last-child');
-        row.appendChild(td);
-    }
-});
-
-
-
-
+</head>
+<body>
+    <header>
+    <nav>
+        <button class="menu-icon">≡</button>
+    </nav>
+</header>
 
 <div class="calendar">
         <div class="month">
             <h2>2024年10月</h2>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>日</th>
-                    <th>月</th>
-                    <th>火</th>
-                    <th>水</th>
-                    <th>木</th>
-                    <th>金</th>
-                    <th>土</th>
-                </tr>
-            </thead>
-            <tbody id="firstDay">
-                <!-- カレンダーの日付が入る -->
-            </tbody>
-        </table>
-        <button class="add-btn">＋</button>
-    </div>
+</div>
+    <table>
+      <thead>
+        <tr>
+          <th>日</th>
+          <th>月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+          <th>金</th>
+          <th>土</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+          <td>18</td>
+          <td>20</td>
+          <td>21</td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>23</td>
+          <td>24</td>
+          <td>25</td>
+          <td>26</td>
+          <td>27</td>
+          <td>28</td>
+        </tr>
+        <tr>
+          <td>29</td>
+          <td>30</td>
+          <td>31</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <!-- 他の週も同様に追加 -->
+      </tbody>
+    </table>
+    <button class="add-btn">＋</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
 
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
-    text-align: center;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  text-align: center;
 }
 
 header {
-    background-color: #fff;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .menu-icon {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    right: 20px;
-    top: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
 }
 
 .calendar {
-    margin: 20px auto;
-    width: 90%;
-    max-width: 500px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 500px;
 }
 
 .month h2 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 th {
-    background-color: #f4f4f4;
-    padding: 10px;
-    font-weight: bold;
+  background-color: #f4f4f4;
+  padding: 10px;
+  font-weight: bold;
 }
 
 td {
-    border: 1px solid #ddd;
-    height: 100px;
-    vertical-align: top;
-    position: relative;
+  border: 1px solid #ddd;
+  height: 100px;
+  vertical-align: top;
+  position: relative;
 }
 
 td .tag {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    background-color: #ff0;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 12px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  background-color: #ff0;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
 }
 
 .add-btn {
-    background-color: #bca;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+  background-color: #bca;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 
 
-<header>
-       
-        <div class="icon">
-        <img src="img/Ciel logo.png">
-        </div>
-        <nav>
-            <button class="menu-icon">≡</button>
-        </nav>
-    </header>
 
 
-    <div class="header">2024年10月</div>
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarBody = document.getElementById('calendar-body');
+  const daysInMonth = 30; // 9月の日数（例）
+  
+  // カレンダーの日付を生成
+  for (let i = 1; i <= daysInMonth; i++) {
+      let td = document.createElement('td');
+      td.innerHTML = i;
+      
+      // タグを表示する場合
+      if (tags[i]) {
+          let tag = document.createElement('div');
+          tag.classList.add('tag');
+          tag.textContent = tags[i];
+          td.appendChild(tag);
+      }
 
-<table class="calendar">
-    <thead>
-        <tr>
-            <th class="sunday">日</th>
-            <th>月</th>
-            <th>火</th>
-            <th>水</th>
-            <th>木</th>
-            <th>金</th>
-            <th>土</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="sunday">1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-        </tr>
-        <tr>
-            <td class="sunday">8</td>
-            <td>9</td>
-            <td>10</td>
-            <td>11</td>
-            <td>12</td>
-            <td>13</td>
-            <td>14</td>
-        </tr>
-        <tr>
-            <td class="sunday">15</td>
-            <td>16</td>
-            <td>17</td>
-            <td>18</td>
-            <td>19</td>
-            <td>20</td>
-            <td>21</td>
-        </tr>
-        <tr>
-            <td class="sunday">22</td>
-            <td>23</td>
-            <td>24</td>
-            <td>25</td>
-            <td>26</td>
-            <td>27</td>
-            <td>28</td>
-        </tr>
-        <tr>
-            <td class="sunday">29</td>
-            <td>30</td>
-            <td>31</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
+      // カレンダーに日付を追加
+      let row;
+      if (i % 7 === 1) {  // 新しい行を追加
+          row = document.createElement('tr');
+          calendarBody.appendChild(row);
+      }
+      row = calendarBody.querySelector('tr:last-child');
+      row.appendChild(td);
+  }
+});
 
-<div class="fab-button">+</div>
-
-    <script src="G4-1.js"></script>

@@ -2,13 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const calendarBody = document.getElementById('calendar-body');
   const daysInMonth = 30; // 9月の日数（例）
   
-  // ダミーデータ（タグを表示する日付とタグ名）
-  const tags = {
-      11: 'タグ名',
-      23: 'タグ名',
-      29: 'タグ名'
-  };
-
   // カレンダーの日付を生成
   for (let i = 1; i <= daysInMonth; i++) {
       let td = document.createElement('td');
