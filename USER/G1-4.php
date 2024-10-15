@@ -48,7 +48,7 @@ try {
         $user_id = $user['user_id'];  // 新規登録されたユーザーのIDを取得
 
         // Tagsテーブルから全てのタグを取得
-        $stmt = $dbh->prepare("SELECT * FROM Tags");
+        $stmt = $dbh->prepare("SELECT * FROM Tags LIMIT 12");
         $stmt->execute();
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
