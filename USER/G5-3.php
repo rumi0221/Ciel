@@ -19,10 +19,11 @@
         $usertag_id = $_POST['usertag_id']; 
     
         try{
-            $sql = 'update Usertags set tag_name=:tag_name where usertag_id=:usertag_id';
+            $sql = 'update Usertags set tag_name=:tag_name where usertag_id=:usertag_id AND user_id=:user_tag';
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':tag_name', $tag_name, PDO::PARAM_STR);
             $stmt->bindParam(':usertag_id', $user_id, PDO::PARAM_INT);
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
             header("Location: G5-1.php");
             exit;
@@ -107,6 +108,7 @@
             echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
             echo '<input type="hidden" name="user_flg" value="true">';
             if($usertags){
+                //usertagテーブル出力
                 foreach ($colorresults as $index => $colorresult) {
                     $usertag = $usertags[$index];
                     echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
@@ -115,12 +117,14 @@
                     echo '<input type="text" name="tag_name" value="', htmlspecialchars($usertag['tag_name']),'">';
                     echo "</div>";
                 }
+                //tagsテーブル出力
             }else{
                 foreach ($colorresults as $colorresult) {
                     echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
                     echo "<div style='display: flex; flex-wrap: wrap;'>";
                     echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    echo '<input type="text" name="tag_name" value="', htmlspecialchars($colorresult['tag_name']),'">';
+                    // echo '<input type="text" name="tag_name" value="', htmlspecialchars($colorresult['tag_name']),'">';
+                    echo "usertag取れてない";
                     echo "</div>";
                 }
             }  
