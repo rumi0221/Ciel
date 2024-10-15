@@ -54,11 +54,21 @@ try {
 
         // usertagsテーブルに挿入
         foreach ($tags as $tag) {
-            $stmt = $dbh->prepare("INSERT INTO Usertags (user_id, tag_id, tag_name) VALUES (:user_id, :tag_id, :tag_name)");
+            // 既に同じ user_id と tag_id のペアが存在するかチェック
+            $stmt = $dbh->prepare("SELECT COUNT(*) FROM Usertags WHERE user_id = :user_id AND tag_id = :tag_id");
             $stmt->bindParam(':user_id', $user_id);
             $stmt->bindParam(':tag_id', $tag['tag_id']);
-            $stmt->bindParam(':tag_name', $tag['tag_name']);
             $stmt->execute();
+            $count = $stmt->fetchColumn();
+
+            // 存在しない場合のみ INSERT を実行
+            if ($count == 0) {
+                $stmt = $dbh->prepare("INSERT INTO Usertags (user_id, tag_id, tag_name) VALUES (:user_id, :tag_id, :tag_name)");
+                $stmt->bindParam(':user_id', $user_id);
+                $stmt->bindParam(':tag_id', $tag['tag_id']);
+                $stmt->bindParam(':tag_name', $tag['tag_name']);
+                $stmt->execute();
+            }
         }
 
         $message = "登録が完了しました。";
