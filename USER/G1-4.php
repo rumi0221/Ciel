@@ -30,17 +30,12 @@ try {
     if ($count > 0) {
         $message = "このメールアドレスは既に登録されています。";
     } else {
-        // データベースにデータを挿入
+        // データベースにユーザー情報を挿入
         $stmt = $dbh->prepare("INSERT INTO Users (user_name, user_mail, user_pass) VALUES (:user_name, :user_mail, :user_pass)");
         $stmt->bindParam(':user_name', $user_name);
         $stmt->bindParam(':user_mail', $user_mail);
         $stmt->bindParam(':user_pass', $hashedPass);
         $stmt->execute();
-
-        //Tagsテーブルのselect
-
-        //usertagsテーブルのinsert
-
 
         // 登録が完了したらユーザー情報を取得してセッションに保存
         $stmt = $dbh->prepare("SELECT * FROM Users WHERE user_mail = :user_mail");
@@ -50,6 +45,22 @@ try {
 
         session_start();
         $_SESSION['user'] = $user;
+        $user_id = $user['user_id'];  // 新規登録されたユーザーのIDを取得
+
+        // Tagsテーブルから全てのタグを取得
+        $stmt = $dbh->prepare("SELECT * FROM Tags");
+        $stmt->execute();
+        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // usertagsテーブルに挿入
+        foreach ($tags as $tag) {
+            $stmt = $dbh->prepare("INSERT INTO Usertags (user_id, tag_id, tag_name) VALUES (:user_id, :tag_id, :tag_name)");
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':tag_id', $tag['tag_id']);
+            $stmt->bindParam(':tag_name', $tag['tag_name']);
+            $stmt->execute();
+        }
+
         $message = "登録が完了しました。";
     }
 } catch (PDOException $e) {
