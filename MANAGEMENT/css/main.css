@@ -1,0 +1,77 @@
+.login {
+    text-align: center;
+    width: 100%;
+    height: 600px;
+    background: linear-gradient(#D1DBFF 33.5%, #E9D1FF 0, #E9D1FF 66.5%, #FFCDEB 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+ 
+h1 {
+    font-size: 60px;
+    font-family: Serif;
+}
+ 
+.text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px; /* 入力フォームの幅を広げます */
+}
+ 
+.input {
+    font-family: Serif;
+    width: 100%; /* 入力ボックスをテキストエリアに合わせて広げます */
+    height: 40px; /* 入力ボックスの高さを大きくします */
+    margin-bottom: 10px; /* ボタンとの間に余白を追加 */
+    padding: 0.5em;
+    font-size: 1.2em;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 20px;
+}
+ 
+.login-button {
+    font-size: 20px;
+    font-family: serif;
+    background: #FFF;
+    width: 11em;
+    height: 2.8em;
+    border: 2px solid #FF72C6;
+    border-radius: 15px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+
+.user {
+    text-align: left;
+    width: 100%;
+    height: 600px;
+    background: linear-gradient(#D1DBFF 33.5%, #E9D1FF 0, #E9D1FF 66.5%, #FFCDEB 0);
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: left;
+    font-family: Serif;
+    font-size: 40px;
+}
+
+.delete {
+    font-size: 30px;
+    font-family: Serif;
+    color: #5da9ff;
+    text-align: left;
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
