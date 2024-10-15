@@ -1,16 +1,17 @@
+<?php session_start();?>
 <?php
    require 'db-connect.php';
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // if(!isset($_SESSION['user'])){
-    //     header("Location: G3-1-1.php");
-    //     exit;
-    // }
+    if(!isset($_SESSION['user'])){
+        header("Location: G3-1-1.php");
+        exit;
+    }
 
-    // // 初期化
-    // $error = false; 
-    // $errorMessage = ""; 
+    // 初期化
+    $error = false; 
+    $errorMessage = ""; 
 
     //update(新規登録時insertされる)
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_flg'])){
@@ -38,9 +39,9 @@
     //select
     try{
         // idの取得
-        // $user = $_SESSION['user'];
-        // $user_id = $user['user_id'];
-        $user_id = 2;
+        $user = $_SESSION['user'];
+        $user_id = $user['user_id'];
+        // $user_id = 2;
         $sql='select * from Users where user_id = :user_id';
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);

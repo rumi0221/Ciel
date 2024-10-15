@@ -52,6 +52,7 @@ try {
         $stmt->execute();
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
         // usertagsテーブルに挿入
         foreach ($tags as $tag) {
             $stmt = $dbh->prepare("INSERT INTO Usertags (user_id, tag_id, tag_name) VALUES (:user_id, :tag_id, :tag_name)");
