@@ -111,11 +111,12 @@
             if($usertags){
                 //usertagテーブル出力
                 foreach ($colorresults as $index => $colorresult) {
-                    $usertag = $usertags[$index];
+                    
                     echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
                     echo "<div style='display: flex; flex-wrap: wrap;'>";
                     echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    echo '<input type="text" name="tag_name" value="', htmlspecialchars($usertag['tag_name']),'">';
+                    echo '<input type="text" name="tag_name" value="', htmlspecialchars($usertags['tag_name']),'">';
+                    // $usertags++;
                     echo "</div>";
                 }
                 //tagsテーブル出力

@@ -23,14 +23,7 @@
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        //usertag取得
-        $colorsql='select Tags.color from Tags inner join Usertags on Tags.tag_id = Usertags.tag_id inner join Users on Usertags.user_id = :user_id LIMIT 12';
-        $colorstmt = $db->prepare($colorsql);
-        $colorstmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $colorstmt->execute();
-        $colorresult = $colorstmt->fetch(PDO::FETCH_ASSOC);
-        // if文を追加して、falseの場合に別のクエリを実行
-        if ($colorresult === false) {
+        
         // データが見つからない場合、新しいSQLクエリを実行
             $colorsql = 'SELECT * FROM Tags LIMIT 12';
             $colorstmt = $db->prepare($colorsql);
@@ -41,12 +34,6 @@
             // 新しいクエリも失敗した場合のエラーハンドリング
                 echo "データ取得に失敗しました。";
             }
-
-        } else {
-        // 最初のクエリが成功した場合の処理
-            echo "Usertagsと結合されたデータを取得しました。";
-            print_r($colorresult); // デバッグ用にデータを表示
-        }
 
     }catch(PDOException $e){
         $error = true;
