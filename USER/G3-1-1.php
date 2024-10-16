@@ -36,6 +36,18 @@
             overflow: auto; /* 必要に応じてスクロールを追加 */
         }
 
+        /* term */
+        .termblock {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            padding: 10px;
+            width: 80%;
+            background-color: #DBB5FF;
+            border: none;
+            border-radius: 5px;
+        }
+
         /* todo追加のテキストボックスと編集ボタンの配置固定 */
         .tododiv {
             display: flex;
@@ -107,6 +119,12 @@
     <img class="logo" src="img/Ciel logo.png" >
 
     <div class="background">
+
+        <div class="termblock">
+            term
+        </div>
+
+
         <ul id="sortable-list">
             <li class="normal-mode" data-id="1">
                 <input type="checkbox" class="hide-checkbox"> 文1 
@@ -125,7 +143,7 @@
         <!-- テキストボックスと追加ボタンのフォーム -->
         <div class="tododiv">
         <form id="todo-form" class="todo-form">
-            <input type="text" class="todo-inp" id="todo-input" placeholder="TODOを追加する">
+            <input type="text" class="todo-inp" id="todo-input" placeholder=" TODOを追加する">
             <button class="todo-btn" id="toggleMode"><img src="img/edit.png" style="height:30px; width:30px;"></button>
         </form>
         </div>
