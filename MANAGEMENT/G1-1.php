@@ -1,23 +1,3 @@
-
-
-<!-- <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <title>ログイン画面</title>
-</head>
-<body class="login">
-    <h1>LOGIN</h1>
-    <div class="text">
-        <input type="text" class="input" name="user" placeholder=" user"><br>
-        <input type="password" class="input" name="password" placeholder=" password"><br><br>
-    <button class="login-button">LOGIN</button>
-    </div>
-</body>
-</html> -->
-
 <?php session_start(); ?><!--  // セッションの開始 -->
 
 <?php
@@ -62,66 +42,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
     <title>ログイン画面</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            width: 400px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .login-container h1 {
-            margin-bottom: 30px;
-            font-size: 24px;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        .login-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .login-btn:hover {
-            background-color: #45a049;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-    </style>
 </head>
-<body>
-
-<div class="login-container">
-    <h1>ログイン</h1>
+<body class="login">
+    <h1>LOGIN</h1>
     <?php if (isset($error)) { echo '<p class="error">'.$error.'</p>'; } ?>
-    <form method="POST" action="">
-        <input type="text" name="user" placeholder="ユーザー名" required>
-        <input type="password" name="password" placeholder="パスワード" required>
-        <button type="submit" class="login-btn">ログイン</button>
+    <div class="text">
+    <form method="POST" action="G1-2.php">
+        <input type="text" class="input" name="user" placeholder=" user" required><br>
+        <input type="password" class="input" name="password" placeholder=" password" required><br><br>
+        <button type="submit" class="login-button">LOGIN</button>
     </form>
-</div>
-
+    </div>
+</body>
+</html>
 </body>
 </html>
