@@ -1,0 +1,64 @@
+<!--プロフィールのupdateとG5-1に遷移-->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/G5-3.css">
+    <title>プロフィール設定画面</title>
+</head>
+<body>
+    <!-- header挿入 -->
+        <header class="header">
+          <button type="button" onclick="history.back()" class="headerbutton">←</button>
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+            <input type="submit" value="更新" form="update" class="headersubmit">
+        </header>
+    <div class="main">
+    <!-- tag　 -->
+        <form action="G5-3.php" method="POST" id="update"></form>
+        <div class="tag">
+              <table>
+                <input type="hidden" name="user_id" value="' , $user_id ,'">
+                <!--if文:1~12-->
+                  <tr><td>〇</td><td><input type="text" name="" value="tag名"></td></tr>                            
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+                  <tr><td>〇</td><td><input type="text" name=""></td></tr>
+              </table> 
+      </div> 
+    </form>
+
+    <!-- footer挿入 -->
+        <footer class="footer">
+            <div class="menu-bar">
+                <a href="G4-1.php">
+                  <div class="icon">
+                    <img src="img/calendar.png">
+                  </div>
+                </a>
+                <a href="G3-1-1.php">
+                  <div class="icon">
+                    <img src="img/todo.png">
+                  </div>
+                </a>
+                <a href="G5-1.php">
+                  <div class="icon">
+                    <img src="img/settings.png">
+                  </div>
+                </a>
+              </div>
+        </footer>
+    
+</body>
+</html>

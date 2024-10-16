@@ -1,0 +1,143 @@
+/* ヘッダーのスタイル */
+.header {
+  position: fixed;
+    top: 10;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 400px; /* mainの幅に合わせる */
+    background-color: #fff;
+    padding: 0 0;
+    text-align: center;
+    z-index: 1000; /* ヘッダーが常に最前面に表示されるようにする */
+    display: flex;
+}
+
+button.headerbutton {
+  background-color: #FFF;
+  border: none;
+}
+
+.logo {
+  width: 100px; /* ロゴのサイズ調整 */
+  height: auto;
+  margin-left: 130px;
+}
+
+input.headersubmit {
+  border: none;
+  background-color: #FFF;
+  margin-left: 100px;
+} 
+
+.profilebutton {
+  text-align: right;
+}
+
+/* メインコンテンツのスタイル */
+.main {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 130px 20px 20px;
+  background-color: #FFCDEB;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* プロフィールセクションのスタイル */
+.tag {
+  background-color: #FFD9E8;
+  border-radius: 15px;
+  padding: 10px;
+  margin-top: -70px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.tag td {
+  font-size: 20px;
+  color: #000;
+}
+
+/* タグセクションのスタイル */
+/* .tag {
+  background-color: #FFD9E8;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: left;
+}
+
+.tag form button {
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  padding-top: 10px;
+  display: block;
+  margin-left: 195px;
+} */
+
+/* フッターメニューのスタイル */
+.footer {
+  position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 8px;
+    max-width: 400px; /* mainの幅に合わせる */
+    background-color: #d2e3fc;
+    height: 80px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+/*.header{
+    position: fixed;*/ /* ヘッダーを固定する */
+    /*top: 0; /* 上部から配置の基準位置を決める */
+    /*left: 0; /* 左から配置の基準位置を決める */
+    /*width: 100%; /* ヘッダーの横幅を指定する */
+    /* height: 35px; ヘッダーの高さを指定する */
+    /*padding: 10px; /* ヘッダーの余白を指定する(上下左右) */
+/*}
+
+.logo{
+    margin: auto;
+    display: block;
+    width: 20%;
+    height: 20%;
+    margin-left: 500px;
+    margin-bottom: 500px;
+}
+
+.main {
+    width: 100%;
+    max-width: 700px;
+    margin: 0px auto; 
+    padding: 200px;
+    background-color: #FFCDEB;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    } 
+
+  .profile{
+    background-color: #FFFFFF;
+  }
+
+  .tag{
+    background-color: #FFFFFF;
+  }
+
+  .footer{
+    position: fixed; /* フッターを固定する */
+/*bottom: 0; /* 上部から配置の基準位置を決める */
+/*left: 0; /* 左から配置の基準位置を決める */
+/*width: 100%; /* フッターの横幅を指定する */
+/*height: 35px; /* フッターの高さを指定する */
+/*padding:10px; /* フッター内側の余白を指定する(上下左右) */
+  /*}
+----------------------------------------------------------------
