@@ -18,9 +18,9 @@
     </div>
     <div id="menu" class="menu">
       <a href="#">全てのタグを表示</a>
-      <a href="#">タグ名1</a>
-      <a href="#">タグ名2</a>
-      <a href="#">タグ名3</a>
+      <a href="#">タグ名</a>
+      <a href="#">タグ名</a>
+      <a href="#">タグ名</a>
       <a href="#">決定</a>
     </div>
 </header>
