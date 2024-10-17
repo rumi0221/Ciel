@@ -15,33 +15,32 @@
 
     //update(新規登録時insertされる)
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_flg'])){
-
         for ($i = 1; $i <= 12; $i++){
             if (isset($_POST['tag_id_' . $i]) && isset($_POST['tag_name_' . $i])) {
         
-        $user_id = $_POST['user_id'];
-        $tag_id = $_POST['tag_id_'.$i];
-        $tag_name = $_POST['tag_name_'.$i]; 
+                $user_id = $_POST['user_id'];
+                $tag_id = $_POST['tag_id_'.$i];
+                $tag_name = $_POST['tag_name_'.$i]; 
     
-        try{
-            $sql = 'update Usertags set tag_name=:tag_name where user_id=:user_id and tag_id=:tag_id';
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':tag_name', $tag_name, PDO::PARAM_STR);
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $stmt->bindParam(':tag_id', $tag_id, PDO::PARAM_INT);
-            $stmt->execute();
-            header("Location: G5-1.php");
-            exit;
-        } catch(PDOException $e) {
-            $error = true;
-            $errorMessage = "エラーが発生しました: " . $e->getMessage();
-        } catch(IconException $e) {
-            $error = true;
-            $errorMessage = "エラーが発生しました: " . $e->getMessage();
+                try{
+                    $sql = 'update Usertags set tag_name=:tag_name where user_id=:user_id and tag_id=:tag_id';
+                    $stmt = $db->prepare($sql);
+                    $stmt->bindParam(':tag_name', $tag_name, PDO::PARAM_STR);
+                    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                    $stmt->bindParam(':tag_id', $tag_id, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                } catch(PDOException $e) {
+                    $error = true;
+                    $errorMessage = "エラーが発生しました: " . $e->getMessage();
+                } catch(IconException $e) {
+                    $error = true;
+                    $errorMessage = "エラーが発生しました: " . $e->getMessage();
+                }
+            }
         }
-        }
-    }
-    header("Location: G5-3.php");
+        header("Location: G5-1.php");
+        exit;
     }
     //select
     try{
@@ -92,12 +91,7 @@
         $error = true;
         $errorMessage = "エラーが発生しました: " . $e->getMessage();
     }
-    // if ($error) {
-    //     echo "<p>" . $errorMessage . "</p>";
-    //     header("Location: G3-1-1.php");
-    //     exit;
-
-    // }
+   
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -127,13 +121,8 @@
                 //usertagテーブル出力
                 $i = 0;
                 foreach ($colorresults as $colorresult) {
-                    // echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
                     echo "<div style='display: flex; flex-wrap: wrap;'>";
                     echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    // echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($color[$i])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    // echo '<input type="text" name="tag_name_"'.$j. 'value="', htmlspecialchars($usertag['tag_name']),'">';
-                    // echo "</div>";
-                    // echo '<input type="hidden" name="tag_id_"'.$j. ' value="',($usertag['tag_id']),'">';
                     echo '<input type="text" name="tag_name_' . $i+1 . '"value="'. htmlspecialchars($tag_name[$i]).'">';
                     echo '<input type="hidden" name="tag_id_' . $i+1 . '"value="'. htmlspecialchars($tag_id[$i]).'">';
                     echo "</div>";
@@ -149,7 +138,6 @@
                     echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
                     echo "<div style='display: flex; flex-wrap: wrap;'>";
                     echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    // echo '<input type="text" name="tag_name" value="', htmlspecialchars($colorresult['tag_name']),'">';
                     echo "usertag取れてない";
                     echo "</div>";
                 }
