@@ -5,7 +5,7 @@
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     if(!isset($_SESSION['user'])){
-        header("Location: G3-1-1.php");
+        header("Location: G1-1.php");
         exit;
     }
 
