@@ -18,17 +18,19 @@
 button.headerbutton {
   background-color: #FFF;
   border: none;
+  color:#000;
 }
 
 .logo {
   width: 100px; /* ロゴのサイズ調整 */
   height: auto;
-  margin-left: 130px;
+  margin-left: 120px;
 }
 
 input.headersubmit {
   border: none;
   background-color: #FFF;
+  color:#000;
   margin-left: 100px;
 } 
 
