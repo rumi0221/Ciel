@@ -11,40 +11,31 @@ function toggleMenu() {
 }
 
 
-// document.addEventListener('DOMContentLoaded', function() {
-//   const calendarBody = document.getElementById('calendar-body');
-//   const daysInMonth = 30; // 9月の日数（例）
-  
-//   // カレンダーの日付を生成
-//   for (let i = 1; i <= daysInMonth; i++) {
-//       let td = document.createElement('td');
-//       td.innerHTML = i;
-      
-//       // タグを表示する場合
-//       if (tags[i]) {
-//           let tag = document.createElement('div');
-//           tag.classList.add('tag');
-//           tag.textContent = tags[i];
-//           td.appendChild(tag);
-//       }
+let selectedYear = 2024;
+let selectedMonth = 10;
 
-//       // カレンダーに日付を追加
-//       let row;
-//       if (i % 7 === 1) {  // 新しい行を追加
-//           row = document.createElement('tr');
-//           calendarBody.appendChild(row);
-//       }
-//       row = calendarBody.querySelector('tr:last-child');
-//       row.appendChild(td);
-//   }
+function toggleMonthSelector() {
+    const monthSelector = document.getElementById("month-selector");
+    if (monthSelector.style.display === "block") {
+        monthSelector.style.display = "none";
+    } else {
+        monthSelector.style.display = "block";
+    }
+}
 
-  
-// },
-// function toggleMenu() {
-//     var menu = document.getElementById('menu');
-//     menu.classList.toggle('active');
-//   }
-// );
+function changeYear(change) {
+    selectedYear += change;
+    document.getElementById("selected-year").innerText = selectedYear + "年";
+}
+
+function selectMonth(month) {
+    selectedMonth = month;
+    document.getElementById("current-month").innerText = `${selectedYear}年${selectedMonth}月`;
+    document.querySelectorAll(".month").forEach(m => m.classList.remove("selected"));
+    document.querySelectorAll(".month")[month - 1].classList.add("selected");
+    toggleMonthSelector(); // Close the selector after choosing
+}
+
 
 
   
