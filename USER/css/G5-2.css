@@ -43,7 +43,8 @@ input.headersubmit {
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
-  padding: 150px 20px 230px;
+  /* padding: 150px 20px 140px; */
+  padding: 40% 3% 80%;
   background-color: #FFCDEB;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -53,9 +54,12 @@ input.headersubmit {
 .profile {
   background-color: #FFD9E8;
   border-radius: 15px;
-  padding: 20px;
+  /* padding: 20px;
   margin-top: -50px;
-  margin-bottom: 20px;
+  margin-bottom: 20px; */
+  padding: 5%;
+  margin-top: -10%;
+  margin-bottom: 5%;
   text-align: left;
 }
 
@@ -69,19 +73,9 @@ input.headersubmit {
   background-color: #FFD9E8;
 }
 
-/* .profile form button {
-  background: none;
-  border: none;
-  color: #000;
-  font-size: 16px;
-  cursor: pointer;
-  padding-top: 10px;
-  display: block;
-  margin-left: 195px;
-} */
 
 /* タグセクションのスタイル */
-.tag {
+/* .tag {
   background-color: #FFD9E8;
   border-radius: 15px;
   padding: 20px;
@@ -97,7 +91,7 @@ input.headersubmit {
   padding-top: 10px;
   display: block;
   margin-left: 195px;
-}
+} */
 
 /* フッターメニューのスタイル */
 .footer {

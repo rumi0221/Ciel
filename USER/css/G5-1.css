@@ -22,7 +22,8 @@
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
-  padding: 150px 20px 140px;
+  /* padding: 150px 20px 140px; */
+  padding: 40% 3% 30%;
   background-color: #FFCDEB;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -32,9 +33,12 @@
 .profile {
   background-color: #FFD9E8;
   border-radius: 15px;
-  padding: 20px;
-  margin-top: -50px;
-  margin-bottom: 20px;
+  /* padding: 20px; */
+  padding: 5%;
+  /* margin-top: -50px;
+  margin-bottom: 20px; */
+  margin-top: -12%;
+  margin-bottom: 6%;
   text-align: left;
 }
 
@@ -58,7 +62,8 @@
 .tag {
   background-color: #FFD9E8;
   border-radius: 15px;
-  padding: 20px;
+  /* padding: 20px; */
+  padding: 5%;
   text-align: left;
 }
 
@@ -70,7 +75,8 @@
   cursor: pointer;
   padding-top: 10px;
   display: block;
-  margin-left: 195px;
+  /* margin-left: 195px; */
+  margin-left: 60%;
 }
 
 /* フッターメニューのスタイル */
