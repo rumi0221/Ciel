@@ -87,10 +87,55 @@
             margin-left: 10px;
             display: none; /* 初期状態で非表示にする */
         }
+
+
+        /* タブ部分 */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: #f5deb3;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .tab.active {
+            background-color: #d4b4ff;
+            transform: scale(1.1);
+        }
+
+        /* スライド用の設定 */
+        .tab-wrapper {
+            display: flex;
+            overflow: hidden;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .tab-list {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 <body>
 <img class="logo" src="img/Ciel logo.png">
+
+<div class="tab-wrapper">
+    <div class="tab-list">
+        <div class="tab" id="tab-yesterday"></div>
+        <div class="tab" id="tab-today"></div>
+        <div class="tab" id="tab-tomorrow"></div>
+    </div>
+</div>
 
 <div class="background">
     <div class="termblock">
@@ -137,6 +182,28 @@
         const todoForm = document.getElementById('todo-form');
         const todoInput = document.getElementById('todo-input');
         let isEditMode = false;
+
+
+
+        const tabs = document.querySelectorAll('.tab');
+        const tabList = document.querySelector('.tab-list');
+        const tabWrapper = document.querySelector('.tab-wrapper');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                // すべてのタブからactiveクラスを外す
+                tabs.forEach(t => t.classList.remove('active'));
+                // クリックしたタブにactiveクラスを追加
+                tab.classList.add('active');
+
+                // 選択したタブを左から2番目に表示するためのスライド
+                const tabWidth = tab.offsetWidth + 20; // タブの幅と隙間
+                const scrollPosition = -tabWidth * (index - 1);
+                tabList.style.transform = `translateX(${scrollPosition}px)`;
+            });
+        });
+
+
 
         // 編集モードのトグル機能
         toggleModeButton.addEventListener('click', (event) => {
