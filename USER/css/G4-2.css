@@ -1,0 +1,91 @@
+/* 全体のスタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+img{
+    height: 100px;
+    width: 200px;
+  }
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+}
+
+/* フォームタイトル */
+h2 {
+    text-align: center;
+    font-family: 'Cursive', sans-serif;
+    font-size: 24px;
+    color: #333;
+}
+
+/* ラベルのスタイル */
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* テキスト入力や選択肢 */
+input[type="text"],
+input[type="datetime-local"],
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* ラジオボタン */
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* ラジオボタンとそのラベル */
+input[type="radio"] + label {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: normal;
+}
+
+/* ボタンのスタイル */
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* メモ欄 */
+textarea {
+    height: 80px;
+    resize: none;
+}
+
+/* 日付選択のリンク風デザイン */
+.date-range {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.date-r

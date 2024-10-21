@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
@@ -196,7 +195,7 @@ td:last-child {
   background-color: white;
   border: 1px solid lightgray;
   padding: 20px;
-  width: 300px;
+  width: 390px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
