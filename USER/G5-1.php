@@ -4,33 +4,26 @@
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // if(!isset($_SESSION['user'])){
-    //     header("Location: G3-1-1.php");
-    //     exit;
-    // }
+    if(!isset($_SESSION['user'])){
+        header("Location: G1-1.php");
+        exit;
+    }
 
-    // // 初期化
-    // $error = false; 
-    // $errorMessage = ""; 
+    // 初期化
+    $error = false; 
+    $errorMessage = ""; 
 
     try{
         // idの取得
-        // $user = $_SESSION['user'];
-        // $user_id = $user['user_id'];
-        $user_id = 2;
+        $user = $_SESSION['user'];
+        $user_id = $user['user_id'];
+        // $user_id = 2;
         $sql='select * from Users where user_id = :user_id';
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        //usertag取得
-        $colorsql='select Tags.color from Tags inner join Usertags on Tags.tag_id = Usertags.tag_id inner join Users on Usertags.user_id = :user_id LIMIT 12';
-        $colorstmt = $db->prepare($colorsql);
-        $colorstmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $colorstmt->execute();
-        $colorresult = $colorstmt->fetch(PDO::FETCH_ASSOC);
-        // if文を追加して、falseの場合に別のクエリを実行
-        if ($colorresult === false) {
+        
         // データが見つからない場合、新しいSQLクエリを実行
             $colorsql = 'SELECT * FROM Tags LIMIT 12';
             $colorstmt = $db->prepare($colorsql);
@@ -42,22 +35,16 @@
                 echo "データ取得に失敗しました。";
             }
 
-        } else {
-        // 最初のクエリが成功した場合の処理
-            echo "Usertagsと結合されたデータを取得しました。";
-            print_r($colorresult); // デバッグ用にデータを表示
-        }
-
     }catch(PDOException $e){
         $error = true;
         $errorMessage = "エラーが発生しました: " . $e->getMessage();
     }
-    // if ($error) {
-    //     echo "<p>" . $errorMessage . "</p>";
-    //     header("Location: G3-1-1.php");
-    //     exit;
+    if ($error) {
+        echo "<p>" . $errorMessage . "</p>";
+        header("Location: G3-1-1.php");
+        exit;
 
-    // }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
