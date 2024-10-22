@@ -51,7 +51,11 @@ try {
         $stmt->execute();
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+
+        // usertagsテーブルに挿入
         // Usertagsテーブルに挿入
+
         foreach ($tags as $tag) {
             // 既に同じ user_id と tag_id のペアが存在するかチェック
             $stmt = $dbh->prepare("SELECT COUNT(*) FROM Usertags WHERE user_id = :user_id AND tag_id = :tag_id");
