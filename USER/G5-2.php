@@ -1,6 +1,6 @@
 <?php
 //プロフィールのupdateとG5-1に遷移
-    require 'db-connect.php';
+require_once 'db-connect.php';
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
