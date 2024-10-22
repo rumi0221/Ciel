@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+session_start(); 
 // 登録完了時にセッションデータをクリア
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_SESSION['user_name']);
@@ -43,8 +43,7 @@ try {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        session_start();
-        $_SESSION['user'] = $user;
+        $_SESSION['user'] = $user;  // 既に開始されたセッションにユーザー情報を保存
         $user_id = $user['user_id'];  // 新規登録されたユーザーのIDを取得
 
         // Tagsテーブルから全てのタグを取得
@@ -53,7 +52,10 @@ try {
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
+
         // usertagsテーブルに挿入
+        // Usertagsテーブルに挿入
+
         foreach ($tags as $tag) {
             // 既に同じ user_id と tag_id のペアが存在するかチェック
             $stmt = $dbh->prepare("SELECT COUNT(*) FROM Usertags WHERE user_id = :user_id AND tag_id = :tag_id");
