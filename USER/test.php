@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo App</title>
+    <title>タブ管理アプリ</title>
     <style>
         body {
             margin: 0;
@@ -16,9 +16,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
             padding: 10px;
             background-color: #fff;
+            overflow: hidden; /* 追加 */
+            position: relative; /* 追加 */
+            width: 100%; /* 追加 */
         }
 
         .tab {
@@ -26,7 +28,7 @@
             background-color: #f5deb3;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
             white-space: nowrap;
         }
 
@@ -35,24 +37,10 @@
             transform: scale(1.1);
         }
 
-        .tab-wrapper {
-            display: flex;
-            overflow: hidden;
-            justify-content: center;
-            width: 100%;
-        }
-
         .tab-list {
             display: flex;
             transition: transform 0.3s ease;
-        }
-
-        .card {
-            background-color: #f0eaff;
-            padding: 10px;
-            border-radius: 10px;
-            margin: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: absolute; /* 追加 */
         }
 
         .todo-list {
@@ -73,20 +61,15 @@
 </head>
 <body>
 
-    <div class="tab-wrapper">
+    <div class="tab-container">
         <div class="tab-list" id="tab-list">
             <div class="tab" id="tab-yesterday"></div>
             <div class="tab active" id="tab-today"></div>
             <div class="tab" id="tab-tomorrow"></div>
-            <div class="tab" id="tab-day-after-tomorrow"></div>
         </div>
     </div>
 
     <div class="todo-list">
-        <div class="card">
-            <p>レポート課題</p>
-            <small>冬季課題 | 1/6まで</small>
-        </div>
         <div class="todo-item">
             <input type="checkbox"> おつかい
         </div>
@@ -105,16 +88,13 @@
         const tabYesterday = document.getElementById('tab-yesterday');
         const tabToday = document.getElementById('tab-today');
         const tabTomorrow = document.getElementById('tab-tomorrow');
-        const tabDayAfterTomorrow = document.getElementById('tab-day-after-tomorrow');
         const tabList = document.getElementById('tab-list');
 
         let today = new Date();
         let tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
-        let dayAfterTomorrow = new Date(today);
-        dayAfterTomorrow.setDate(today.getDate() + 2);
-
-        let futureDateCount = 2;
+        let yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
 
         function formatDate(date) {
             const month = date.getMonth() + 1;
@@ -122,47 +102,48 @@
             return `${month}/${day}`;
         }
 
-        tabYesterday.innerText = formatDate(new Date(today.setDate(today.getDate() - 1)));
-        tabToday.innerText = formatDate(new Date());
-        tabTomorrow.innerText = formatDate(new Date(tomorrow));
-        tabDayAfterTomorrow.innerText = formatDate(new Date(dayAfterTomorrow));
+        tabYesterday.innerText = formatDate(yesterday);
+        tabToday.innerText = formatDate(today);
+        tabTomorrow.innerText = formatDate(tomorrow);
+
+        let futureDateCount = 0;
 
         function handleTabClick(event) {
             const clickedTab = event.target;
-
             const allTabs = document.querySelectorAll('.tab');
             allTabs.forEach(tab => tab.classList.remove('active'));
-
             clickedTab.classList.add('active');
 
+            // クリックされたタブを中央に配置
             centerTab(clickedTab);
 
+            // 次の日のタブを生成
             if (clickedTab.id === 'tab-tomorrow' || clickedTab.id.startsWith('tab-future-')) {
                 futureDateCount++;
                 const newFutureDate = new Date();
-                newFutureDate.setDate(new Date().getDate() + futureDateCount);
+                newFutureDate.setDate(today.getDate() + futureDateCount + 1); // 明日の次の日
 
                 const newTab = document.createElement('div');
                 newTab.classList.add('tab');
                 newTab.id = `tab-future-${futureDateCount}`;
                 newTab.innerText = formatDate(newFutureDate);
                 tabList.appendChild(newTab);
-
                 attachTabClickEvent(newTab);
+            }
+
+            // 3つ以上のタブがある場合に左側か右側を削除
+            const totalTabs = tabList.children.length;
+            if (totalTabs > 3) {
+                tabList.removeChild(tabList.firstChild); // 左側のタブを削除
             }
         }
 
         function centerTab(clickedTab) {
-            const tabListWidth = tabList.offsetWidth;
             const clickedTabIndex = Array.from(tabList.children).indexOf(clickedTab);
+            const targetIndex = 1; // 中央に表示するタブのインデックス
 
-            const totalTabs = tabList.children.length;
-            const targetIndex = 2;
-
-            let offsetIndex = Math.max(clickedTabIndex - targetIndex, 0);
-
-            let scrollPosition = -(clickedTab.offsetWidth + 20) * offsetIndex;
-            tabList.style.transform = `translateX(${scrollPosition}px)`;
+            let offsetIndex = clickedTabIndex - targetIndex; // オフセット計算
+            tabList.style.transform = `translateX(${-offsetIndex * (clickedTab.offsetWidth + 10)}px)`; // スライド計算
         }
 
         const tabs = document.querySelectorAll('.tab');
@@ -172,7 +153,7 @@
             tab.addEventListener('click', handleTabClick);
         }
 
-        centerTab(document.getElementById('tab-today'));
+        centerTab(tabToday); // 初期状態で今日のタブを中央に
     </script>
 
 </body>
