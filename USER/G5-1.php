@@ -17,14 +17,14 @@
         // idの取得
         $user = $_SESSION['user'];
         $user_id = $user['user_id'];
-        // $user_id = 2;
+
         $sql='select * from Users where user_id = :user_id';
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // データが見つからない場合、新しいSQLクエリを実行
+        // データが見つからない場合、新しいSQL実行
             $colorsql = 'SELECT * FROM Tags LIMIT 12';
             $colorstmt = $db->prepare($colorsql);
             $colorstmt->execute();
@@ -88,7 +88,7 @@
                         echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 30px; height: 30px; border-radius: 50%; margin: 5px;'></span>";
                     }
                 }
-                echo "</div>"; // flexbox用のdivを閉じる
+                echo "</div>";
             ?>                   
             <button type="submit">rename a tag-></button>
             </form>
