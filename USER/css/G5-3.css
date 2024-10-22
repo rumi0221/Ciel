@@ -16,6 +16,7 @@
 button.headerbutton {
   background-color: #FFF;
   border: none;
+  color:#000;
 }
 
 .logo {
@@ -27,7 +28,8 @@ button.headerbutton {
 input.headersubmit {
   border: none;
   background-color: #FFF;
-  margin-left: 100px;
+  color:#000;
+  margin-left: 20%;
 } 
 
 .profilebutton {
@@ -35,11 +37,21 @@ input.headersubmit {
 }
 
 /* メインコンテンツのスタイル */
-.main {
+/* .main {
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
   padding: 130px 20px 20px;
+  background-color: #FFCDEB;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} */
+
+.main {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 40% 3% 30%;
   background-color: #FFCDEB;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
