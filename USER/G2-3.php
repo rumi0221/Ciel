@@ -52,7 +52,7 @@ session_destroy();
 </head>
 <body>
     <div class="container">
-        <h1>パスワード再設定完了</h1>
+        <h1>PASSWORD<br>RESET<br>COMPLETION</h1>
         <p><?php echo htmlspecialchars($message); ?></p>
 
         <button type="button" class="btn" onclick="location.href='G1-1.php'">RETURN TO LOGIN</button><!-- RETURN TO LOGINボタン -->
