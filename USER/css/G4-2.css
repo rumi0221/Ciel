@@ -4,6 +4,7 @@ body {
     background-color: #fff;
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 img{
     height: 100px;
@@ -29,7 +30,6 @@ h2 {
 
 /* ラベルのスタイル */
 label {
-    display: block;
     margin: 10px 0 5px;
     font-weight: bold;
     color: #333;
@@ -45,6 +45,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
+    text-align: center;
 }
 
 /* ラジオボタン */
@@ -58,23 +59,6 @@ input[type="radio"] + label {
     margin-right: 15px;
     font-weight: normal;
 }
-
-/* ボタンのスタイル */
-input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
 /* メモ欄 */
 textarea {
     height: 80px;
@@ -88,4 +72,23 @@ textarea {
     margin-bottom: 15px;
 }
 
-.date-r
+/*.cancel-buttom{
+    top:30px;
+}
+.confirm-buttom{
+    top:30px;
+}*/
+
+.header {
+    display: flex;
+    justify-content: space-between; /* 左右に配置 */
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+/* キャンセルボタンと決定ボタンのスタイル */
+.header button {
+    background-color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}

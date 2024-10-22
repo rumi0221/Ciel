@@ -94,6 +94,10 @@
         <!-- 他の週も同様に追加 -->
       </tbody>
     </table>
+    <!-- プラスボタン -->
+    <div class="floating-button">+</div>
+    <!-- プラスボタン -->
+    <div class="floating-button" onclick="goToNextPage()">+</div>
 
     <div id="month-selector" class="month-selector">
         <div class="selector-header">
@@ -116,14 +120,7 @@
             <span class="month" onclick="selectMonth(12)">12月</span>
         </div>
         <span class="close-selector" onclick="toggleMonthSelector()">×</span>
-  </div>
 </div>
-
-
-
-
-    <button class="add-btn">＋</button>
-  </div>
 
   <script src="script/G4-1.js"></script>
 </body>

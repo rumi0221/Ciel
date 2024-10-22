@@ -36,6 +36,14 @@ function selectMonth(month) {
     toggleMonthSelector(); // Close the selector after choosing
 }
 
+function goToNextPage() {
+    // 次のページ（例: event.html）に遷移する
+    window.location.href = "G4-2.html";
+}
+
+function NextPage() {
+    window.location.href = "G4-1.php";
+}
 
 
   

@@ -7,8 +7,14 @@
     <title>新しい予定</title>
 </head>
 <body>
-    <img src="./img/Ciel logo.png">
     <form action="save_schedule.php" method="POST">
+
+<div class="header">
+        <div class="cancel-button" onclick="NextPage()">キャンセル</div>
+        <img src="./img/Ciel logo.png">
+        <div class="confirm-button" onclick="NextPage()">決定</div>
+</div>
+
         <h2>新しい予定</h2>
         <input type="text" value="タイトルを入力" id="title" name="title" required><br><br>
 
@@ -26,8 +32,7 @@
         <input type="datetime-local" id="end" name="end" required><br><br>
 
         <textarea>メモ</textarea><br><br>
-
-        <input type="submit" value="保存">
     </form>
+    <script src="script/G4-1.js"></script>
 </body>
 </html>
