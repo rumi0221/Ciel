@@ -85,7 +85,9 @@ require_once 'db-connect.php';
           ?>
         </footer>
 
-        <script>
+        <script src="script/G5-2.js"></script>
+
+        <!-- <script>
           var showPasswordButton = document.getElementById("showPasswordButton");
           showPasswordButton.addEventListener("click", togglePasswordVisibility);
 
@@ -99,6 +101,6 @@ require_once 'db-connect.php';
                       showPasswordButton.className = "fa fa-eye";
                 } 
             }
-        </script>
+        </script> -->
 </body>
 </html>
