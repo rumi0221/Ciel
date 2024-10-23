@@ -91,30 +91,6 @@
 </head>
 <body>
 <img class="logo" src="img/Ciel logo.png">
-<!-- 
-<div class="menu">
-    <nav>
-        <ul>
-            <li>menu</li>
-        </ul>
-    </nav>
-</div>
-
-<dvi class="menu">
-    <span class="material-icon" id="open">menu</span>
-</div>
-
-<div class="overlay">
-        <span class="material-icons" id="close">close</span>
-        <nav>
-            <ul>
-                <li><a href="#">メニュー1</a></li>
-                <li><a href="#">メニュー2</a></li>
-                <li><a href="#">メニュー3</a></li>
-            </ul>
-        </nav>
-    </div> -->
-
 
 <div class="background">
 
