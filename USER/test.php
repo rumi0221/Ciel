@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>タブ管理アプリ</title>
+    <title>デバッグ用タブ管理アプリ</title>
     <style>
         body {
             margin: 0;
@@ -18,9 +18,9 @@
             align-items: center;
             padding: 10px;
             background-color: #fff;
-            overflow: hidden; /* 追加 */
-            position: relative; /* 追加 */
-            width: 100%; /* 追加 */
+            overflow: hidden;
+            position: relative;
+            width: 100%;
         }
 
         .tab {
@@ -40,7 +40,7 @@
         .tab-list {
             display: flex;
             transition: transform 0.3s ease;
-            position: absolute; /* 追加 */
+            position: relative;
         }
 
         .todo-list {
@@ -69,21 +69,6 @@
         </div>
     </div>
 
-    <div class="todo-list">
-        <div class="todo-item">
-            <input type="checkbox"> おつかい
-        </div>
-        <div class="todo-item">
-            <input type="checkbox"> お菓子の補充
-        </div>
-        <div class="todo-item">
-            <input type="checkbox"> ATMからお金をおろす
-        </div>
-        <div class="todo-item">
-            <input type="checkbox"> 新刊「○○」
-        </div>
-    </div>
-
     <script>
         const tabYesterday = document.getElementById('tab-yesterday');
         const tabToday = document.getElementById('tab-today');
@@ -107,6 +92,7 @@
         tabTomorrow.innerText = formatDate(tomorrow);
 
         let futureDateCount = 0;
+        let pastDateCount = 0;
 
         function handleTabClick(event) {
             const clickedTab = event.target;
@@ -114,15 +100,16 @@
             allTabs.forEach(tab => tab.classList.remove('active'));
             clickedTab.classList.add('active');
 
-            // クリックされたタブを中央に配置
-            centerTab(clickedTab);
+            // デバッグ用のログを追加
+            console.log(`タブがクリックされました: ${clickedTab.innerText}`);
 
-            // 次の日のタブを生成
+            // クリックされたタブが明日以降の場合
             if (clickedTab.id === 'tab-tomorrow' || clickedTab.id.startsWith('tab-future-')) {
                 futureDateCount++;
                 const newFutureDate = new Date();
-                newFutureDate.setDate(today.getDate() + futureDateCount + 1); // 明日の次の日
+                newFutureDate.setDate(today.getDate() + futureDateCount + 1);
 
+                // 新しいタブを右側に追加
                 const newTab = document.createElement('div');
                 newTab.classList.add('tab');
                 newTab.id = `tab-future-${futureDateCount}`;
@@ -131,19 +118,20 @@
                 attachTabClickEvent(newTab);
             }
 
-            // 3つ以上のタブがある場合に左側か右側を削除
-            const totalTabs = tabList.children.length;
-            if (totalTabs > 3) {
-                tabList.removeChild(tabList.firstChild); // 左側のタブを削除
+            // クリックされたタブが昨日以前の場合
+            if (clickedTab.id === 'tab-yesterday' || clickedTab.id.startsWith('tab-past-')) {
+                pastDateCount++;
+                const newPastDate = new Date();
+                newPastDate.setDate(today.getDate() - pastDateCount - 1);
+
+                // 新しいタブを左側に追加
+                const newTab = document.createElement('div');
+                newTab.classList.add('tab');
+                newTab.id = `tab-past-${pastDateCount}`;
+                newTab.innerText = formatDate(newPastDate);
+                tabList.insertBefore(newTab, tabList.firstChild); // 左側に追加
+                attachTabClickEvent(newTab);
             }
-        }
-
-        function centerTab(clickedTab) {
-            const clickedTabIndex = Array.from(tabList.children).indexOf(clickedTab);
-            const targetIndex = 1; // 中央に表示するタブのインデックス
-
-            let offsetIndex = clickedTabIndex - targetIndex; // オフセット計算
-            tabList.style.transform = `translateX(${-offsetIndex * (clickedTab.offsetWidth + 10)}px)`; // スライド計算
         }
 
         const tabs = document.querySelectorAll('.tab');
@@ -152,8 +140,6 @@
         function attachTabClickEvent(tab) {
             tab.addEventListener('click', handleTabClick);
         }
-
-        centerTab(tabToday); // 初期状態で今日のタブを中央に
     </script>
 
 </body>
