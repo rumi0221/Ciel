@@ -1,0 +1,94 @@
+/* 全体のスタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+img{
+    height: 100px;
+    width: 200px;
+  }
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+}
+
+/* フォームタイトル */
+h2 {
+    text-align: center;
+    font-family: 'Cursive', sans-serif;
+    font-size: 24px;
+    color: #333;
+}
+
+/* ラベルのスタイル */
+label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* テキスト入力や選択肢 */
+input[type="text"],
+input[type="datetime-local"],
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ラジオボタン */
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* ラジオボタンとそのラベル */
+input[type="radio"] + label {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: normal;
+}
+/* メモ欄 */
+textarea {
+    height: 80px;
+    resize: none;
+}
+
+/* 日付選択のリンク風デザイン */
+.date-range {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/*.cancel-buttom{
+    top:30px;
+}
+.confirm-buttom{
+    top:30px;
+}*/
+
+.header {
+    display: flex;
+    justify-content: space-between; /* 左右に配置 */
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+/* キャンセルボタンと決定ボタンのスタイル */
+.header button {
+    background-color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}

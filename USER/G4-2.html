@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/G4-2.css">
+    <title>新しい予定</title>
+</head>
+<body>
+    <form action="save_schedule.php" method="POST">
+
+<div class="header">
+        <div class="cancel-button" onclick="NextPage()">キャンセル</div>
+        <img src="./img/Ciel logo.png">
+        <div class="confirm-button" onclick="NextPage()">決定</div>
+</div>
+
+        <h2>新しい予定</h2>
+        <input type="text" value="タイトルを入力" id="title" name="title" required><br><br>
+
+        <label for="tag">タグ選択:</label>
+        <input type="text" id="tag" name="tag"><br><br>
+
+        <label>TERMに追加する:</label>
+        <input type="radio" id="term_yes" name="term" value="yes">YES
+        <input type="radio" id="term_no" name="term" value="no" checked>NO<br><br>
+
+        <label for="start">開始日時:</label>
+        <input type="datetime-local" id="start" name="start" required><br><br>
+
+        <label for="end">終了日時:</label>
+        <input type="datetime-local" id="end" name="end" required><br><br>
+
+        <textarea>メモ</textarea><br><br>
+    </form>
+    <script src="script/G4-1.js"></script>
+</body>
+</html>
