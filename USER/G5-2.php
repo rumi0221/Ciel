@@ -1,6 +1,6 @@
 <?php
 //プロフィールのupdateとG5-1に遷移
-    require 'db-connect.php';
+require_once 'db-connect.php';
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -71,8 +71,6 @@
               echo '<tr>','<td>user 　　：</td>','<td>','<input type="text" name="user_name" value="', htmlspecialchars($result['user_name']) ,'" required>','</td>','</tr>';
               echo '<tr>','<td>email　　：</td>','<td>','<input type="email"  name="user_mail" value="', htmlspecialchars($result['user_mail']) ,'" required>','</td>','</tr>';
               echo '<tr>','<td>password：</td>','<td>','<input type="password" name="user_pass" id="passwordInput" required>','</td>';
-              
-              //echo '<td><button id="showPasswordButton"><i class="fa-solid fa-eye"></i></button></td>','</tr>'
             ?>
             </form>
             <td><button id="showPasswordButton" class="fa fa-eye"></button></td></tr>
@@ -87,21 +85,22 @@
           ?>
         </footer>
 
-        <script>
-              var showPasswordButton = document.getElementById("showPasswordButton");
-                showPasswordButton.addEventListener("click", togglePasswordVisibility);
+        <script src="script/G5-2.js"></script>
 
-                function togglePasswordVisibility() {
-                  var passwordInput = document.getElementById("passwordInput");
-                    if (passwordInput.type === "password") {
+        <!-- <script>
+          var showPasswordButton = document.getElementById("showPasswordButton");
+          showPasswordButton.addEventListener("click", togglePasswordVisibility);
+
+            function togglePasswordVisibility() {
+              var passwordInput = document.getElementById("passwordInput");
+                if (passwordInput.type === "password") {
                       passwordInput.type = "text";
                       showPasswordButton.className = "fa fa-eye-slash";
-                    } else {
+                } else {
                       passwordInput.type = "password";
                       showPasswordButton.className = "fa fa-eye";
-                    } 
-                }
-            </script>
-    
+                } 
+            }
+        </script> -->
 </body>
 </html>
