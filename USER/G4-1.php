@@ -21,11 +21,11 @@
       <ul class="tag-list">
       <li><span class="tag-color" style="background-color: #d4ff7f;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #ffeb7f;"></span>タグ名</li>
-      <li><span class="tag-color checked" style="background-color: #ff7fbf;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #ff7fbf;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #7fafff;"></span>タグ名</li>
-      <li><span class="tag-color" style="background-color: #d47fff;"></span>...</li>
+      <li><span class="tag-color" style="background-color: #d47fff;"></span>タグ名</li>
       </ul>
-      <button class="confirm-button">決定</button>
+      <a href="#" class="confirm-button">決定</a>
     </div>
 </header>
 
@@ -122,8 +122,6 @@
             <span class="month" onclick="selectMonth(11)">11月</span>
             <span class="month" onclick="selectMonth(12)">12月</span>
         </div>
-
-        <div id="calender-container"></div>
 
         <span class="close-selector" onclick="toggleMonthSelector()">×</span>
 </div>
