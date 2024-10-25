@@ -87,9 +87,14 @@
             return `${month}/${day}`;
         }
 
-        tabYesterday.innerText = formatDate(yesterday);
-        tabToday.innerText = formatDate(today);
-        tabTomorrow.innerText = formatDate(tomorrow);
+        // 初期タブの日付設定
+        function resetInitialTabs() {
+            tabYesterday.innerText = formatDate(yesterday);
+            tabToday.innerText = formatDate(today);
+            tabTomorrow.innerText = formatDate(tomorrow);
+        }
+
+        resetInitialTabs();
 
         let futureDateCount = 0;
         let pastDateCount = 0;
@@ -97,31 +102,20 @@
         function handleTabClick(event) {
             const clickedTab = event.target;
             const allTabs = document.querySelectorAll('.tab');
-            allTabs.forEach(tab => tab.classList.remove('active'));
-            clickedTab.classList.add('active');
 
-            // クリックされたタブが「昨日」の場合
-            if (clickedTab.id === 'tab-yesterday' || clickedTab.id.startsWith('tab-past-')) {
-                pastDateCount++;
-                const newPastDate = new Date();
-                newPastDate.setDate(today.getDate() - pastDateCount - 1);
-
-                // 新しい過去の日付のタブを左側に追加
-                const newTab = document.createElement('div');
-                newTab.classList.add('tab');
-                newTab.id = `tab-past-${pastDateCount}`;
-                newTab.innerText = formatDate(newPastDate);
-                tabList.insertBefore(newTab, tabList.firstChild); // 左側に追加
-                attachTabClickEvent(newTab);
-
-                // 明日のタブを削除
-                if (tabTomorrow.parentNode) {
-                    tabTomorrow.parentNode.removeChild(tabTomorrow);
-                }
+            // クリックされたタブがすでにアクティブなら何もしない
+            if (clickedTab.classList.contains('active')) {
+                return;
             }
 
-            // クリックされたタブが「明日」の場合
-            if (clickedTab.id === 'tab-tomorrow' || clickedTab.id.startsWith('tab-future-')) {
+            // 全てのタブから active クラスを削除
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // クリックされたタブに active クラスを追加
+            clickedTab.classList.add('active');
+
+            // 未来のタブ（「明日」やそれ以降）がクリックされた場合
+            if (clickedTab.id.startsWith('tab-future-') || clickedTab.id === 'tab-tomorrow') {
                 futureDateCount++;
                 const newFutureDate = new Date();
                 newFutureDate.setDate(today.getDate() + futureDateCount + 1);
@@ -134,20 +128,49 @@
                 tabList.appendChild(newTab);
                 attachTabClickEvent(newTab);
 
-                // 昨日のタブを削除
-                if (tabYesterday.parentNode) {
-                    tabYesterday.parentNode.removeChild(tabYesterday);
+                // タブが4つ以上にならないように調整
+                while (tabList.childElementCount > 3) {
+                    tabList.removeChild(tabList.firstChild); // 左側のタブを削除
                 }
             }
 
-            // タブ数が3つを超えたら、適切なタブを削除
-            if (tabList.childElementCount > 3) {
-                if (clickedTab.id.startsWith('tab-future-')) {
-                    tabList.removeChild(tabList.firstChild); // 左側のタブを削除
-                } else if (clickedTab.id.startsWith('tab-past-')) {
+            // 過去のタブ（「昨日」やそれ以前）がクリックされた場合
+            if (clickedTab.id.startsWith('tab-past-') || clickedTab.id === 'tab-yesterday') {
+                pastDateCount++;
+                const newPastDate = new Date();
+                newPastDate.setDate(today.getDate() - pastDateCount - 1);
+
+                // 新しい過去の日付のタブを左側に追加
+                const newTab = document.createElement('div');
+                newTab.classList.add('tab');
+                newTab.id = `tab-past-${pastDateCount}`;
+                newTab.innerText = formatDate(newPastDate);
+                tabList.insertBefore(newTab, tabList.firstChild); // 左側に追加
+                attachTabClickEvent(newTab);
+
+                // タブが4つ以上にならないように調整
+                while (tabList.childElementCount > 3) {
                     tabList.removeChild(tabList.lastChild); // 右側のタブを削除
                 }
             }
+
+            // 今日のタブがクリックされたときは初期状態に戻す
+            if (clickedTab.id === 'tab-today') {
+                resetTabsToInitialState();
+            }
+        }
+
+        // 初期状態に戻す関数
+        function resetTabsToInitialState() {
+            tabList.innerHTML = ''; // すべてのタブを削除
+            tabList.appendChild(tabYesterday);  // 昨日のタブ
+            tabList.appendChild(tabToday);      // 今日のタブ
+            tabList.appendChild(tabTomorrow);   // 明日のタブ
+
+            resetInitialTabs();  // タブの日付を再設定
+            tabToday.classList.add('active');  // 今日のタブをアクティブに
+            futureDateCount = 0;
+            pastDateCount = 0;
         }
 
         const tabs = document.querySelectorAll('.tab');
