@@ -31,13 +31,13 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     if (!empty($_POST['user_ids'])) {
         $ids = implode(',', array_map('intval', $_POST['user_ids']));
-        $sql = "DELETE FROM users WHERE id IN ($ids)";
+        $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
         $conn->query($sql);
     }
 }
 
 // ユーザーデータの取得
-$sql = "SELECT user_id, user_name, user_email, user_pass, last_history FROM Users";
+$sql = "SELECT user_id, user_name, user_email, user_pass, last_history, delete_flg FROM Users";
 $result = $conn->query($sql);
 ?>
 
@@ -46,13 +46,14 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
     <title>ユーザー管理画面</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
         .header {
-            background-color: #d5e0ff;
+            /* background-color: #d5e0ff; */
             padding: 20px;
             text-align: center;
         }
@@ -114,6 +115,7 @@ $result = $conn->query($sql);
                             <td><?= htmlspecialchars($row['user_email'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($row['user_pass'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= $row['last_history'] ?></td>
+                            <td><?= htmlspecialchars($row['delete_flg'], ENT_QUOTES, 'UTF-8') ?></td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
@@ -123,7 +125,7 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </tbody>
         </table>
-        <button type="submit" name="delete" class="delete-btn">delete</button>
+        <!-- <button type="submit" name="delete" class="delete-btn">delete</button> -->
     </form>
 </div>
 
