@@ -1,11 +1,33 @@
+body{
+  width: 80%;
+  max-width: 380px;
+  max-height: 812px;
+  height: 100%;
+  background-color: #FFCDEB;
+  display: flex;
+}
+
+.main{
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  /* padding: 150px 20px 140px; */
+  padding: 40% 3% 80%;
+  /* background-color: #FFCDEB; */
+  /* border-radius: 15px; */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  position: absolute;
+}
+
+
 /* ヘッダーのスタイル */
 .header {
   position: fixed;
-    top: 10;
+  margin-top: -2%;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 400px; /* mainの幅に合わせる */
+    max-width: 450px; /* mainの幅に合わせる */
     background-color: #fff;
     padding: 0 0;
     text-align: center;
@@ -31,7 +53,8 @@ input.headersubmit {
   border: none;
   background-color: #FFF;
   color:#000;
-  margin-left: 100px;
+  /* margin-left: 100px; */
+  margin-left: 30%;
 } 
 
 .profilebutton {
@@ -39,16 +62,16 @@ input.headersubmit {
 }
 
 /* メインコンテンツのスタイル */
-.main {
+/* .main {
   width: 100%;
   max-width: 360px;
-  margin: 0 auto;
+  margin: 0 auto; */
   /* padding: 150px 20px 140px; */
-  padding: 40% 3% 80%;
+  /* padding: 40% 3% 80%;
   background-color: #FFCDEB;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /* プロフィールセクションのスタイル */
 .profile {
@@ -96,12 +119,12 @@ input.headersubmit {
 /* フッターメニューのスタイル */
 .footer {
   position: fixed;
-    bottom: 0;
+  bottom: -1%;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
     margin-bottom: 8px;
-    max-width: 400px; /* mainの幅に合わせる */
+    max-width: 450px; /* mainの幅に合わせる */
     background-color: #d2e3fc;
     height: 80px;
     display: flex;
