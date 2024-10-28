@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3つまでのタブ管理アプリ</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <title>常に3つのタブが表示されるアプリ</title>
     <style>
-        body {
+        html, body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 8px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        .background {
             background-color: #E1DBFF;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
         }
 
         .tab-container {
@@ -39,47 +61,139 @@
 
         .tab-list {
             display: flex;
+            justify-content: center;
             transition: transform 0.3s ease;
             position: relative;
         }
 
-        .todo-list {
-            padding: 20px;
-            background-color: #e1dbff;
+        .termblock {
+            margin: 20px auto;
+            padding: 10px;
+            width: 80%;
+            background-color: #DBB5FF;
+            border: none;
+            border-radius: 10px;
         }
 
-        .todo-item {
+        .tododiv {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: fixed;
+            bottom: 100px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 10px;
+        }
+
+        .todo-form {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            gap: 10px;
         }
 
-        .todo-item input[type="checkbox"] {
-            margin-right: 10px;
+        .todo-inp {
+            height: 3em;
+            width: 20em;
+            border-radius: 5px;
+        }
+
+        .todo-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background-color: #FFF;
+            border-radius: 10px;
+        }
+
+        .normal-mode {
+            background-color: #f0f0f0;
+        }
+
+        .edit-mode {
+            background-color: #e0e0e0;
+            border: 1px dashed #000;
+            justify-content: space-between;
+        }
+
+        .hide-checkbox {
+            display: inline-block;
+        }
+
+        .delete-button {
+            background-color: transparent;
+            border: none;
+            margin-left: 10px;
+            display: none;
         }
     </style>
 </head>
 <body>
 
+    <img class="logo" src="img/Ciel logo.png">
+
     <div class="tab-container">
         <div class="tab-list" id="tab-list">
-            <div class="tab" id="tab-yesterday"></div>
-            <div class="tab active" id="tab-today"></div>
-            <div class="tab" id="tab-tomorrow"></div>
+            <div class="tab" id="tab-left"></div>
+            <div class="tab active" id="tab-center"></div>
+            <div class="tab" id="tab-right"></div>
         </div>
     </div>
 
+    <div class="background">
+
+        <div class="termblock">
+            term
+            <ul>
+                <li class="normal-mode">
+                    <input type="checkbox" class="hide-checkbox">term1
+                </li>
+            </ul>
+        </div>
+
+        <ul id="sortable-list">
+            <li class="normal-mode" data-id="1">
+                <input type="checkbox" class="hide-checkbox"> 文1
+                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+            </li>
+            <li class="normal-mode" data-id="2">
+                <input type="checkbox" class="hide-checkbox"> 文2
+                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+            </li>
+            <li class="normal-mode" data-id="3">
+                <input type="checkbox" class="hide-checkbox"> 文3
+                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+            </li>
+        </ul>
+
+        <div class="tododiv">
+            <form id="todo-form" class="todo-form">
+                <input type="text" class="todo-inp" id="todo-input" placeholder=" TODOを追加する">
+                <button class="todo-btn" id="addTodo" style="display: none;">
+                    <img src="img/add.png" style="height:30px; width:30px;">
+                </button>
+                <button class="todo-btn" id="toggleMode">
+                    <img src="img/edit.png" style="height:30px; width:30px;">
+                </button>
+            </form>
+        </div>
+
+        <div id="output"></div>
+    </div>
+
+    <footer><?php include 'menu.php'; ?></footer>
+
     <script>
-        const tabYesterday = document.getElementById('tab-yesterday');
-        const tabToday = document.getElementById('tab-today');
-        const tabTomorrow = document.getElementById('tab-tomorrow');
+        const tabLeft = document.getElementById('tab-left');
+        const tabCenter = document.getElementById('tab-center');
+        const tabRight = document.getElementById('tab-right');
         const tabList = document.getElementById('tab-list');
 
         let today = new Date();
-        let tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-        let yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
+        let currentDay = new Date(today);
 
         function formatDate(date) {
             const month = date.getMonth() + 1;
@@ -87,97 +201,128 @@
             return `${month}/${day}`;
         }
 
-        // 初期タブの日付設定
-        function resetInitialTabs() {
-            tabYesterday.innerText = formatDate(yesterday);
-            tabToday.innerText = formatDate(today);
-            tabTomorrow.innerText = formatDate(tomorrow);
+        function updateTabs() {
+            let yesterday = new Date(currentDay);
+            yesterday.setDate(currentDay.getDate() - 1);
+            let tomorrow = new Date(currentDay);
+            tomorrow.setDate(currentDay.getDate() + 1);
+
+            tabLeft.innerText = formatDate(yesterday);
+            tabCenter.innerText = formatDate(currentDay);
+            tabRight.innerText = formatDate(tomorrow);
         }
-
-        resetInitialTabs();
-
-        let futureDateCount = 0;
-        let pastDateCount = 0;
 
         function handleTabClick(event) {
             const clickedTab = event.target;
-            const allTabs = document.querySelectorAll('.tab');
 
-            // クリックされたタブがすでにアクティブなら何もしない
-            if (clickedTab.classList.contains('active')) {
-                return;
+            if (clickedTab.id === 'tab-left') {
+                currentDay.setDate(currentDay.getDate() - 1);
+            } else if (clickedTab.id === 'tab-right') {
+                currentDay.setDate(currentDay.getDate() + 1);
             }
 
-            // 全てのタブから active クラスを削除
-            allTabs.forEach(tab => tab.classList.remove('active'));
-
-            // クリックされたタブに active クラスを追加
-            clickedTab.classList.add('active');
-
-            // 未来のタブ（「明日」やそれ以降）がクリックされた場合
-            if (clickedTab.id.startsWith('tab-future-') || clickedTab.id === 'tab-tomorrow') {
-                futureDateCount++;
-                const newFutureDate = new Date();
-                newFutureDate.setDate(today.getDate() + futureDateCount + 1);
-
-                // 新しい未来の日付のタブを右側に追加
-                const newTab = document.createElement('div');
-                newTab.classList.add('tab');
-                newTab.id = `tab-future-${futureDateCount}`;
-                newTab.innerText = formatDate(newFutureDate);
-                tabList.appendChild(newTab);
-                attachTabClickEvent(newTab);
-
-                // タブが4つ以上にならないように調整
-                while (tabList.childElementCount > 3) {
-                    tabList.removeChild(tabList.firstChild); // 左側のタブを削除
-                }
-            }
-
-            // 過去のタブ（「昨日」やそれ以前）がクリックされた場合
-            if (clickedTab.id.startsWith('tab-past-') || clickedTab.id === 'tab-yesterday') {
-                pastDateCount++;
-                const newPastDate = new Date();
-                newPastDate.setDate(today.getDate() - pastDateCount - 1);
-
-                // 新しい過去の日付のタブを左側に追加
-                const newTab = document.createElement('div');
-                newTab.classList.add('tab');
-                newTab.id = `tab-past-${pastDateCount}`;
-                newTab.innerText = formatDate(newPastDate);
-                tabList.insertBefore(newTab, tabList.firstChild); // 左側に追加
-                attachTabClickEvent(newTab);
-
-                // タブが4つ以上にならないように調整
-                while (tabList.childElementCount > 3) {
-                    tabList.removeChild(tabList.lastChild); // 右側のタブを削除
-                }
-            }
-
-            // 今日のタブがクリックされたときは初期状態に戻す
-            if (clickedTab.id === 'tab-today') {
-                resetTabsToInitialState();
-            }
+            updateTabs();
         }
 
-        // 初期状態に戻す関数
-        function resetTabsToInitialState() {
-            tabList.innerHTML = ''; // すべてのタブを削除
-            tabList.appendChild(tabYesterday);  // 昨日のタブ
-            tabList.appendChild(tabToday);      // 今日のタブ
-            tabList.appendChild(tabTomorrow);   // 明日のタブ
+        tabLeft.addEventListener('click', handleTabClick);
+        tabRight.addEventListener('click', handleTabClick);
 
-            resetInitialTabs();  // タブの日付を再設定
-            tabToday.classList.add('active');  // 今日のタブをアクティブに
-            futureDateCount = 0;
-            pastDateCount = 0;
+        updateTabs();
+
+        const toggleModeButton = document.getElementById('toggleMode');
+        const addTodoButton = document.getElementById('addTodo');
+        const sortableList = document.getElementById('sortable-list');
+        const todoForm = document.getElementById('todo-form');
+        const todoInput = document.getElementById('todo-input');
+        let isEditMode = false;
+
+        toggleModeButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            isEditMode = !isEditMode;
+            const checkboxes = document.querySelectorAll('.hide-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.style.display = isEditMode ? 'none' : 'inline-block';
+            });
+
+            addTodoButton.style.display = 'none';
+            todoInput.style.display = isEditMode ? 'none' : 'inline-block';
+            const buttonIcon = toggleModeButton.querySelector('img');
+            buttonIcon.src = isEditMode ? 'img/edit.png' : 'img/edit.png';
+
+            sortableList.querySelectorAll('li').forEach(li => {
+                if (isEditMode) {
+                    li.classList.add('edit-mode');
+                    li.classList.remove('normal-mode');
+                    li.querySelector('.delete-button').style.display = 'block';
+                    li.setAttribute('draggable', 'true');
+                } else {
+                    li.classList.add('normal-mode');
+                    li.classList.remove('edit-mode');
+                    li.querySelector('.delete-button').style.display = 'none';
+                    li.removeAttribute('draggable');
+                }
+            });
+
+            sortableList.querySelectorAll('.delete-button').forEach(button => {
+                attachDeleteHandler(button);
+            });
+
+            if (isEditMode) {
+                enableDragAndDrop();
+            }
+        });
+
+        function enableDragAndDrop() {
+            let draggedItem = null;
+            let overItem = null;
+
+            sortableList.addEventListener('dragstart', function (e) {
+                if (e.target.tagName === 'LI') {
+                    draggedItem = e.target;
+                    setTimeout(() => {
+                        e.target.style.display = 'none';
+                    }, 0);
+                }
+            });
+
+            sortableList.addEventListener('dragend', function (e) {
+                setTimeout(() => {
+                    draggedItem.style.display = 'block';
+                    draggedItem = null;
+                }, 0);
+            });
+
+            sortableList.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                if (e.target.tagName === 'LI') {
+                    overItem = e.target;
+                }
+            });
+
+            sortableList.addEventListener('drop', function (e) {
+                e.preventDefault();
+                if (draggedItem !== null && overItem !== null && draggedItem !== overItem) {
+                    const draggedId = draggedItem.dataset.id;
+                    const overId = overItem.dataset.id;
+
+                    if (draggedId && overId) {
+                        swapListItems(draggedItem, overItem);
+                    }
+                }
+            });
         }
 
-        const tabs = document.querySelectorAll('.tab');
-        tabs.forEach(tab => attachTabClickEvent(tab));
+        function swapListItems(item1, item2) {
+            const parent = item1.parentElement;
+            const nextSibling = item1.nextElementSibling === item2 ? item1 : item1.nextElementSibling;
+            parent.insertBefore(item1, item2);
+            parent.insertBefore(item2, nextSibling);
+        }
 
-        function attachTabClickEvent(tab) {
-            tab.addEventListener('click', handleTabClick);
+        function attachDeleteHandler(button) {
+            button.addEventListener('click', function () {
+                button.parentElement.remove();
+            });
         }
     </script>
 

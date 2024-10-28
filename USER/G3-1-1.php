@@ -1,20 +1,55 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/menu.css">
+    <title>常に3つのタブが表示されるアプリ</title>
     <style>
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: #f5deb3;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background-color: #E1DBFF;
+            transform: scale(1.1);
+        }
+
+        .tab-list {
+            display: flex;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
         }
+
         ul {
             list-style-type: none;
             padding: 0;
         }
+
         li {
             padding: 8px;
             margin-bottom: 4px;
@@ -23,15 +58,15 @@
             align-items: center;
             text-align: left;
         }
+
         .background {
             background-color: #E1DBFF;
             width: 100%;
             height: 100%;
             overflow: auto;
         }
+
         .termblock {
-            /* display: flex;
-            justify-content: center; */
             margin: 20px auto;
             padding: 10px;
             width: 80%;
@@ -39,6 +74,7 @@
             border: none;
             border-radius: 10px;
         }
+
         .tododiv {
             display: flex;
             justify-content: center;
@@ -51,16 +87,19 @@
             z-index: 1000;
             padding: 10px;
         }
+
         .todo-form {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         .todo-inp {
             height: 3em;
             width: 20em;
             border-radius: 5px;
         }
+
         .todo-btn {
             display: inline-flex;
             align-items: center;
@@ -69,14 +108,17 @@
             background-color: #FFF;
             border-radius: 10px;
         }
+
         .normal-mode {
             background-color: #f0f0f0;
         }
+
         .edit-mode {
             background-color: #e0e0e0;
             border: 1px dashed #000;
             justify-content: space-between;
         }
+
         .hide-checkbox {
             display: inline-block;
         }
@@ -85,53 +127,108 @@
             background-color: transparent;
             border: none;
             margin-left: 10px;
-            display: none; /* 初期状態で非表示にする */
+            display: none;
         }
     </style>
 </head>
 <body>
-<img class="logo" src="img/Ciel logo.png">
 
-<div class="background">
+    <img class="logo" src="img/Ciel logo.png">
 
-    <div class="termblock">
-        term
-        <ul>
-            <li class="normal-mode">
-                <input type="checkbox"  class="hide-checkbox">term1
+    <div class="tab-container">
+        <div class="tab-list" id="tab-list">
+            <div class="tab" id="tab-left"></div>
+            <div class="tab active" id="tab-center"></div>
+            <div class="tab" id="tab-right"></div>
+        </div>
+    </div>
+
+    <div class="background">
+
+        <div class="termblock">
+            term
+            <ul>
+                <li class="normal-mode">
+                    <input type="checkbox" class="hide-checkbox">term1
+                </li>
+            </ul>
+        </div>
+
+        <ul id="sortable-list">
+            <li class="normal-mode" data-id="1">
+                <input type="checkbox" class="hide-checkbox"> 文1
+                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+            </li>
+            <li class="normal-mode" data-id="2">
+                <input type="checkbox" class="hide-checkbox"> 文2
+                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+            </li>
+            <li class="normal-mode" data-id="3">
+                <input type="checkbox" class="hide-checkbox"> 文3
+                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
             </li>
         </ul>
+
+        <div class="tododiv">
+            <form id="todo-form" class="todo-form">
+                <input type="text" class="todo-inp" id="todo-input" placeholder=" TODOを追加する">
+                <button class="todo-btn" id="addTodo" style="display: none;">
+                    <img src="img/add.png" style="height:30px; width:30px;">
+                </button>
+                <button class="todo-btn" id="toggleMode">
+                    <img src="img/edit.png" style="height:30px; width:30px;">
+                </button>
+            </form>
+        </div>
+
+        <div id="output"></div>
     </div>
 
-    <ul id="sortable-list">
-        <li class="normal-mode" data-id="1">
-            <input type="checkbox" class="hide-checkbox"> 文1
-            <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-        </li>
-        <li class="normal-mode" data-id="2">
-            <input type="checkbox" class="hide-checkbox"> 文2
-            <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-        </li>
-        <li class="normal-mode" data-id="3">
-            <input type="checkbox" class="hide-checkbox"> 文3
-            <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-        </li>
-    </ul>
-
-    <div class="tododiv">
-        <form id="todo-form" class="todo-form">
-            <input type="text" class="todo-inp" id="todo-input" placeholder=" TODOを追加する">
-            <button class="todo-btn" id="addTodo" style="display: none;"><img src="img/add.png" style="height:30px; width:30px;"></button> <!-- 非表示にする -->
-            <button class="todo-btn" id="toggleMode"><img src="img/edit.png" style="height:30px; width:30px;"></button>
-        </form>
-    </div>
-
-    <div id="output"></div>
-</div>
-
-<footer><?php include 'menu.php'; ?></footer>
+    <footer><?php include 'menu.php'; ?></footer>
 
     <script>
+        const tabLeft = document.getElementById('tab-left');
+        const tabCenter = document.getElementById('tab-center');
+        const tabRight = document.getElementById('tab-right');
+        const tabList = document.getElementById('tab-list');
+
+        let today = new Date();
+        let currentDay = new Date(today);
+
+        function formatDate(date) {
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${month}/${day}`;
+        }
+
+        function updateTabs() {
+            let yesterday = new Date(currentDay);
+            yesterday.setDate(currentDay.getDate() - 1);
+            let tomorrow = new Date(currentDay);
+            tomorrow.setDate(currentDay.getDate() + 1);
+
+            tabLeft.innerText = formatDate(yesterday);
+            tabCenter.innerText = formatDate(currentDay);
+            tabRight.innerText = formatDate(tomorrow);
+        }
+
+        function handleTabClick(event) {
+            const clickedTab = event.target;
+
+            if (clickedTab.id === 'tab-left') {
+                currentDay.setDate(currentDay.getDate() - 1);
+            } else if (clickedTab.id === 'tab-right') {
+                currentDay.setDate(currentDay.getDate() + 1);
+            }
+
+            updateTabs();
+        }
+
+        tabLeft.addEventListener('click', handleTabClick);
+        tabRight.addEventListener('click', handleTabClick);
+
+        updateTabs();
+
         const toggleModeButton = document.getElementById('toggleMode');
         const addTodoButton = document.getElementById('addTodo');
         const sortableList = document.getElementById('sortable-list');
@@ -139,17 +236,16 @@
         const todoInput = document.getElementById('todo-input');
         let isEditMode = false;
 
-        // 編集モードのトグル機能
         toggleModeButton.addEventListener('click', (event) => {
-            event.preventDefault();  // デフォルトのボタン動作を無効化
+            event.preventDefault();
             isEditMode = !isEditMode;
             const checkboxes = document.querySelectorAll('.hide-checkbox');
             checkboxes.forEach(checkbox => {
                 checkbox.style.display = isEditMode ? 'none' : 'inline-block';
             });
 
-            addTodoButton.style.display = 'none'; // addTodoボタンは常に非表示
-            todoInput.style.display = isEditMode ? 'none' : 'inline-block';  // 編集モードでテキストボックスを非表示
+            addTodoButton.style.display = 'none';
+            todoInput.style.display = isEditMode ? 'none' : 'inline-block';
             const buttonIcon = toggleModeButton.querySelector('img');
             buttonIcon.src = isEditMode ? 'img/edit.png' : 'img/edit.png';
 
@@ -157,17 +253,16 @@
                 if (isEditMode) {
                     li.classList.add('edit-mode');
                     li.classList.remove('normal-mode');
-                    li.querySelector('.delete-button').style.display = 'block'; // 編集モードで表示
-                    li.setAttribute('draggable', 'true'); // 編集モードでドラッグ可能にする
+                    li.querySelector('.delete-button').style.display = 'block';
+                    li.setAttribute('draggable', 'true');
                 } else {
                     li.classList.add('normal-mode');
                     li.classList.remove('edit-mode');
-                    li.querySelector('.delete-button').style.display = 'none'; // 通常モードで非表示
-                    li.removeAttribute('draggable'); // 通常モードでドラッグ無効
+                    li.querySelector('.delete-button').style.display = 'none';
+                    li.removeAttribute('draggable');
                 }
             });
 
-            // 各削除ボタンに削除イベントを追加
             sortableList.querySelectorAll('.delete-button').forEach(button => {
                 attachDeleteHandler(button);
             });
@@ -177,12 +272,10 @@
             }
         });
 
-        // ドラッグ＆ドロップ機能
         function enableDragAndDrop() {
             let draggedItem = null;
             let overItem = null;
 
-            // PC用ドラッグイベント
             sortableList.addEventListener('dragstart', function (e) {
                 if (e.target.tagName === 'LI') {
                     draggedItem = e.target;
@@ -201,91 +294,37 @@
 
             sortableList.addEventListener('dragover', function (e) {
                 e.preventDefault();
-                if (e.target.tagName === 'LI' && e.target !== draggedItem) {
+                if (e.target.tagName === 'LI') {
                     overItem = e.target;
-                    const rect = overItem.getBoundingClientRect();
-                    const offset = e.clientY - rect.top;
-                    if (offset > rect.height / 2) {
-                        sortableList.insertBefore(draggedItem, overItem.nextSibling);
-                    } else {
-                        sortableList.insertBefore(draggedItem, overItem);
-                    }
                 }
             });
 
             sortableList.addEventListener('drop', function (e) {
                 e.preventDefault();
-                if (e.target.tagName === 'LI' && e.target !== draggedItem) {
-                    sortableList.insertBefore(draggedItem, overItem);
-                }
-            });
+                if (draggedItem !== null && overItem !== null && draggedItem !== overItem) {
+                    const draggedId = draggedItem.dataset.id;
+                    const overId = overItem.dataset.id;
 
-            // スマホ対応のタッチイベント
-            sortableList.addEventListener('touchstart', function (e) {
-                if (e.target.tagName === 'LI') {
-                    draggedItem = e.target;
-                    e.target.style.opacity = '0.5';  // ドラッグ中に視覚的に区別
-                }
-            });
-
-            sortableList.addEventListener('touchmove', function (e) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const elementUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
-
-                if (elementUnderTouch && elementUnderTouch.tagName === 'LI' && elementUnderTouch !== draggedItem) {
-                    overItem = elementUnderTouch;
-                    const rect = overItem.getBoundingClientRect();
-                    const offset = touch.clientY - rect.top;
-                    if (offset > rect.height / 2) {
-                        sortableList.insertBefore(draggedItem, overItem.nextSibling);
-                    } else {
-                        sortableList.insertBefore(draggedItem, overItem);
+                    if (draggedId && overId) {
+                        swapListItems(draggedItem, overItem);
                     }
                 }
             });
-
-            sortableList.addEventListener('touchend', function () {
-                draggedItem.style.opacity = '1';  // 元の状態に戻す
-                draggedItem = null;
-            });
-
-            // すべての <li> 要素をドラッグ可能にする
-            sortableList.querySelectorAll('li').forEach(li => {
-                li.setAttribute('draggable', 'true');  // PC向けのドラッグ＆ドロップ
-            });
         }
 
-        // TODO追加処理
-        addTodoButton.addEventListener('click', function (event) {
-            event.preventDefault();  // ページリロードを防ぐ
-            const newItemText = todoInput.value.trim();
-            if (newItemText !== "") {
-                const newItem = document.createElement('li');
-                newItem.classList.add('normal-mode');  // 通常モードのスタイルを適用
-                newItem.innerHTML = `<input type="checkbox" class="hide-checkbox"> ${newItemText} <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>`;
-                newItem.setAttribute('draggable', isEditMode); // 編集モードならドラッグ可能に
-                sortableList.appendChild(newItem);
-                todoInput.value = "";  // 入力フォームをクリア
-
-                // 新規追加した項目にも削除イベントを適用
-                attachDeleteHandler(newItem.querySelector('.delete-button'));
-
-                if (isEditMode) {
-                    enableDragAndDrop();  // 編集モード時に追加されたTODOのドラッグ&ドロップ機能を有効化
-                }
-            }
-        });
-
-        // 削除ボタンの機能を追加する関数
-        function attachDeleteHandler(deleteButton) {
-            deleteButton.addEventListener('click', function (event) {
-                event.preventDefault(); // ページリロード防止
-                const li = deleteButton.closest('li');
-                li.remove(); // 対応するリストアイテムを削除
-            });
+        function swapListItems(item1, item2) {
+            const parent = item1.parentElement;
+            const nextSibling = item1.nextElementSibling === item2 ? item1 : item1.nextElementSibling;
+            parent.insertBefore(item1, item2);
+            parent.insertBefore(item2, nextSibling);
         }
 
+        function attachDeleteHandler(button) {
+            button.addEventListener('click', function () {
+                button.parentElement.remove();
+            });
+        }
     </script>
+
 </body>
 </html>
