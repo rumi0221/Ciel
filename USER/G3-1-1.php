@@ -1,3 +1,5 @@
+<?php require 'db-connect.php;' ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,195 +8,6 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/menu.css">
     <title>常に3つのタブが表示されるアプリ</title>
-    <style>
-        .tab-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            background-color: #fff;
-            overflow: hidden;
-            position: relative;
-            width: 100%;
-        }
-
-        .tab {
-            padding: 10px 20px;
-            background-color: #f5deb3;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            white-space: nowrap;
-        }
-
-        .tab.active {
-            background-color: #E1DBFF;
-            transform: scale(1.1);
-        }
-
-        .tab-list {
-            display: flex;
-            justify-content: center;
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 8px;
-            margin-bottom: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            text-align: left;
-        }
-
-        .background {
-            background-color: #E1DBFF;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-        }
-
-        /* term */
-        .term-container {
-            display: block;
-            margin: auto;
-            width: 300px;
-            background-color: #D7B8F5;
-            border-radius: 10px;
-            padding: 10px;
-            position: relative;
-        }
-
-        .term-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            background-color: #D7B8F5;
-            padding: 10px;
-            border-radius: 5px;
-            position: relative;
-        }
-
-        .term-title {
-            transition: all 0.5s ease;
-            position: relative;
-        }
-
-        .term-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease, padding 0.5s ease;
-            padding: 0;
-        }
-
-        .term-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        .due-date {
-            color: red;
-        }
-
-        .open {
-            max-height: 200px;
-            padding: 10px 0;
-        }
-
-        #arrow {
-            transition: transform 0.5s ease;
-        }
-
-        .rotated {
-            transform: rotate(180deg);
-        }
-
-        .term-title.move-to-top-left {
-            position: absolute;
-            top: -15px;
-            left: 10px;
-            font-size: 16px;
-        }
-
-        /* .termblock {
-            margin: 20px auto;
-            padding: 10px;
-            width: 80%;
-            background-color: #DBB5FF;
-            border: none;
-            border-radius: 10px;
-        } */
-
-        .tododiv {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            position: fixed;
-            bottom: 100px;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 10px;
-        }
-
-        .todo-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .todo-inp {
-            height: 3em;
-            width: 20em;
-            border-radius: 5px;
-        }
-
-        .todo-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            background-color: #FFF;
-            border-radius: 10px;
-        }
-
-        .normal-mode {
-            background-color: #f0f0f0;
-        }
-
-        .edit-mode {
-            background-color: #e0e0e0;
-            border: 1px dashed #000;
-            justify-content: space-between;
-        }
-
-        .hide-checkbox {
-            display: inline-block;
-        }
-
-        .delete-button {
-            background-color: transparent;
-            border: none;
-            margin-left: 10px;
-            display: none;
-        }
-    </style>
 </head>
 <body>
 
@@ -218,30 +31,36 @@
         <div id="term-content" class="term-content">
             <div class="term-item">
                 <input type="checkbox">
-                <label>レポート課題</label>
-                <span class="due-date">1/6まで</span>
+                <label class="term-list">　レポート課題</label><br>
+                <label>経済学</label>
+                <span class="due-date">　1/6まで</span>
             </div>
             <div class="term-item">
                 <input type="checkbox">
-                <label>新刊「○○」</label>
-                <span class="due-date">1/20まで</span>
+                <label class="term-list">　新刊「○○」</label>
+                <span class="due-date">　1/20まで</span>
             </div>
         </div>
     </div>
 
         <ul id="sortable-list">
-            <li class="normal-mode" data-id="1">
-                <input type="checkbox" class="hide-checkbox"> 文1
-                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-            </li>
-            <li class="normal-mode" data-id="2">
-                <input type="checkbox" class="hide-checkbox"> 文2
-                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-            </li>
-            <li class="normal-mode" data-id="3">
-                <input type="checkbox" class="hide-checkbox"> 文3
-                <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-            </li>
+            <?php
+            for(){
+                echo "
+                    <li class="normal-mode" data-id="1">
+                        <input type="checkbox" class="hide-checkbox"> 文1
+                        <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                    </li>
+                    <li class="normal-mode" data-id="2">
+                        <input type="checkbox" class="hide-checkbox"> 文2
+                        <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                    </li>
+                    <li class="normal-mode" data-id="3">
+                        <input type="checkbox" class="hide-checkbox"> 文3
+                        <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                    </li>";
+            }
+            ?>
         </ul>
 
         <div class="tododiv">
