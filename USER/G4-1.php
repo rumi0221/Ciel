@@ -33,6 +33,7 @@
 <img src="./img/Ciel logo.png">
 <div id="calendar">
           <h2 id="current-month" onclick="toggleMonthSelector()">2024年10月</h2>
+
     <table>
       <thead>
         <tr>
@@ -95,6 +96,12 @@
       </tbody>
     </table>
 
+
+    <!-- プラスボタン -->
+    <div class="floating-button">+</div>
+    <!-- プラスボタン -->
+    <div class="floating-button" onclick="goToNextPage()">+</div>
+
     <div id="month-selector" class="month-selector">
         <div class="selector-header">
             <span id="prev-year" onclick="changeYear(-1)">← 前年</span>
@@ -115,15 +122,11 @@
             <span class="month" onclick="selectMonth(11)">11月</span>
             <span class="month" onclick="selectMonth(12)">12月</span>
         </div>
+
+        <div id="calender-container"></div>
+
         <span class="close-selector" onclick="toggleMonthSelector()">×</span>
-  </div>
 </div>
-
-
-
-
-    <button class="add-btn">＋</button>
-  </div>
 
   <script src="script/G4-1.js"></script>
 </body>

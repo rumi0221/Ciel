@@ -1,6 +1,6 @@
 <?php session_start();?>
 <?php
-   require 'db-connect.php';
+   require_once 'db-connect.php';
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -145,6 +145,7 @@
             ?>
           </div>
     </form>
+    </div>
 
     <!-- footer挿入 -->
         <footer class="footer">
