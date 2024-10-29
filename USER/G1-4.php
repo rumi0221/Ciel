@@ -90,7 +90,12 @@ try {
     <title>登録完了</title>
 </head>
 <body>
-    <div class="container">
+    <!-- header挿入 -->
+    <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
+<div class="main">
+    <!--div class="container"-->
     <h1>REGISTER<br>COMPLETION</h1>
         <p><?php echo $message; ?></p>
         
