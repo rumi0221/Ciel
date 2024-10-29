@@ -48,7 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>ログイン</title>
 </head>
 <body>
+    <!-- header挿入 -->
+    <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
     <div class="form-container">
+    <h1>LOGIN</h1>
         <form action="G1-1.php" method="POST">
             <?php if(isset($error_message)): ?>
                 <div class="error-message"><?php echo $error_message; ?></div>
@@ -64,12 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- SIGN UPボタンをLOGINボタンの上に配置 -->
             <div class="button-container">
-                <button class="button is-medium" type="button" onclick="location.href='G1-2.php'">SIGN UP</button>
-            </div>
+                <button class="button is-signup" type="button" onclick="location.href='G1-2.php'">SIGN UP</button>
             
             <!-- LOGINボタン（フォーム送信） -->
-            <div class="button-container">
-                <button class="button is-medium" type="submit">LOGIN</button>
+         
+                <button class="button is-login" type="submit">LOGIN</button>
             </div>
             <div class="link-container">
                 <a href="G2-1.php">Forgot your password?</a>

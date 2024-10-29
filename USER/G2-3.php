@@ -51,6 +51,10 @@ session_destroy();
     <title>パスワード再設定完了</title>
 </head>
 <body>
+    <!-- header挿入 -->
+    <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
     <div class="container">
         <h1>PASSWORD<br>RESET<br>COMPLETION</h1>
         <p><?php echo htmlspecialchars($message); ?></p>
