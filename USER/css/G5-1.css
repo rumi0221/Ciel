@@ -1,6 +1,5 @@
 body{
   width: 80%;
-    max-width: 380px;
     max-height: 812px;
     height: 100%;
     background-color: #FFCDEB;
@@ -8,6 +7,7 @@ body{
 
 }
 
+/* ヘッダーのスタイル */
 .header{
   position: fixed;
     /* top: 10; */
@@ -15,56 +15,26 @@ body{
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 450px;
+    /* max-width: 450px; */
     background-color: #fff;
     padding: 0 0;
     text-align: center;
     z-index: 1000;
 }
 
-.main{
-  width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    /* padding: 150px 20px 140px; */
-    padding: 40% 3% 30%;
-    /* background-color: #FFCDEB; */
-    border-radius: 15px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    position: absolute;
-}
-
-
-/* ヘッダーのスタイル */
-/* .header {
-  position: fixed;
-    top: 10;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 400px; mainの幅に合わせる
-    background-color: #fff;
-    padding: 0 0;
-    text-align: center;
-    z-index: 1000; ヘッダーが常に最前面に表示されるようにする
-} */
-
 .logo {
-  width: 100px; /* ロゴのサイズ調整 */
+  width: 25%; /* ロゴのサイズ調整 */
   height: auto;
 }
 
 /* メインコンテンツのスタイル */
-/* .main {
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto; */
-  /* padding: 150px 20px 140px; */
-  /* padding: 40% 3% 30%;
-  background-color: #FFCDEB;
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-} */
+.main{
+  width: 90%;
+    margin: 0 auto;
+    padding: 40% 3% 30%;
+    border-radius: 15px;
+    position: absolute;
+}
 
 /* プロフィールセクションのスタイル */
 .profile {
@@ -76,6 +46,8 @@ body{
   margin-bottom: 20px; */
   margin-top: -12%;
   margin-bottom: 6%;
+  margin-left: 5%;
+  margin-right: 5%;
   text-align: left;
 }
 
@@ -102,6 +74,8 @@ body{
   border-radius: 15px;
   /* padding: 20px; */
   padding: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
   text-align: left;
 }
 
@@ -126,7 +100,7 @@ body{
     transform: translateX(-50%);
     width: 100%;
     margin-bottom: 8px;
-    max-width: 450px; /* mainの幅に合わせる */
+    /* max-width: 450px; mainの幅に合わせる */
     background-color: #d2e3fc;
     height: 80px;
     display: flex;

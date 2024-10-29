@@ -145,6 +145,7 @@
             ?>
           </div>
     </form>
+    </div>
 
     <!-- footer挿入 -->
         <footer class="footer">
