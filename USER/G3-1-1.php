@@ -1,4 +1,4 @@
-<?php require 'db-connect.php;' ?>
+<?php require 'db-connect.php'; ?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -21,45 +21,67 @@
         </div>
     </div>
 
+    <?php
+        $pdo = new PDO($connect, USER, PASS);
+        //仮で入れている
+        $user_name = 'Test2';
+        $user_pass = '';
+
+        $user_id = 8;
+    ?>
+
     <div class="background">
     <br>
-    <div class="term-container">
-        <div class="term-header" onclick="toggleTerm()">
-            <span id="term-title" class="term-title">term(2)</span>
-            <span id="arrow">▼</span>
-        </div>
-        <div id="term-content" class="term-content">
-            <div class="term-item">
-                <input type="checkbox">
-                <label class="term-list">　レポート課題</label><br>
-                <label>経済学</label>
-                <span class="due-date">　1/6まで</span>
-            </div>
-            <div class="term-item">
-                <input type="checkbox">
-                <label class="term-list">　新刊「○○」</label>
-                <span class="due-date">　1/20まで</span>
-            </div>
-        </div>
-    </div>
+    <?php
+        //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
+        //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
+        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND start_date <= "2024-10-23 23:59:59" AND final_date >= "2024-10-23 00:00:00" AND todo_flg = 1');
+        $sql->execute([$user_id]);
+        echo '
+            <div class="term-container">
+                <div class="term-header" onclick="toggleTerm()">
+                    <span id="term-title" class="term-title">term(2)</span>
+                    <span id="arrow">▼</span>
+                </div>
+            <div id="term-content" class="term-content">
+        ';
+        foreach($sql as $row){
+            $plan = $row['plan'];
+            $fdate = $row['final_date'];
+            $date = new DateTime($fdate);    // DateTimeオブジェクトに変換
+            $formattedDate = $date->format('m/d'); // 月/日 の形式に変換
+            echo '
+                <div class="term-item">
+                    <input type="checkbox">
+                    <label class="term-list">　', $plan, '</label>
+                    <span class="due-date">　', $formattedDate, 'まで</span>
+                </div>
+                ';
+        }
+
+        echo '</div></div>';
+
+    ?>
 
         <ul id="sortable-list">
             <?php
-            for(){
-                echo "
-                    <li class="normal-mode" data-id="1">
-                        <input type="checkbox" class="hide-checkbox"> 文1
-                        <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-                    </li>
-                    <li class="normal-mode" data-id="2">
-                        <input type="checkbox" class="hide-checkbox"> 文2
-                        <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-                    </li>
-                    <li class="normal-mode" data-id="3">
-                        <input type="checkbox" class="hide-checkbox"> 文3
-                        <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-                    </li>";
-            }
+                $sql2=$pdo->query('select * from Todos where user_id = '. $user_id);
+                foreach($sql2 as $row2){
+                    $todo_id = $row2['todo_id'];
+                    $sort = $row2['sort_id'];
+                    $todo = $row2['todo'];
+                    $completion = $row2['completion_flg'];
+                    $check = '';
+                    if($completion == 1){
+                        $check = 'checked';
+                    }
+                    echo '
+                        <li class="normal-mode" data-id="', $todo_id, '">
+                            <input type="checkbox" class="hide-checkbox"', $check, '> ', $todo, '
+                            <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                        </li>
+                        ';
+                }
             ?>
         </ul>
 
