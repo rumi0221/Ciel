@@ -35,6 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>パスワード再設定</title>
 </head>
 <body>
+    <!-- header挿入 -->
+    <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
     <div class="main">
         <h1>PASSWORD<br>RESET</h1>
 
