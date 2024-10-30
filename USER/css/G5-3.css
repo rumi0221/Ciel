@@ -37,7 +37,9 @@ button.headerbutton {
   background-color: #FFF;
   border: none;
   color:#000;
-  font-size: 100%;
+  font-size: xx-large;
+  padding-left: 0%;
+  margin-right: 5%;
 }
 
 
@@ -45,7 +47,7 @@ input.headersubmit {
   border: none;
   background-color: #FFF;
   color:#000;
-  font-size: 100%;
+  font-size: x-large;
 } 
 
 .profilebutton {

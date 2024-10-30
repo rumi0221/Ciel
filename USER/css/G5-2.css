@@ -32,7 +32,7 @@ button.headerbutton {
   background-color: #FFF;
   border: none;
   color: #000;
-  font-size: 100%;
+  font-size: xx-large;
   padding-left: 0%;
   margin-right: 5%;
 }
@@ -47,7 +47,7 @@ input.headersubmit {
   border: none;
   background-color: #FFF;
   color: #000;
-  font-size: 100%;
+  font-size: x-large;
 } 
 
 .profilebutton {
@@ -58,12 +58,7 @@ input.headersubmit {
 .profile {
   background-color: #FFD9E8;
   border-radius: 15px;
-  /* padding: 20px;
-  margin-top: -50px;
-  margin-bottom: 20px; */
   padding: 5%;
-  /* margin-top: -10%;
-  margin-bottom: 5%; */
   text-align: left;
 }
 
@@ -85,7 +80,6 @@ input.headersubmit {
     transform: translateX(-50%);
     width: 100%;
     margin-bottom: 8px;
-    /*max-width: 450px;  mainの幅に合わせる */
     background-color: #d2e3fc;
     height: 80px;
     display: flex;
