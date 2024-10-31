@@ -23,7 +23,14 @@ body {
     position: relative;
     min-height: 100px;
     z-index: 1;
-    margin-top: 60px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main > * {
+    margin-bottom: 80px; /* main内のすべての子要素の下に余白を追加 */
 }
 
 .header {
@@ -57,32 +64,9 @@ h1 {
     margin-bottom: 10px;
 }
 
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-    margin-bottom: 50px;
-}
-
-.input-group label {
-    font-size: 25px;
-    color: #5c5c5c;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-bottom: 2px solid #aaa;
-    background-color: transparent;
-    background: none;
-    border-radius: 0;
-    margin-top: 5px;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-bottom: 2px solid #6d6d6d;
+.check {
+    width: 100px;
+    height: auto;
 }
 
 .button-container {
@@ -111,15 +95,6 @@ h1 {
 
 .button.is-medium:hover {
     background-color: #d7b4fc;
-    color: #fff;
-}
-
-.button.is-btn {
-    border-color: #fcbcfc;
-}
-
-.button.is-btn:hover {
-    background-color: #fcbcfc;
     color: #fff;
 }
 
