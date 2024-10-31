@@ -33,7 +33,7 @@ function selectMonth(month) {
     document.getElementById("current-month").innerText = `${selectedYear}年${selectedMonth}月`;
     document.querySelectorAll(".month").forEach(m => m.classList.remove("selected"));
     document.querySelectorAll(".month")[month - 1].classList.add("selected");
-    generateCalender(selectedYear,selectedMonth);
+    generateCalendar(selectedYear,selectedMonth);
     toggleMonthSelector();
 }
 
@@ -75,10 +75,14 @@ function generateCalendar(year, month) {
     calendarTable.innerHTML = table;
 }
 
+const calendarTable = document.getElementById("calendar-table");
+if (calendarTable) {
+    calendarTable.innerHTML = "";
+    // 続きの処理
+}
+
+
 generateCalendar(selectedYear, selectedMonth);
-
-
-
 
 
 function goToNextPage() {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>タグ選択画面</title>
     <link rel="stylesheet" href="./css/G4-3.css">
 </head>
 <body>
@@ -48,5 +48,6 @@
         <span>タグ名</span>
     </li>
 </ul>
+<script src="script/G4-3.js"></script>
 </body>
 </html>

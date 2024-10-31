@@ -23,7 +23,10 @@ body {
 }
 .confirm-button{
     margin-left: 70%;
-    display: flex;
+    text-decoration: none;
+    color: black;
+    position: relative;
+    top: -30px;
 }
 .tag-list {
     list-style: none;
@@ -35,8 +38,10 @@ body {
     align-items: center;
     padding: 10px;
     cursor: pointer;
+    color: #999;
 }
 .tag-item.selected {
+    color: #000;
     background-color: #f0f0f0;
 }
 .tag-item .color-circle {
@@ -53,7 +58,7 @@ body {
 }
 .tag-item.selected .checkmark {
     visibility: visible;
-    color: #FFD700;
+    color: #6b6b6b;
 }
 img{
     height: 100px;
@@ -66,7 +71,8 @@ img{
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #f0f0f0;
+    background-color: transparent;
+    padding:0;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -75,7 +81,9 @@ img{
     transition: background-color 0.3s;
     margin-right: 70%;
 }
-
+.back-button:focus {
+    outline: none; /* フォーカス時のアウトラインを消す */
+}
 /* ホバー時のスタイル */
 .back-button:hover {
     background-color: #ffffff;
