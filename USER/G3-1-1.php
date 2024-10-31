@@ -46,13 +46,16 @@
             <div id="term-content" class="term-content">
         ';
         foreach($sql as $row){
+            $plan_id = $row['plan_id']; // plan_idを取得
             $plan = $row['plan'];
             $fdate = $row['final_date'];
             $date = new DateTime($fdate);    // DateTimeオブジェクトに変換
             $formattedDate = $date->format('m/d'); // 月/日 の形式に変換
+            $completion = $row['completion_flg'];
+            $check = ($completion == 1) ? 'checked' : '';
             echo '
                 <div class="term-item">
-                    <input type="checkbox">
+                    <input type="checkbox" data-id="', $plan_id, '" ', $check, '>
                     <label class="term-list">　', $plan, '</label>
                     <span class="due-date">　', $formattedDate, 'まで</span>
                 </div>
@@ -71,13 +74,10 @@
                     $sort = $row2['sort_id'];
                     $todo = $row2['todo'];
                     $completion = $row2['completion_flg'];
-                    $check = '';
-                    if($completion == 1){
-                        $check = 'checked';
-                    }
+                    $check = ($completion == 1) ? 'checked' : '';
                     echo '
-                        <li class="normal-mode" data-id="', $todo_id, '">
-                            <input type="checkbox" class="hide-checkbox"', $check, '> ', $todo, '
+                        <li class="normal-mode">
+                            <input type="checkbox" data-id="', $todo_id, '" class="hide-checkbox"', $check, '> ', $todo, '
                             <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
                         </li>
                         ';
@@ -165,6 +165,7 @@
         tabRight.addEventListener('click', handleTabClick);
 
         updateTabs();
+
 
         const toggleModeButton = document.getElementById('toggleMode');
         const addTodoButton = document.getElementById('addTodo');
@@ -261,6 +262,30 @@
                 button.parentElement.remove();
             });
         }
+
+        //チェックボックス
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const planId = this.dataset.planId;  // 各チェックボックスに対応するプランのIDを取得
+                const isChecked = this.checked ? 1 : 0;  // チェックされているかどうか
+
+                // Ajaxリクエストを送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'checkbox_update.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log('Completion flag updated successfully');
+                    }
+                };
+                xhr.send('plan_id=' + planId + '&completion_flg=' + isChecked);
+            });
+        });
+
+        
+
+
+
     </script>
 
 </body>
