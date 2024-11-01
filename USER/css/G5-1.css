@@ -10,12 +10,10 @@ body{
 /* ヘッダーのスタイル */
 .header{
   position: fixed;
-    /* top: 10; */
     margin-top: -2%;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    /* max-width: 450px; */
     background-color: #fff;
     padding: 0 0;
     text-align: center;
@@ -40,10 +38,7 @@ body{
 .profile {
   background-color: #FFD9E8;
   border-radius: 15px;
-  /* padding: 20px; */
   padding: 5%;
-  /* margin-top: -50px;
-  margin-bottom: 20px; */
   margin-top: -12%;
   margin-bottom: 6%;
   margin-left: 5%;
@@ -64,7 +59,6 @@ body{
   cursor: pointer;
   padding-top: 10px;
   display: block;
-  /* margin-left: 195px; */
   margin-left: auto;
 }
 
@@ -72,7 +66,6 @@ body{
 .tag {
   background-color: #FFD9E8;
   border-radius: 15px;
-  /* padding: 20px; */
   padding: 5%;
     margin-left: 5%;
     margin-right: 5%;
@@ -87,8 +80,6 @@ body{
   cursor: pointer;
   padding-top: 10px;
   display: block;
-  /* margin-left: 195px; */
-  /* margin-left: 60%; */
   margin-left: auto;
 }
 
@@ -100,7 +91,6 @@ body{
     transform: translateX(-50%);
     width: 100%;
     margin-bottom: 8px;
-    /* max-width: 450px; mainの幅に合わせる */
     background-color: #d2e3fc;
     height: 80px;
     display: flex;
@@ -108,84 +98,48 @@ body{
     align-items: center;
 }
 
-
-/*.header{
-    position: fixed;*/ /* ヘッダーを固定する */
-    /*top: 0; /* 上部から配置の基準位置を決める */
-    /*left: 0; /* 左から配置の基準位置を決める */
-    /*width: 100%; /* ヘッダーの横幅を指定する */
-    /* height: 35px; ヘッダーの高さを指定する */
-    /*padding: 10px; /* ヘッダーの余白を指定する(上下左右) */
-/*}
-
-.logo{
-    margin: auto;
-    display: block;
-    width: 20%;
-    height: 20%;
-    margin-left: 500px;
-    margin-bottom: 500px;
+/* ログアウト */
+.logout {
+  text-align: right;
 }
 
-.main {
-    width: 100%;
-    max-width: 700px;
-    margin: 0px auto; 
-    padding: 200px;
-    background-color: #FFCDEB;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    } 
-
-  .profile{
-    background-color: #FFFFFF;
-  }
-
-  .tag{
-    background-color: #FFFFFF;
-  }
-
-  .footer{
-    position: fixed; /* フッターを固定する */
-/*bottom: 0; /* 上部から配置の基準位置を決める */
-/*left: 0; /* 左から配置の基準位置を決める */
-/*width: 100%; /* フッターの横幅を指定する */
-/*height: 35px; /* フッターの高さを指定する */
-/*padding:10px; /* フッター内側の余白を指定する(上下左右) */
-  /*}
-----------------------------------------------------------------
-
-/* body{
-    display: flex;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0; 
-  }
-  
-  .main {
-    width: 100%;
-    max-width: 700px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-.logo{
-    margin: auto;
-    display: block;
-    width: 20%;
-    height: 20%;
-    margin-left: 270px;
-    margin-bottom: 500px;
+button#click-btn{
+  border-color: #d7b4fc;
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 55%;
+  width: 35%;
 }
 
-.menu-bar{
-    width: 100%;
-    max-width: 700px;
-    margin: 50px auto;
-    padding: 20px;
-    margin-left: 260px;
-} */
+#popup-wrapper {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+#popup-inside {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+#close {
+  margin-top: -3%;
+  margin-left: 93%;
+}
+
+.logoutsubmit {
+  background-color: #d7b4fc;
+  /* color: white; */
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
