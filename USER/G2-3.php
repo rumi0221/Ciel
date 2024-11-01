@@ -55,11 +55,12 @@ session_destroy();
     <header class="header">
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
 </header>
-    <div class="container">
+    <div class="main">
         <h1>PASSWORD<br>RESET<br>COMPLETION</h1>
+        <img src="img/Ciel check.png" alt="check" class="check"></a>
         <p><?php echo htmlspecialchars($message); ?></p>
 
-        <button type="button" class="btn" onclick="location.href='G1-1.php'">RETURN TO LOGIN</button><!-- RETURN TO LOGINボタン -->
+        <button type="button" class="button is-medium" onclick="location.href='G1-1.php'">RETURN TO LOGIN</button><!-- RETURN TO LOGINボタン -->
         </form>
     </div>
 </body>

@@ -58,27 +58,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header class="header">
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
 </header>
-    <div class="form-container">
+    <div class="main">
         <h1>PASSWORD<br>RESET</h1>
         <form action="G2-1.php" method="POST">
             <?php if (!empty($error_message)): ?>
                 <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div> <!-- エラーメッセージ表示 -->
             <?php endif; ?>
-            <div class="input-group">
-                <label for="user_name">user</label><br>
-                <input type="text" id="user_name" name="user_name" maxlength="32" required>
-            </div>
-            <div class="input-group">
-                <label for="user_mail">email</label><br>
-                <input type="email" id="user_mail" name="user_mail" maxlength="50" required>
-            </div>
-            <div class="button-container">
-                <button class="button is-medium" type="submit">NEXT</button> <!-- NEXTボタン -->
-            </div>
-            <div class="link-container">
-                <button class="button is-medium" type="button" onclick="location.href='G1-1.php'">RETURN</button> <!-- RETURNボタン -->
-            </div>
+                <div class="input-group">
+                    <label for="user_name">user</label><br>
+                    <input type="text" id="user_name" name="user_name" maxlength="32" required>
+                </div>
+                <div class="input-group">
+                    <label for="user_mail">email</label><br>
+                    <input type="email" id="user_mail" name="user_mail" maxlength="50" required>
+                </div>
+                <div class="button-container">
+                    <button class="button is-btn" type="submit">NEXT</button> <!-- NEXTボタン -->
+                <div class="link-container">
+                    <button class="button is-medium" type="button" onclick="location.href='G1-1.php'">RETURN</button> <!-- RETURNボタン -->
+                </div>
         </form>
+            </div>
     </div>
 </body>
 </html>

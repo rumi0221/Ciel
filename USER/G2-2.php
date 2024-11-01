@@ -48,17 +48,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form action="G2-2.php" method="post"> <!-- 現在のページにPOSTメソッドで送信 -->
             <p>
+            <div class="input-group">
                 <label for="new_pass">新しいパスワード<span class="required">*</span></label><br>
                 <input type="password" id="new_pass" name="new_pass" placeholder="新しいパスワードを入力してください" maxlength="8" required>
+        </div>
             </p>
             <p>
+            <div class="input-group">
                 <label for="new_pass_confirm">新しいパスワード(確認)<span class="required">*</span></label><br>
                 <input type="password" id="new_pass_confirm" name="new_pass_confirm" placeholder="新しいパスワードをもう一度入力してください" maxlength="8" required>
+        </div>
             </p>
 
             <div class="button-container">
-                <button type="submit" class="btn">RESET PASSWORD</button> <!-- RESET PASSWORDボタン -->
-                <button type="button" class="btn" onclick="location.href='G2-1.php'">RETURN</button> <!-- RETURNボタン -->
+                <button type="submit" class="button is-btn">RESET PASSWORD</button> <!-- RESET PASSWORDボタン -->
+                <button type="button" class="button is-medium" onclick="location.href='G2-1.php'">RETURN</button> <!-- RETURNボタン -->
             </div>
         </form>
     </div>
