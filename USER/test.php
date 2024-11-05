@@ -55,7 +55,7 @@
             $check = ($completion == 1) ? 'checked' : '';
             echo '
                 <div class="term-item">
-                    <input type="checkbox" data-id="', $plan_id, '" ', $check, '>
+                    <input type="checkbox" data-id="', $plan_id, '" ', $check, ' style="transform: scale(1.4);">
                     <label class="term-list">　', $plan, '</label>
                     <span class="due-date">　', $formattedDate, 'まで</span>
                 </div>
@@ -69,18 +69,34 @@
         <ul id="sortable-list">
             <?php
                 $sql2=$pdo->query('select * from Todos where user_id = '. $user_id);
+                // foreach($sql2 as $row2){
+                //     $todo_id = $row2['todo_id'];
+                //     $sort = $row2['sort_id'];
+                //     $todo = $row2['todo'];
+                //     $completion = $row2['completion_flg'];
+                //     $check = ($completion == 1) ? 'checked' : '';
+                //     echo '
+                //         <li class="normal-mode">
+                //             <input type="checkbox" data-id="', $todo_id, '" class="hide-checkbox"', $check, '> ', $todo, '
+                //             <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                //         </li>
+                //         ';
+                // }
+
                 foreach($sql2 as $row2){
                     $todo_id = $row2['todo_id'];
                     $sort = $row2['sort_id'];
-                    $todo = $row2['todo'];
+                    $todo = htmlspecialchars($row2['todo']); // XSS防止
                     $completion = $row2['completion_flg'];
                     $check = ($completion == 1) ? 'checked' : '';
                     echo '
-                        <li class="normal-mode">
-                            <input type="checkbox" data-id="', $todo_id, '" class="hide-checkbox"', $check, '> ', $todo, '
-                            <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                        <li class="normal-mode" data-id="', $todo_id, '">
+                            <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
+                            <span class="todo-text">', $todo, '</span>
+                            <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none;">
+                            <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
                         </li>
-                        ';
+                    ';
                 }
             ?>
         </ul>
@@ -174,94 +190,100 @@
         const todoInput = document.getElementById('todo-input');
         let isEditMode = false;
 
+
+        //名前変更・並び替え
         toggleModeButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            isEditMode = !isEditMode;
-            const checkboxes = document.querySelectorAll('.hide-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.style.display = isEditMode ? 'none' : 'inline-block';
-            });
+        event.preventDefault();
+        isEditMode = !isEditMode;
 
-            addTodoButton.style.display = 'none';
-            todoInput.style.display = isEditMode ? 'none' : 'inline-block';
-            const buttonIcon = toggleModeButton.querySelector('img');
-            buttonIcon.src = isEditMode ? 'img/edit.png' : 'img/edit.png';
-
-            sortableList.querySelectorAll('li').forEach(li => {
-                if (isEditMode) {
-                    li.classList.add('edit-mode');
-                    li.classList.remove('normal-mode');
-                    li.querySelector('.delete-button').style.display = 'block';
-                    li.setAttribute('draggable', 'true');
-                } else {
-                    li.classList.add('normal-mode');
-                    li.classList.remove('edit-mode');
-                    li.querySelector('.delete-button').style.display = 'none';
-                    li.removeAttribute('draggable');
-                }
-            });
-
-            sortableList.querySelectorAll('.delete-button').forEach(button => {
-                attachDeleteHandler(button);
-            });
+        const todoItems = sortableList.querySelectorAll('li');
+        todoItems.forEach(item => {
+            const todoText = item.querySelector('.todo-text');
+            const editInput = item.querySelector('.edit-todo-input');
+            const deleteButton = item.querySelector('.delete-button');
+            const checkbox = item.querySelector('.hide-checkbox'); // チェックボックスの取得
 
             if (isEditMode) {
-                enableDragAndDrop();
+                item.classList.add('edit-mode');
+                todoText.style.display = 'none';
+                editInput.style.display = 'inline-block';
+                deleteButton.style.display = 'block';
+                checkbox.style.display = 'none'; // 編集モードではチェックボックスを非表示
+                item.setAttribute('draggable', 'true');
+            } else {
+                const newTodoText = editInput.value.trim();
+                if (newTodoText !== todoText.textContent.trim()) {
+                    todoText.textContent = newTodoText;
+                    // Ajaxで名前を更新
+                    const todoId = item.dataset.id;
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'update_todo.php', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.send('todo_id=' + todoId + '&todo=' + encodeURIComponent(newTodoText));
+                }
+
+                todoText.style.display = 'inline-block';
+                editInput.style.display = 'none';
+                deleteButton.style.display = 'none';
+                checkbox.style.display = 'inline-block'; // 通常モードではチェックボックスを表示
+                item.classList.remove('edit-mode');
+                item.removeAttribute('draggable');
             }
         });
 
-        function enableDragAndDrop() {
-            let draggedItem = null;
-            let overItem = null;
+        if (isEditMode) {
+            enableDragAndDrop();
+        }
+    });
 
-            sortableList.addEventListener('dragstart', function (e) {
-                if (e.target.tagName === 'LI') {
-                    draggedItem = e.target;
-                    setTimeout(() => {
-                        e.target.style.display = 'none';
-                    }, 0);
-                }
-            });
 
-            sortableList.addEventListener('dragend', function (e) {
+    function enableDragAndDrop() {
+        let draggedItem = null;
+
+        sortableList.addEventListener('dragstart', function (e) {
+            if (e.target.tagName === 'LI') {
+                draggedItem = e.target;
                 setTimeout(() => {
-                    draggedItem.style.display = 'block';
-                    draggedItem = null;
+                    e.target.style.display = 'none';
                 }, 0);
-            });
+            }
+        });
 
-            sortableList.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                if (e.target.tagName === 'LI') {
-                    overItem = e.target;
+        sortableList.addEventListener('dragend', function (e) {
+            setTimeout(() => {
+                draggedItem.style.display = 'block';
+                draggedItem = null;
+            }, 0);
+        });
+
+        sortableList.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
+
+        sortableList.addEventListener('drop', function (e) {
+            e.preventDefault();
+            if (draggedItem) {
+                const overItem = e.target.closest('li');
+                if (draggedItem !== overItem) {
+                    sortableList.insertBefore(draggedItem, overItem);
+                    updateSortOrder();
                 }
-            });
+            }
+        });
+    }
 
-            sortableList.addEventListener('drop', function (e) {
-                e.preventDefault();
-                if (draggedItem !== null && overItem !== null && draggedItem !== overItem) {
-                    const draggedId = draggedItem.dataset.id;
-                    const overId = overItem.dataset.id;
+    function updateSortOrder() {
+        const todoItems = sortableList.querySelectorAll('li');
+        todoItems.forEach((item, index) => {
+            const todoId = item.dataset.id;
+            // Ajaxで並び順を更新
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update_sort.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('todo_id=' + todoId + '&sort_id=' + index);
+        });
+    }
 
-                    if (draggedId && overId) {
-                        swapListItems(draggedItem, overItem);
-                    }
-                }
-            });
-        }
-
-        function swapListItems(item1, item2) {
-            const parent = item1.parentElement;
-            const nextSibling = item1.nextElementSibling === item2 ? item1 : item1.nextElementSibling;
-            parent.insertBefore(item1, item2);
-            parent.insertBefore(item2, nextSibling);
-        }
-
-        function attachDeleteHandler(button) {
-            button.addEventListener('click', function () {
-                button.parentElement.remove();
-            });
-        }
 
         //チェックボックス
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {

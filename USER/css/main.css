@@ -15,7 +15,6 @@
     background-color: #fff;
     overflow: hidden;
     position: relative;
-    width: 100%;
 }
 
 .tab {
@@ -48,15 +47,25 @@ html, body {
 ul {
     list-style-type: none;
     padding: 0;
+    margin-left: 10%;
 }
 
-li {
+/* li {
     padding: 8px;
     margin-bottom: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
     text-align: left;
+} */
+
+li {
+    list-style-type: none; /* オプション: デフォルトのリストの記号を削除 */
+    padding-left: 0; /* 左側のパディングをなくして左寄せに */
+}
+
+li input[type="checkbox"] {
+    margin-right: 10px; /* チェックボックスとテキストの間に適度なスペースを調整 */
 }
 
 .background {
@@ -180,19 +189,25 @@ li {
     border-radius: 10px;
 }
 
+.edit-todo-input {
+    border: none;
+    background-color: none;
+    font-size: 20px;
+}
+
 .normal-mode {
-    background-color: #f0f0f0;
+    text-align: left; /* 通常モードで項目を左寄せにする */
+    font-size: 20px;
 }
 
 .edit-mode {
-    background-color: #e0e0e0;
-    border: 1px dashed #000;
-    justify-content: space-between;
+    text-align: left; /* 編集モードでも左寄せにする */
 }
 
 .hide-checkbox {
     display: inline-block;
     margin: 0 10px;
+    transform: scale(1.4);
 }
 
 .delete-button {
