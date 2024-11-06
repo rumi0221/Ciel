@@ -123,7 +123,7 @@
                 foreach ($colorresults as $colorresult) {
                     echo "<div style='display: flex; flex-wrap: wrap;'>";
                     echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    echo '<input type="text" name="tag_name_' . $i+1 . '"value="'. htmlspecialchars($tag_name[$i]).'">';
+                    echo '<input type="text" name="tag_name_' . $i+1 . '"value="'. htmlspecialchars($tag_name[$i]).'"required>';
                     echo '<input type="hidden" name="tag_id_' . $i+1 . '"value="'. htmlspecialchars($tag_id[$i]).'">';
                     echo "</div>";
                     $i++;
@@ -131,17 +131,9 @@
                         break;
                     }
                 }
-
-                //tagsテーブル出力
-            }else{
-                foreach ($colorresults as $colorresult) {
-                    echo '<input type="hidden" name="tag_id" value="' , $tag_id ,'">';    
-                    echo "<div style='display: flex; flex-wrap: wrap;'>";
-                    echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    echo "usertag取れてない";
-                    echo "</div>";
-                }
-            }  
+             }  else{
+                
+             }
             ?>
           </div>
     </form>
