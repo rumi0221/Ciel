@@ -57,7 +57,7 @@ session_destroy();
 </header>
     <div class="main">
         <h1>PASSWORD<br>RESET<br>COMPLETION</h1>
-        <img src="img/Ciel check.png" alt="check" class="check"></a>
+        <img src="img/check.png" alt="check" class="check"></a>
         <p><?php echo htmlspecialchars($message); ?></p>
 
         <button type="button" class="button is-medium" onclick="location.href='G1-1.php'">RETURN TO LOGIN</button><!-- RETURN TO LOGINボタン -->

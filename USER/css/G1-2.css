@@ -23,7 +23,7 @@ body {
     position: relative;
     min-height: 100px;
     z-index: 1;
-    margin-top: 140px;
+    margin-top: 60px;
 }
 
 .header {
@@ -60,7 +60,21 @@ h1 {
 .input-group {
     margin-bottom: 15px;
     text-align: left;
-    margin-bottom: 80px;
+    margin-bottom: 0px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.toggle-password {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -25px;
+    top: 60%;
+    
+    cursor: pointer;
 }
 
 .input-group label {
@@ -90,7 +104,7 @@ h1 {
     flex-direction: column; /* ボタンを縦に並べる */
     align-items: center; /* ボタンを中央揃え */
     gap: 15px; /* ボタン間の余白 */
-    margin-top: 30px; /* テキストボックスとボタンの間に余白を追加 */
+    margin-top: 40px; /* テキストボックスとボタンの間に余白を追加 */
 }
 
 .button {
@@ -106,6 +120,9 @@ h1 {
 }
 
 .button.is-medium {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
     border-color: #d7b4fc;
 }
 
@@ -115,6 +132,9 @@ h1 {
 }
 
 .button.is-btn {
+    width: 200px;
+    padding: 15px;
+    font-size: 16px;
     border-color: #fcbcfc;
 }
 
@@ -122,7 +142,6 @@ h1 {
     background-color: #fcbcfc;
     color: #fff;
 }
-
 
 
 /* ãƒ¡ãƒ‡ã‚£ã‚¢ã‚¯ã‚¨ãƒªï¼šç”»é¢å¹…500pxä»¥ä¸‹ã®ã¨ãã®ã‚¹ã‚¿ã‚¤ãƒ«èª¿æ•´ */

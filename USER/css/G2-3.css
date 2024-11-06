@@ -17,20 +17,20 @@ body {
 }
 
 .main {
-    width: 70%;
+    width: 100%;
     padding: 80px 20px;
     text-align: center;
     position: relative;
     min-height: 100px;
     z-index: 1;
-    margin-top: 50px;
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .main > * {
-    margin-bottom: 80px; /* main内のすべての子要素の下に余白を追加 */
+    margin-bottom: 60px; /* main内のすべての子要素の下に余白を追加 */
 }
 
 .header {
