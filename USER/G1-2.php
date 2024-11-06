@@ -55,16 +55,17 @@ session_start(); // セッションを開始
                
             </p>
             <p>
-                <label for="user_pass">password<span class="required">*</span></label><br>
-                
-                    <input type="password" id="user_pass" name="user_pass" placeholder="パスワードを入力してください" required>
-                
-            </p>
+    <div class="input-group">
+        <label for="user_pass">password<span class="required">*</span></label><br>
+        <input type="password" id="user_pass" name="user_pass" placeholder="パスワードを入力してください" maxlength="8" required>
+        <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('user_pass')">
+        </div>
+</p>
             <p>
                 <label for="user_pass_confirm">password(確認)<span class="required">*</span></label><br>
-                
-                    <input type="password" id="user_pass_confirm" name="user_pass_confirm" placeholder="パスワードをもう一度入力してください" required>
-                
+                    <input type="password" id="user_pass_confirm" name="user_pass_confirm" placeholder="パスワードをもう一度入力してください" maxlength="8" required>
+                    <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('user_pass_confirm')">
+                    
             </p>
         <div class="button-container">
             <button type="submit" class="button is-btn">CONFIRMATION</button>
@@ -74,5 +75,13 @@ session_start(); // セッションを開始
            </div> 
         </form>
     </div>
+
+    <script>
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+
 </body>
 </html>

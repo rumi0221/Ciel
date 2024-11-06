@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <!-- header挿入 -->
     <header class="header">
-            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
-</header>
+        <img src="img/Ciel logo.png" alt="Ciel" class="logo">
+    </header>
     <div class="main">
         <h1>PASSWORD<br>RESET</h1>
 
@@ -47,18 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form action="G2-2.php" method="post"> <!-- 現在のページにPOSTメソッドで送信 -->
-            <p>
             <div class="input-group">
                 <label for="new_pass">新しいパスワード<span class="required">*</span></label><br>
                 <input type="password" id="new_pass" name="new_pass" placeholder="新しいパスワードを入力してください" maxlength="8" required>
-        </div>
-            </p>
-            <p>
+                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass')">
+            </div>
+
             <div class="input-group">
                 <label for="new_pass_confirm">新しいパスワード(確認)<span class="required">*</span></label><br>
                 <input type="password" id="new_pass_confirm" name="new_pass_confirm" placeholder="新しいパスワードをもう一度入力してください" maxlength="8" required>
-        </div>
-            </p>
+                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass_confirm')">
+            </div>
 
             <div class="button-container">
                 <button type="submit" class="button is-btn">RESET PASSWORD</button> <!-- RESET PASSWORDボタン -->
@@ -66,5 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </div>
+
+    <script>
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+
 </body>
 </html>
