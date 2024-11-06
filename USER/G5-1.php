@@ -9,6 +9,14 @@
         exit;
     }
 
+    
+  if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout_flg']) == 'true'){
+        session_destroy();
+        header("Location: G5-1.php");
+        exit;
+    }
+
+
     // 初期化
     $error = false; 
     $errorMessage = ""; 
@@ -93,13 +101,34 @@
             <button type="submit">rename a tag-></button>
             </form>
         </div>
+
+        <!-- logout -->
+        <div class="logout">
+          <button id="click-btn">logout</button>
+          <div id="popup-wrapper">
+              <div id="popup-inside">
+                  <div id="message">
+                    <div id="close">x</div>
+                      <h2>ログアウトしますか？</h2>
+                      <form action="G5-1.php" method="POST">
+                          <input type="submit" value="ログアウト" class="logoutsubmit">
+                          <input type="hidden" name="logout_flg" value="true">
+                      </form>
+                  </div>
+              </div>
+          </div>
+        <!-- </div> -->
     </div>
+
     <!-- footer挿入 -->
         <footer class="footer">
             <?php
                 require 'menu.php';
             ?>
         </footer>
+
+        <!-- JavaScriptファイルの読み込み -->
+    <script src="script/G5-1.js"></script>
     
 </body>
 </html>
