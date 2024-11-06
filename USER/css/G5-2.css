@@ -33,7 +33,7 @@ button.headerbutton {
   border: none;
   color: #000;
   font-size: x-large;
-  padding-left: 5%;
+  padding-left: 8%;
   margin-right: 5%;
 }
 
@@ -48,6 +48,7 @@ input.headersubmit {
   background-color: #FFF;
   color: #000;
   font-size: large;
+  margin-top: 2%;
   margin-right: 5%;
 } 
 
