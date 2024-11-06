@@ -64,7 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="input-group">
                 <label for="user_pass">password</label><br>
-                <input type="password" id="user_pass" name="user_pass" required>
+                <input type="password" id="user_pass" name="user_pass" maxlength="8" required>
+                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('user_pass')">
             </div>
 
             <!-- SIGN UPボタンをLOGINボタンの上に配置 -->
@@ -80,5 +81,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
+
+    <script>
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+
 </body>
 </html>

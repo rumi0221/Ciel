@@ -17,7 +17,7 @@ body {
 }
 
 .main {
-    width: 70%;
+    width: 90%;
     padding: 80px 20px;
     text-align: center;
     position: relative;
@@ -63,6 +63,20 @@ h1 {
     margin-bottom: 50px;
 }
 
+.input-group {
+    position: relative;
+}
+
+.toggle-password {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -25px;
+    top: 60%;
+    
+    cursor: pointer;
+}
+
 .input-group label {
     font-size: 25px;
     color: #5c5c5c;
@@ -94,7 +108,7 @@ h1 {
 }
 
 .button {
-    width: 210px; /* ボタンの幅を統一 */
+    width: 200px; /* ボタンの幅を統一 */
     padding: 15px;
     font-size: 18px;
     border-radius: 8px;
@@ -106,6 +120,9 @@ h1 {
 }
 
 .button.is-medium {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
     border-color: #d7b4fc;
 }
 
@@ -115,6 +132,9 @@ h1 {
 }
 
 .button.is-btn {
+    width: 200px;
+    padding: 15px;
+    font-size: 16px;
     border-color: #fcbcfc;
 }
 
