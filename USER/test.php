@@ -40,7 +40,7 @@
         echo '
             <div class="term-container">
                 <div class="term-header" onclick="toggleTerm()">
-                    <span id="term-title" class="term-title">term(2)</span>
+                    <span id="term-title" class="term-title">term</span>
                     <span id="arrow">▼</span>
                 </div>
             <div id="term-content" class="term-content">
@@ -68,6 +68,7 @@
 
         <ul id="sortable-list">
             <?php
+                //日付の条件をつけて → sortで昇順にする
                 $sql2=$pdo->query('select * from Todos where user_id = '. $user_id);
                 // foreach($sql2 as $row2){
                 //     $todo_id = $row2['todo_id'];
@@ -92,6 +93,7 @@
                     echo '
                         <li class="normal-mode" data-id="', $todo_id, '">
                             <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
+                            <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
                             <span class="todo-text">', $todo, '</span>
                             <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none;">
                             <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
@@ -202,6 +204,7 @@
             const editInput = item.querySelector('.edit-todo-input');
             const deleteButton = item.querySelector('.delete-button');
             const checkbox = item.querySelector('.hide-checkbox'); // チェックボックスの取得
+            const editModeIcon = item.querySelector('.edit-mode-icon'); //画像の取得
 
             if (isEditMode) {
                 item.classList.add('edit-mode');
@@ -209,6 +212,7 @@
                 editInput.style.display = 'inline-block';
                 deleteButton.style.display = 'block';
                 checkbox.style.display = 'none'; // 編集モードではチェックボックスを非表示
+                editModeIcon.style.display = 'inline-block'; //画像を表示
                 item.setAttribute('draggable', 'true');
             } else {
                 const newTodoText = editInput.value.trim();
@@ -226,6 +230,7 @@
                 editInput.style.display = 'none';
                 deleteButton.style.display = 'none';
                 checkbox.style.display = 'inline-block'; // 通常モードではチェックボックスを表示
+                editModeIcon.style.display = 'none'; //画像を非表示
                 item.classList.remove('edit-mode');
                 item.removeAttribute('draggable');
             }

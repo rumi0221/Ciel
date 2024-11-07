@@ -46,6 +46,8 @@ html, body {
 
 ul {
     list-style-type: none;
+    margin: 0 5%;
+    margin-top: 5px;
     padding: 0;
     margin-left: 10%;
 }
@@ -191,7 +193,7 @@ li input[type="checkbox"] {
 
 .edit-todo-input {
     border: none;
-    background-color: none;
+    background-color: #E1DBFF;
     font-size: 20px;
 }
 
@@ -202,6 +204,14 @@ li input[type="checkbox"] {
 
 .edit-mode {
     text-align: left; /* 編集モードでも左寄せにする */
+    display: flex;
+    margin: 0.5em;
+}
+
+.edit-mode-icon {
+    margin: auto;
+    width: 20px;
+    height: 20px;
 }
 
 .hide-checkbox {
