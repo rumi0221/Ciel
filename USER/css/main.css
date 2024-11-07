@@ -64,10 +64,19 @@ ul {
 li {
     list-style-type: none; /* オプション: デフォルトのリストの記号を削除 */
     padding-left: 0; /* 左側のパディングをなくして左寄せに */
+    cursor: grab;
 }
 
 li input[type="checkbox"] {
     margin-right: 10px; /* チェックボックスとテキストの間に適度なスペースを調整 */
+}
+
+li.dragging {
+    opacity: 0.5;/* ドラッグ中のアイテムを半透明に */
+}
+
+li:not(.dragging) {
+    transition: transform 0.2s ease; /* 他のアイテムがスムーズに動くように */
 }
 
 .background {

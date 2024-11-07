@@ -242,6 +242,7 @@
     });
 
 
+    //編集モードの並び替え
     function enableDragAndDrop() {
         let draggedItem = null;
 
@@ -249,33 +250,68 @@
             if (e.target.tagName === 'LI') {
                 draggedItem = e.target;
                 setTimeout(() => {
-                    e.target.style.display = 'none';
+                    e.target.style.display = 'none';  // ドラッグ中は項目を一旦非表示に
                 }, 0);
             }
         });
 
         sortableList.addEventListener('dragend', function (e) {
             setTimeout(() => {
-                draggedItem.style.display = 'block';
+                draggedItem.style.display = 'block';  // ドラッグ終了後に表示
                 draggedItem = null;
             }, 0);
         });
 
         sortableList.addEventListener('dragover', function (e) {
-            e.preventDefault();
+            e.preventDefault();  // ドラッグ中に他の要素の上に移動できるようにする
+            const closestItem = getClosestListItem(e.clientY);
+            if (closestItem && closestItem !== draggedItem) {
+                sortableList.insertBefore(draggedItem, closestItem.nextElementSibling);
+            }
         });
 
         sortableList.addEventListener('drop', function (e) {
             e.preventDefault();
-            if (draggedItem) {
-                const overItem = e.target.closest('li');
-                if (draggedItem !== overItem) {
-                    sortableList.insertBefore(draggedItem, overItem);
-                    updateSortOrder();
-                }
+            if (draggedItem !== null) {
+                draggedItem.style.display = 'block';  // ドロップ時に再表示
             }
         });
     }
+
+    // ドラッグ位置に一番近いリスト項目を取得する関数
+    function getClosestListItem(y) {
+        const items = [...sortableList.querySelectorAll('li:not(.dragging)')];
+        return items.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    sortableList.addEventListener('dragstart', function (e) {
+        if (e.target.tagName === 'LI') {
+            draggedItem = e.target;
+            draggedItem.classList.add('dragging');  // ドラッグ開始時にクラスを追加
+            setTimeout(() => {
+                e.target.style.display = 'none';
+            }, 0);
+        }
+    });
+
+    sortableList.addEventListener('dragend', function (e) {
+        if (draggedItem) {
+            draggedItem.classList.remove('dragging');  // ドラッグ終了時にクラスを削除
+            draggedItem.style.display = 'block';
+            draggedItem = null;
+        }
+    });
+
+
+
 
     function updateSortOrder() {
         const todoItems = sortableList.querySelectorAll('li');
