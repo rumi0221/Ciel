@@ -68,7 +68,19 @@
         <header class="header">
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
         </header>
+
     <div class="main">
+
+      <!-- 成功メッセージの表示 -->
+      <div class="succces">
+        <?php if (!empty($_SESSION['message'])): ?>
+            <!-- <p style="color: green;"> -->
+            <?php echo htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php unset($_SESSION['message']); // 表示後にメッセージを消去
+                endif;
+            ?>
+        </div>
+
     <!-- profile -->
         <div class="profile">
             <form action="G5-2.php" method="POST">
