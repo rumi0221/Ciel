@@ -17,7 +17,7 @@ body {
 }
 
 .main {
-    width: 70%;
+    width: 80%;
     padding: 80px 20px;
     text-align: center;
     position: relative;
@@ -30,7 +30,6 @@ body {
 }
 
 table {
-    margin: 0 auto;
     width: 80%; /* テーブルの幅を制限 */
     border-collapse: collapse;
 }
