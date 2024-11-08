@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Inria Serif', serif;
     background: linear-gradient(to bottom, #d7e3fc, #e9d7fc, #fcd7e3);
     display: flex;
     justify-content: center;
@@ -72,6 +72,7 @@ h1 {
     width: 100%;
     padding: 10px;
     font-size: 16px;
+    font-family: 'Inria Serif', serif;
     border: none;
     border-bottom: 2px solid #aaa;
     background-color: transparent;
@@ -98,6 +99,7 @@ h1 {
     padding: 15px;
     font-size: 18px;
     border-radius: 8px;
+    font-family: 'Inria Serif', serif;
     cursor: pointer;
     background-color: #fff;
     color: #000;
