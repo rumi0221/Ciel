@@ -32,7 +32,7 @@
 <footer><?php include 'menu.php';?>
 <img src="./img/Ciel logo.png">
 <div id="calendar">
-          <h2 id="current-month" onclick="toggleMonthSelector()">2024年10月</h2>
+          <h2 id="current-month" onclick="toggleMonthSelector()">2024年11月</h2>
 
 
 
@@ -59,8 +59,8 @@
             <span class="month" onclick="selectMonth(7)">7月</span>
             <span class="month" onclick="selectMonth(8)">8月</span>
             <span class="month" onclick="selectMonth(9)">9月</span>
-            <span class="month selected" onclick="selectMonth(10)">10月</span>
-            <span class="month" onclick="selectMonth(11)">11月</span>
+            <span class="month" onclick="selectMonth(10)">10月</span>
+            <span class="month selected" onclick="selectMonth(11)">11月</span>
             <span class="month" onclick="selectMonth(12)">12月</span>
         </div>
 

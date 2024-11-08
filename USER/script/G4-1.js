@@ -12,7 +12,7 @@ function toggleMenu() {
 
 
 let selectedYear = 2024;
-let selectedMonth = 10;
+let selectedMonth = 11;
 
 function toggleMonthSelector() {
     const monthSelector = document.getElementById("month-selector");

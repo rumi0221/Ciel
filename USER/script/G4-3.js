@@ -18,3 +18,4 @@ tagItems.forEach(item => {
         item.classList.add('selected');
     });
 });
+
