@@ -46,10 +46,7 @@ html, body {
 
 ul {
     list-style-type: none;
-    margin: 0 5%;
-    margin-top: 5px;
-    padding: 0;
-    margin-left: 10%;
+    margin: 10px;
 }
 
 /* li {
@@ -204,6 +201,7 @@ li:not(.dragging) {
     border: none;
     background-color: #E1DBFF;
     font-size: 20px;
+    width: 100%;
 }
 
 .normal-mode {
@@ -219,8 +217,8 @@ li:not(.dragging) {
 
 .edit-mode-icon {
     margin: auto;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
 }
 
 .hide-checkbox {

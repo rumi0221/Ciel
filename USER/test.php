@@ -95,7 +95,7 @@
                             <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
                             <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
                             <span class="todo-text">', $todo, '</span>
-                            <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none;">
+                            <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none; margin-left:5px;">
                             <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
                         </li>
                     ';
