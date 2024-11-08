@@ -104,7 +104,7 @@ h1 {
     flex-direction: column; /* ボタンを縦に並べる */
     align-items: center; /* ボタンを中央揃え */
     gap: 15px; /* ボタン間の余白 */
-    margin-top: 40px; /* テキストボックスとボタンの間に余白を追加 */
+    margin-top: 30px; /* テキストボックスとボタンの間に余白を追加 */
 }
 
 .button {

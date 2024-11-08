@@ -18,6 +18,12 @@ session_start(); // セッションを開始
             // エラーメッセージをクリア
             errorMessageElement.textContent = '';
 
+             // パスワードの長さを確認
+        if (password.length < 6) {
+            errorMessageElement.textContent = 'パスワードは6文字以上で入力してください。';
+            return false; // フォーム送信を阻止
+        }
+
             if (password !== confirmPassword) {
                 // エラーメッセージを表示
                 errorMessageElement.textContent = 'パスワードが一致しません。再度確認してください。';

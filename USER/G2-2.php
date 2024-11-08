@@ -14,9 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_pass = $_POST['new_pass'];
     $new_pass_confirm = $_POST['new_pass_confirm'];
 
-    // パスワードの一致確認
-    if ($new_pass !== $new_pass_confirm) {
-        $error_message = "パスワードが一致しません。"; // エラーメッセージ設定
+    // パスワードの文字数チェック
+    if (strlen($new_pass) < 6) {
+        $error_message = "パスワードは6文字以上である必要があります。";
+    } elseif ($new_pass !== $new_pass_confirm) {
+        $error_message = "パスワードが一致しません。";
     } else {
         // セッションにパスワードを保存し、G2-3.phpに遷移
         $_SESSION['new_pass'] = $new_pass;
