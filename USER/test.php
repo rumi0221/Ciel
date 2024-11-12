@@ -198,6 +198,14 @@
         event.preventDefault();
         isEditMode = !isEditMode;
 
+        const todoInput = document.getElementById('todo-input');
+
+        if (isEditMode) {
+            todoInput.style.display = 'none';  // 編集モード時は非表示
+        } else {
+            todoInput.style.display = 'block';  // 通常モード時は表示
+        }
+
         const todoItems = sortableList.querySelectorAll('li');
         todoItems.forEach(item => {
             const todoText = item.querySelector('.todo-text');
@@ -247,10 +255,10 @@
         let draggedItem = null;
 
         sortableList.addEventListener('dragstart', function (e) {
-            if (e.target.tagName === 'LI') {
-                draggedItem = e.target;
+            if (e.target.closest('.edit-mode-icon')) {  // 画像部分をドラッグ対象に
+                draggedItem = e.target.closest('li');
                 setTimeout(() => {
-                    e.target.style.display = 'none';  // ドラッグ中は項目を一旦非表示に
+                    draggedItem.style.display = 'none';  // ドラッグ中は非表示
                 }, 0);
             }
         });
@@ -274,6 +282,7 @@
             e.preventDefault();
             if (draggedItem !== null) {
                 draggedItem.style.display = 'block';  // ドロップ時に再表示
+                updateSortOrder();
             }
         });
     }
@@ -307,6 +316,23 @@
             draggedItem.classList.remove('dragging');  // ドラッグ終了時にクラスを削除
             draggedItem.style.display = 'block';
             draggedItem = null;
+        }
+    });
+
+    //削除ボタンをクリックした場合
+    sortableList.addEventListener('click', (e) => {
+        if (e.target.closest('.delete-button')) {
+            const todoItem = e.target.closest('li');
+            const todoId = todoItem.dataset.id;
+
+            // Ajaxリクエストで削除
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete_todo.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('todo_id=' + todoId);
+
+            // DOMから削除
+            todoItem.remove();
         }
     });
 
