@@ -69,7 +69,8 @@
         <ul id="sortable-list">
             <?php
                 //日付の条件をつけて → sortで昇順にする
-                $sql2=$pdo->query('select * from Todos where user_id = '. $user_id);
+                $sql2=$pdo->prepare('select * from Todos where user_id = ?');
+                $sql2->execute([$user_id]);
                 // foreach($sql2 as $row2){
                 //     $todo_id = $row2['todo_id'];
                 //     $sort = $row2['sort_id'];
@@ -254,18 +255,38 @@
     function enableDragAndDrop() {
         let draggedItem = null;
 
+
+        sortableList.addEventListener('dragstart', function (e) {
+            if (e.target.tagName === 'LI') {
+                draggedItem = e.target;
+                draggedItem.classList.add('dragging');  // ドラッグ開始時にクラスを追加
+                // setTimeout(() => {
+                //     e.target.style.display = 'none';
+                // }, 0);
+            }
+        });
+
+        sortableList.addEventListener('dragend', function (e) {
+            if (draggedItem) {
+                draggedItem.classList.remove('dragging');  // ドラッグ終了時にクラスを削除
+                // draggedItem.style.display = 'block';
+                draggedItem = null;
+            }
+        });
+
+
         sortableList.addEventListener('dragstart', function (e) {
             if (e.target.closest('.edit-mode-icon')) {  // 画像部分をドラッグ対象に
                 draggedItem = e.target.closest('li');
-                setTimeout(() => {
-                    draggedItem.style.display = 'none';  // ドラッグ中は非表示
-                }, 0);
+                // setTimeout(() => {
+                //     draggedItem.style.display = 'none';  // ドラッグ中は非表示
+                // }, 0);
             }
         });
 
         sortableList.addEventListener('dragend', function (e) {
             setTimeout(() => {
-                draggedItem.style.display = 'block';  // ドラッグ終了後に表示
+                // draggedItem.style.display = 'block';  // ドラッグ終了後に表示
                 draggedItem = null;
             }, 0);
         });
@@ -281,7 +302,7 @@
         sortableList.addEventListener('drop', function (e) {
             e.preventDefault();
             if (draggedItem !== null) {
-                draggedItem.style.display = 'block';  // ドロップ時に再表示
+                // draggedItem.style.display = 'block';  // ドロップ時に再表示(こいつが戦犯)
                 updateSortOrder();
             }
         });
@@ -301,23 +322,7 @@
         }, { offset: Number.NEGATIVE_INFINITY }).element;
     }
 
-    sortableList.addEventListener('dragstart', function (e) {
-        if (e.target.tagName === 'LI') {
-            draggedItem = e.target;
-            draggedItem.classList.add('dragging');  // ドラッグ開始時にクラスを追加
-            setTimeout(() => {
-                e.target.style.display = 'none';
-            }, 0);
-        }
-    });
 
-    sortableList.addEventListener('dragend', function (e) {
-        if (draggedItem) {
-            draggedItem.classList.remove('dragging');  // ドラッグ終了時にクラスを削除
-            draggedItem.style.display = 'block';
-            draggedItem = null;
-        }
-    });
 
     //削除ボタンをクリックした場合
     sortableList.addEventListener('click', (e) => {
