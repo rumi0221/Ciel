@@ -6,7 +6,11 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <title>ログイン画面</title>
 </head>
+<div class="header">
+    <p><img src="./img/Ciel logo.png" width="217.5" height="120" alt="Ciel"></p>
+</div>
 <body class="login">
+<div class="background-gradient-login">
     <h1>LOGIN</h1>
     <?php if (isset($error)) { echo '<p class="error">'.$error.'</p>'; } ?>
     <div class="text">
@@ -16,5 +20,6 @@
         <button type="submit" class="login-button">LOGIN</button>
     </form>
     </div>
+</div>
 </body>
 </html>

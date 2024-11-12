@@ -31,13 +31,15 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     if (!empty($_POST['user_ids'])) {
         $ids = implode(',', array_map('intval', $_POST['user_ids']));
-        $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
+        // $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
+        // デリーとフラグ更新
+        $sql = "UPDATE Users SET delete_flg = true WHERE user_id = $ids";
         $conn->query($sql);
     }
 }
 
 // ユーザーデータの取得
-$sql = "SELECT user_id, user_name, user_email, user_pass, last_history, delete_flg FROM Users";
+$sql = "SELECT user_id, user_name, user_mail, user_pass, last_history, delete_flg FROM Users";
 $result = $conn->query($sql);
 ?>
 
@@ -48,12 +50,11 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <title>ユーザー管理画面</title>
-    <style>
+    <!-- <style>
         body {
             font-family: Arial, sans-serif;
         }
-        .header {
-            /* background-color: #d5e0ff; */
+        .header
             padding: 20px;
             text-align: center;
         }
@@ -83,16 +84,18 @@ $result = $conn->query($sql);
         .delete-btn:hover {
             color: darkblue;
         }
-    </style>
+    </style> -->
 </head>
 <body>
 
 <div class="header">
-    <h1>Ciel</h1>
+    <p><img src="./img/Ciel logo.png" width="217.5" height="120" alt="Ciel"></p>
 </div>
 
+<div class="background-gradient">
 <div class="table-container">
     <h2>USER</h2>
+4-
     <form method="POST" action="">
         <table>
             <thead>
@@ -101,19 +104,19 @@ $result = $conn->query($sql);
                     <th>ユーザーID</th>
                     <th>ユーザー名</th>
                     <th>メールアドレス</th>
-                    <th>パスワード</th>
+                    <!-- <th>パスワード</th> -->
                     <th>最終履歴</th>
+                    <th>削除フラグ</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if ($result->num_rows > 0): ?>
                     <?php while($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><input type="checkbox" name="user_ids[]" value="<?= $row['id'] ?>"></td>
-                            <td><?= $row['id'] ?></td>
+                            <td><input type="checkbox" name="user_ids[]" value="<?= $row['user_id'] ?>"></td>
+                            <td><?= $row['user_id'] ?></td>
                             <td><?= htmlspecialchars($row['user_name'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($row['user_email'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($row['user_pass'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($row['user_mail'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= $row['last_history'] ?></td>
                             <td><?= htmlspecialchars($row['delete_flg'], ENT_QUOTES, 'UTF-8') ?></td>
                         </tr>
@@ -125,8 +128,9 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </tbody>
         </table>
-        <!-- <button type="submit" name="delete" class="delete-btn">delete</button> -->
+        <button type="submit" name="delete" class="delete-btn">🗑delete</button>
     </form>
+</div>
 </div>
 
 </body>
