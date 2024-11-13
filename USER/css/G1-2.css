@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Inria Serif', serif;
     background: linear-gradient(to bottom, #d7e3fc, #e9d7fc, #fcd7e3);
     display: flex;
     justify-content: center;
@@ -86,6 +86,7 @@ h1 {
     width: 100%;
     padding: 10px;
     font-size: 16px;
+    font-family: 'Inria Serif', serif;
     border: none;
     border-bottom: 2px solid #aaa;
     background-color: transparent;
@@ -104,7 +105,7 @@ h1 {
     flex-direction: column; /* ボタンを縦に並べる */
     align-items: center; /* ボタンを中央揃え */
     gap: 15px; /* ボタン間の余白 */
-    margin-top: 40px; /* テキストボックスとボタンの間に余白を追加 */
+    margin-top: 30px; /* テキストボックスとボタンの間に余白を追加 */
 }
 
 .button {
@@ -112,6 +113,7 @@ h1 {
     padding: 15px;
     font-size: 18px;
     border-radius: 8px;
+    font-family: 'Inria Serif', serif;
     cursor: pointer;
     background-color: #fff;
     color: #000;

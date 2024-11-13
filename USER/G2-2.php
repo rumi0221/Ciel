@@ -14,9 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_pass = $_POST['new_pass'];
     $new_pass_confirm = $_POST['new_pass_confirm'];
 
-    // パスワードの一致確認
-    if ($new_pass !== $new_pass_confirm) {
-        $error_message = "パスワードが一致しません。"; // エラーメッセージ設定
+    // パスワードの文字数チェック
+    if (strlen($new_pass) < 6) {
+        $error_message = "パスワードは6文字以上である必要があります。";
+    } elseif ($new_pass !== $new_pass_confirm) {
+        $error_message = "パスワードが一致しません。";
     } else {
         // セッションにパスワードを保存し、G2-3.phpに遷移
         $_SESSION['new_pass'] = $new_pass;
@@ -32,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/G2-2.css"/> <!-- スタイルシート -->
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
     <title>パスワード再設定</title>
 </head>
 <body>
