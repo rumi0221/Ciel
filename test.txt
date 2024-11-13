@@ -1,5 +1,4 @@
 [G4-1.php]
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -23,11 +22,11 @@
       <ul class="tag-list">
       <li><span class="tag-color" style="background-color: #d4ff7f;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #ffeb7f;"></span>タグ名</li>
-      <li><span class="tag-color checked" style="background-color: #ff7fbf;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #ff7fbf;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #7fafff;"></span>タグ名</li>
-      <li><span class="tag-color" style="background-color: #d47fff;"></span>...</li>
+      <li><span class="tag-color" style="background-color: #d47fff;"></span>タグ名</li>
       </ul>
-      <button class="confirm-button">決定</button>
+      <a href="#" class="confirm-button">決定</a>
     </div>
 </header>
 
@@ -36,73 +35,14 @@
 <div id="calendar">
           <h2 id="current-month" onclick="toggleMonthSelector()">2024年10月</h2>
 
-    <table>
-      <thead>
-        <tr>
-          <th>日</th>
-          <th>月</th>
-          <th>火</th>
-          <th>水</th>
-          <th>木</th>
-          <th>金</th>
-          <th>土</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-          <td>6</td>
-          <td>7</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>9</td>
-          <td>10</td>
-          <td>11</td>
-          <td>12</td>
-          <td>13</td>
-          <td>14</td>
-        </tr>
-        <tr>
-          <td>15</td>
-          <td>16</td>
-          <td>17</td>
-          <td>18</td>
-          <td>18</td>
-          <td>20</td>
-          <td>21</td>
-        </tr>
-        <tr>
-          <td>22</td>
-          <td>23</td>
-          <td>24</td>
-          <td>25</td>
-          <td>26</td>
-          <td>27</td>
-          <td>28</td>
-        </tr>
-        <tr>
-          <td>29</td>
-          <td>30</td>
-          <td>31</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <!-- 他の週も同様に追加 -->
-      </tbody>
-    </table>
 
 
     <!-- プラスボタン -->
     <div class="floating-button">+</div>
     <!-- プラスボタン -->
     <div class="floating-button" onclick="goToNextPage()">+</div>
+    
+    <div id="calendar-table"></div>
 
     <div id="month-selector" class="month-selector">
         <div class="selector-header">
@@ -125,14 +65,12 @@
             <span class="month" onclick="selectMonth(12)">12月</span>
         </div>
 
-        <div id="calender-container"></div>
-
         <span class="close-selector" onclick="toggleMonthSelector()">×</span>
 </div>
-
   <script src="script/G4-1.js"></script>
 </body>
 </html>
+
 
 [G4-1.js]
 
@@ -171,11 +109,59 @@ function selectMonth(month) {
     document.getElementById("current-month").innerText = `${selectedYear}年${selectedMonth}月`;
     document.querySelectorAll(".month").forEach(m => m.classList.remove("selected"));
     document.querySelectorAll(".month")[month - 1].classList.add("selected");
-    toggleMonthSelector(); // Close the selector after choosing
+    generateCalendar(selectedYear,selectedMonth);
+    toggleMonthSelector();
 }
 
+function generateCalendar(year, month) {
+    const calendarTable = document.getElementById("calendar-table");
+    calendarTable.innerHTML = "";
+
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+    let table = "<table><tr>";
+    daysOfWeek.forEach(day => {
+        table += `<th>${day}</th>`;
+    });
+    table += "</tr><tr>";
+
+    for (let i = 0; i < firstDay; i++) {
+        table += "<td></td>";
+    }
+
+    let day = 1;
+    for (let i = firstDay; i < 7; i++) {
+        table += `<td>${day}</td>`;
+        day++;
+    }
+    table += "</tr>";
+
+    while (day <= daysInMonth) {
+        table += "<tr>";
+        for (let i = 0; i < 7 && day <= daysInMonth; i++) {
+            table += `<td>${day}</td>`;
+            day++;
+        }
+        table += "</tr>";
+    }
+    table += "</table>";
+
+    calendarTable.innerHTML = table;
+}
+
+const calendarTable = document.getElementById("calendar-table");
+if (calendarTable) {
+    calendarTable.innerHTML = "";
+    // 続きの処理
+}
+
+
+generateCalendar(selectedYear, selectedMonth);
+
+
 function goToNextPage() {
-    // 次のページ（例: event.html）に遷移する
     window.location.href = "G4-2.html";
 }
 
@@ -183,51 +169,6 @@ function NextPage() {
     window.location.href = "G4-1.php";
 }
 
- // 月ごとにカレンダーを表示する関数
- function generateCalendar(month) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const firstDay = new Date(year, month, 1); // その月の最初の日
-    const lastDay = new Date(year, month + 1, 0); // その月の最後の日
-    
-    const daysInMonth = lastDay.getDate();
-    const startDay = firstDay.getDay(); // その月の最初の日が何曜日か
-    
-    const calendarContainer = document.getElementById("calendar-container");
-    calendarContainer.innerHTML = ''; // 既存のカレンダーをクリア
-
-    // カレンダーのHTMLを生成
-    let calendarHTML = "<table class='calendar'><tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr><tr>";
-
-    // 空のセルを追加して、月の最初の日を揃える
-    for (let i = 0; i < startDay; i++) {
-        calendarHTML += "<td></td>";
-    }
-
-    // 各日のセルを追加
-    for (let day = 1; day <= daysInMonth; day++) {
-        calendarHTML += `<td>${day}</td>`;
-        if ((day + startDay) % 7 === 0) {
-            calendarHTML += "</tr><tr>"; // 行を終了し、新しい行を開始
-        }
-    }
-
-    calendarHTML += "</tr></table>";
-    calendarContainer.innerHTML = calendarHTML;
-    
-    // カレンダーを表示
-    const calendar = document.querySelector(".calendar");
-    calendar.style.display = "table";
-}
-
-// 各月のボタンにクリックイベントを追加
-const monthButtons = document.querySelectorAll(".month-button");
-monthButtons.forEach(button => {
-    button.addEventListener("click", function() {
-        const month = parseInt(this.getAttribute("data-month"));
-        generateCalendar(month);
-    });
-});
 
 
 [G4-1.css]
@@ -502,7 +443,7 @@ td:last-child {
 
 <div class="header">
         <div class="cancel-button" onclick="NextPage()">キャンセル</div>
-        <img src="./img/Ciel logo.png" style="margin-left:-30spx;">
+        <img src="./img/Ciel logo.png" style="margin-left:-30px;">
         <div class="confirm-button" onclick="NextPage()">決定</div>
 </div>
 
@@ -624,3 +565,204 @@ textarea {
     font-size: 16px;
     cursor: pointer;
 }
+
+
+
+JSのプログラムでエラーがでます。
+アドバイスください。
+
+#エラー箇所
+    calendarTable.innerHTML = "";
+
+#エラーメッセージ
+Uncaught TypeError: Cannot set properties of null (setting 'innerHTML')
+
+#JSのメソッド全体
+function generateCalendar(year, month) {
+    const calendarTable = document.getElementById("calendar-table");
+    calendarTable.innerHTML = "";
+
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+    let table = "<table><tr>";
+    daysOfWeek.forEach(day => {
+        table += <th>${day}</th>;
+    });
+    table += "</tr><tr>";
+
+    for (let i = 0; i < firstDay; i++) {
+        table += "<td></td>";
+    }
+
+    let day = 1;
+    for (let i = firstDay; i < 7; i++) {
+        table += <td>${day}</td>;
+        day++;
+    }
+    table += "</tr>";
+
+    while (day <= daysInMonth) {
+        table += "<tr>";
+        for (let i = 0; i < 7 && day <= daysInMonth; i++) {
+            table += <td>${day}</td>;
+            day++;
+        }
+        table += "</tr>";
+    }
+    table += "</table>";
+
+    calendarTable.innerHTML = table;
+}
+
+
+#HTML
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カレンダー</title>
+    <link rel="stylesheet" href="./css/G4-1.css">
+    <link rel="stylesheet" href="./css/menu.css">
+    
+
+</head>
+<body>
+    <header>
+    <div class="menu-icon" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div id="menu" class="menu">
+      <a href="#" class="show-all">全てのタグを表示</a>
+      <ul class="tag-list">
+      <li><span class="tag-color" style="background-color: #d4ff7f;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #ffeb7f;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #ff7fbf;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #7fafff;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #d47fff;"></span>タグ名</li>
+      </ul>
+      <a href="#" class="confirm-button">決定</a>
+    </div>
+</header>
+
+<footer><div class="menu-bar">
+  <a href="G4-1.php">
+    <div class="icon">
+      <img src="img/calendar.png">
+    </div>
+  </a>
+  <a href="G3-1-1.php">
+    <div class="icon">
+      <img src="img/todo.png">
+    </div>
+  </a>
+  <a href="G5-1.php">
+    <div class="icon">
+      <img src="img/settings.png">
+    </div>
+  </a>
+</div><img src="./img/Ciel logo.png">
+<div id="calendar">
+          <h2 id="current-month" onclick="toggleMonthSelector()">2024年10月</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>日</th>
+          <th>月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+          <th>金</th>
+          <th>土</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+          <td>18</td>
+          <td>20</td>
+          <td>21</td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>23</td>
+          <td>24</td>
+          <td>25</td>
+          <td>26</td>
+          <td>27</td>
+          <td>28</td>
+        </tr>
+        <tr>
+          <td>29</td>
+          <td>30</td>
+          <td>31</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <!-- 他の週も同様に追加 -->
+      </tbody>
+    </table>
+
+
+    <!-- プラスボタン -->
+    <div class="floating-button">+</div>
+    <!-- プラスボタン -->
+    <div class="floating-button" onclick="goToNextPage()">+</div>
+
+    <div id="month-selector" class="month-selector">
+        <div class="selector-header">
+            <span id="prev-year" onclick="changeYear(-1)">← 前年</span>
+            <span id="selected-year">2024年</span>
+            <span id="next-year" onclick="changeYear(1)">翌年 →</span>
+        </div>
+        <div class="month-grid">
+            <span class="month" onclick="selectMonth(1)">1月</span>
+            <span class="month" onclick="selectMonth(2)">2月</span>
+            <span class="month" onclick="selectMonth(3)">3月</span>
+            <span class="month" onclick="selectMonth(4)">4月</span>
+            <span class="month" onclick="selectMonth(5)">5月</span>
+            <span class="month" onclick="selectMonth(6)">6月</span>
+            <span class="month" onclick="selectMonth(7)">7月</span>
+            <span class="month" onclick="selectMonth(8)">8月</span>
+            <span class="month" onclick="selectMonth(9)">9月</span>
+            <span class="month selected" onclick="selectMonth(10)">10月</span>
+            <span class="month" onclick="selectMonth(11)">11月</span>
+            <span class="month" onclick="selectMonth(12)">12月</span>
+        </div>
+
+        <span class="close-selector" onclick="toggleMonthSelector()">×</span>
+</div>
+
+  <script src="script/G4-1.js"></script>
+</body>
+</html>
+
