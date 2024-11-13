@@ -27,6 +27,8 @@
         $user_name = 'Test2';
         $user_pass = '';
 
+        $formattedDate = $_POST['formattedDate'] ?? date('Y-m-d');
+
         $user_id = 8;
     ?>
 
@@ -35,8 +37,8 @@
     <?php
         //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
         //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
-        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND start_date <= "2024-10-23 23:59:59" AND final_date >= "2024-10-23 00:00:00" AND todo_flg = 1');
-        $sql->execute([$user_id]);
+        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND start_date <= ? AND final_date >= ? AND todo_flg = 1');
+        $sql->execute([$user_id, $formattedDate, $formattedDate]);
         echo '
             <div class="term-container">
                 <div class="term-header" onclick="toggleTerm()">
@@ -69,22 +71,8 @@
         <ul id="sortable-list">
             <?php
                 //日付の条件をつけて → sortで昇順にする
-                $sql2=$pdo->prepare('select * from Todos where user_id = ?');
-                $sql2->execute([$user_id]);
-                // foreach($sql2 as $row2){
-                //     $todo_id = $row2['todo_id'];
-                //     $sort = $row2['sort_id'];
-                //     $todo = $row2['todo'];
-                //     $completion = $row2['completion_flg'];
-                //     $check = ($completion == 1) ? 'checked' : '';
-                //     echo '
-                //         <li class="normal-mode">
-                //             <input type="checkbox" data-id="', $todo_id, '" class="hide-checkbox"', $check, '> ', $todo, '
-                //             <button class="delete-button"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-                //         </li>
-                //         ';
-                // }
-
+                $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ?');
+                $sql2->execute([$user_id, $formattedDate]);
                 foreach($sql2 as $row2){
                     $todo_id = $row2['todo_id'];
                     $sort = $row2['sort_id'];
@@ -107,6 +95,7 @@
         <div class="tododiv">
             <form id="todo-form" class="todo-form">
                 <input type="text" class="todo-inp" id="todo-input" placeholder=" TODOを追加する">
+                <input type="hidden" id="formatted-date" name="formattedDate"> <!-- タブの日付をここにセット -->
                 <button class="todo-btn" id="addTodo" style="display: none;">
                     <img src="img/add.png" style="height:30px; width:30px;">
                 </button>
@@ -375,6 +364,56 @@
                 xhr.send('plan_id=' + planId + '&completion_flg=' + isChecked);
             });
         });
+
+
+        // // 現在の日付を取得して YYYY-MM-DD フォーマットにする関数
+        // function getFormattedDate(date) {
+        //     const year = date.getFullYear();
+        //     const month = ("0" + (date.getMonth() + 1)).slice(-2); // 月を2桁に
+        //     const day = ("0" + date.getDate()).slice(-2); // 日を2桁に
+        //     return `${year}-${month}-${day}`;
+        // }
+
+        // // 中央のタブの日付を取得してフォーマットする関数
+        // function getCenterTabDate() {
+        //     const tabCenterText = document.getElementById('tab-center').innerText;
+            
+        //     // タブに表示されている日付 (例: "10/23") を変換
+        //     const [month, day] = tabCenterText.split('/');
+        //     const today = new Date();
+        //     const year = today.getFullYear();
+
+        //     const formattedDate = `${year}-${("0" + month).slice(-2)}-${("0" + day).slice(-2)}`;
+        //     return formattedDate;
+        // }
+
+
+        // タブの中央にある日付 (例: "10/23") を取得して、フォーマットを変換する関数
+        function getCenterTabDate() {
+            const tabCenterText = document.getElementById('tab-center').innerText;
+
+            // タブに表示されている日付 (例: "10/23") を [月, 日] の配列に分割
+            const [month, day] = tabCenterText.split('/');
+
+            // 今日の日付から年を取得
+            const today = new Date();
+            const year = today.getFullYear();
+
+            // 年、月、日を組み合わせて、YYYY-MM-DDの形式に変換
+            const formattedDate = `${year}-${("0" + month).slice(-2)}-${("0" + day).slice(-2)}`;
+            return formattedDate;
+        }
+
+        // 取得した日付をフォームのhiddenフィールドにセットする
+        function setFormattedDate() {
+            const formattedDate = getCenterTabDate();  // 中央のタブの日付を取得してフォーマット
+            document.getElementById('formatted-date').value = formattedDate;  // hiddenフィールドにセット
+        }
+
+        // ページ読み込み時に`formattedDate`を設定する
+        window.onload = function() {
+            setFormattedDate();  // ページが読み込まれたら自動で日付をセット
+        };
 
         
 
