@@ -1,3 +1,4 @@
+<?php session_start();?>
 <?php
 //プロフィールのupdateとG5-1に遷移
 require_once 'db-connect.php';
@@ -6,12 +7,17 @@ require_once 'db-connect.php';
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_flg'])){
-    $user_id = $_POST['user_id'];
-    $user_name = $_POST['user_name']; 
-    $user_mail = $_POST['user_mail'];
-    $user_pass = password_hash($_POST['user_pass'], PASSWORD_DEFAULT); 
+    $user_pass = $_POST['user_pass'];
+    if(strlen($user_pass) < 6){
+      $error = "パスワードは6文字以上である必要があります";
 
-    try{
+    }else{
+      $user_id = $_POST['user_id'];
+      $user_name = $_POST['user_name']; 
+      $user_mail = $_POST['user_mail'];
+      $user_pass = password_hash($user_pass, PASSWORD_DEFAULT); 
+
+      try{
         $sql = 'update Users set user_name=:name, user_mail=:mail, user_pass=:pass where user_id=:user_id';
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':name', $user_name, PDO::PARAM_STR);
@@ -19,15 +25,19 @@ require_once 'db-connect.php';
         $stmt->bindParam(':pass', $user_pass, PDO::PARAM_STR);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
+
+        $_SESSION['message'] = "プロフィールが更新されました";
         header("Location: G5-1.php");
         exit;
-    } catch(PDOException $e) {
+      } catch(PDOException $e) {
         $error = true;
         $errorMessage = "エラーが発生しました: " . $e->getMessage();
-    } catch(IconException $e) {
+      } catch(IconException $e) {
         $error = true;
         $errorMessage = "エラーが発生しました: " . $e->getMessage();
+      }
     }
+    
 }
 
 ?>
@@ -51,6 +61,13 @@ require_once 'db-connect.php';
         </header>
     <div class="main">
 
+    <!-- パスワードチェックエラー表示 -->
+    <?php if (!empty($error)) : ?>
+        <p style="color: red;">
+          <?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?>
+        </p>
+    <?php endif; ?>
+
     <?php
         $user_id = $_POST['user_id'];
         
@@ -68,8 +85,9 @@ require_once 'db-connect.php';
             <?php
                echo '<input type="hidden" name="user_flg" value="true">';
               echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
-              echo '<tr>','<td>user 　　：</td>','<td>','<input type="text" name="user_name" value="', htmlspecialchars($result['user_name']) ,'" required>','</td>','</tr>';
-              echo '<tr>','<td>email　　：</td>','<td>','<input type="email"  name="user_mail" value="', htmlspecialchars($result['user_mail']) ,'" required>','</td>','</tr>';
+              echo '<tr>','<td>user 　　：</td>','<td>','<input type="text" name="user_name" value="', htmlspecialchars($result['user_name'], ENT_QUOTES) ,'" required>','</td>','</tr>';
+              echo '<tr>','<td>email　　：</td>','<td>','<input type="email"  name="user_mail" value="', htmlspecialchars($result['user_mail'], ENT_QUOTES) ,'" required>','</td>','</tr>';
+              // パスワードの長さチェック追加(半角6文字以上)
               echo '<tr>','<td>password：</td>','<td>','<input type="password" name="user_pass" id="passwordInput" required>','</td>';
             ?>
             </form>
@@ -86,21 +104,5 @@ require_once 'db-connect.php';
         </footer>
 
         <script src="script/G5-2.js"></script>
-
-        <!-- <script>
-          var showPasswordButton = document.getElementById("showPasswordButton");
-          showPasswordButton.addEventListener("click", togglePasswordVisibility);
-
-            function togglePasswordVisibility() {
-              var passwordInput = document.getElementById("passwordInput");
-                if (passwordInput.type === "password") {
-                      passwordInput.type = "text";
-                      showPasswordButton.className = "fa fa-eye-slash";
-                } else {
-                      passwordInput.type = "password";
-                      showPasswordButton.className = "fa fa-eye";
-                } 
-            }
-        </script> -->
 </body>
 </html>

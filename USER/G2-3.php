@@ -48,14 +48,20 @@ session_destroy();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/G2-3.css"> <!-- スタイルシート -->
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
     <title>パスワード再設定完了</title>
 </head>
 <body>
-    <div class="container">
+    <!-- header挿入 -->
+    <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
+    <div class="main">
         <h1>PASSWORD<br>RESET<br>COMPLETION</h1>
+        <img src="img/check.png" alt="check" class="check"></a>
         <p><?php echo htmlspecialchars($message); ?></p>
 
-        <button type="button" class="btn" onclick="location.href='G1-1.php'">RETURN TO LOGIN</button><!-- RETURN TO LOGINボタン -->
+        <button type="button" class="button is-medium" onclick="location.href='G1-1.php'">RETURN TO LOGIN</button><!-- RETURN TO LOGINボタン -->
         </form>
     </div>
 </body>

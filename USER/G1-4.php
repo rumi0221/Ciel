@@ -87,10 +87,16 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/G1-4.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
     <title>登録完了</title>
 </head>
 <body>
-    <div class="container">
+    <!-- header挿入 -->
+    <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
+<div class="main">
+    <!--div class="container"-->
     <h1>REGISTER<br>COMPLETION</h1>
         <p><?php echo $message; ?></p>
         

@@ -1,0 +1,183 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inria Serif', serif;
+    background: linear-gradient(to bottom, #d7e3fc, #e9d7fc, #fcd7e3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    width: 90%;
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    min-height: 100px;
+    z-index: 1;
+    margin-top: 60px;
+}
+
+.header {
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 100%;
+    background-color: #fff;
+    padding: 0 0;
+    text-align: center;
+    z-index: 1000;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #3d3d3d;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.toggle-password {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -25px;
+    top: 60%;
+    
+    cursor: pointer;
+}
+
+.input-group label {
+    font-size: 25px;
+    color: #5c5c5c;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #aaa;
+    background-color: transparent;
+    font-family: 'Inria Serif', serif;
+    background: none;
+    border-radius: 0;
+    margin-top: 5px;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-bottom: 2px solid #6d6d6d;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* ボタンを縦に並べる */
+    align-items: center; /* ボタンを中央揃え */
+    gap: 15px; /* ボタン間の余白 */
+    margin-top: 30px; /* テキストボックスとボタンの間に余白を追加 */
+}
+
+.button {
+    width: 200px; /* ボタンの幅を統一 */
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 8px;
+    font-family: 'Inria Serif', serif;
+    cursor: pointer;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button.is-medium {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
+    border-color: #d7b4fc;
+}
+
+.button.is-medium:hover {
+    background-color: #d7b4fc;
+    color: #fff;
+}
+
+.button.is-btn {
+    width: 200px;
+    padding: 15px;
+    font-size: 16px;
+    border-color: #fcbcfc;
+}
+
+.button.is-btn:hover {
+    background-color: #fcbcfc;
+    color: #fff;
+}
+
+
+
+/* ãƒ¡ãƒ‡ã‚£ã‚¢ã‚¯ã‚¨ãƒªï¼šç”»é¢å¹…500pxä»¥ä¸‹ã®ã¨ãã®ã‚¹ã‚¿ã‚¤ãƒ«èª¿æ•´ */
+@media (max-width: 500px) {
+    .form-container {
+        width: 90%;
+        padding: 60px 15px;
+    }
+
+    .header {
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .input-group label {
+        font-size: 20px;
+    }
+
+    .input-group input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .button {
+        font-size: 18px;
+        padding: 10px;
+        margin: 0 10px;
+    }
+
+    .logo {
+        width: 80px;
+    }
+}

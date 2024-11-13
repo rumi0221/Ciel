@@ -9,6 +9,14 @@
         exit;
     }
 
+    
+  if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout_flg']) == 'true'){
+        session_destroy();
+        header("Location: G5-1.php");
+        exit;
+    }
+
+
     // 初期化
     $error = false; 
     $errorMessage = ""; 
@@ -60,7 +68,19 @@
         <header class="header">
             <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
         </header>
+
     <div class="main">
+
+      <!-- 成功メッセージの表示 -->
+      <div class="succces">
+        <?php if (!empty($_SESSION['message'])): ?>
+            <!-- <p style="color: green;"> -->
+            <?php echo htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php unset($_SESSION['message']); // 表示後にメッセージを消去
+                endif;
+            ?>
+        </div>
+
     <!-- profile -->
         <div class="profile">
             <form action="G5-2.php" method="POST">
@@ -93,13 +113,34 @@
             <button type="submit">rename a tag-></button>
             </form>
         </div>
+
+        <!-- logout -->
+        <div class="logout">
+          <button id="click-btn">logout</button>
+          <div id="popup-wrapper">
+              <div id="popup-inside">
+                  <div id="message">
+                    <div id="close">x</div>
+                      <h2>ログアウトしますか？</h2>
+                      <form action="G5-1.php" method="POST">
+                          <input type="submit" value="ログアウト" class="logoutsubmit">
+                          <input type="hidden" name="logout_flg" value="true">
+                      </form>
+                  </div>
+              </div>
+          </div>
+        <!-- </div> -->
     </div>
+
     <!-- footer挿入 -->
         <footer class="footer">
             <?php
                 require 'menu.php';
             ?>
         </footer>
+
+        <!-- JavaScriptファイルの読み込み -->
+    <script src="script/G5-1.js"></script>
     
 </body>
 </html>

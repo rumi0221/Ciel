@@ -14,9 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_pass = $_POST['new_pass'];
     $new_pass_confirm = $_POST['new_pass_confirm'];
 
-    // パスワードの一致確認
-    if ($new_pass !== $new_pass_confirm) {
-        $error_message = "パスワードが一致しません。"; // エラーメッセージ設定
+    // パスワードの文字数チェック
+    if (strlen($new_pass) < 6) {
+        $error_message = "パスワードは6文字以上である必要があります。";
+    } elseif ($new_pass !== $new_pass_confirm) {
+        $error_message = "パスワードが一致しません。";
     } else {
         // セッションにパスワードを保存し、G2-3.phpに遷移
         $_SESSION['new_pass'] = $new_pass;
@@ -32,9 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/G2-2.css"/> <!-- スタイルシート -->
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
     <title>パスワード再設定</title>
 </head>
 <body>
+    <!-- header挿入 -->
+    <header class="header">
+        <img src="img/Ciel logo.png" alt="Ciel" class="logo">
+    </header>
     <div class="main">
         <h1>PASSWORD<br>RESET</h1>
 
@@ -43,20 +50,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form action="G2-2.php" method="post"> <!-- 現在のページにPOSTメソッドで送信 -->
-            <p>
+            <div class="input-group">
                 <label for="new_pass">新しいパスワード<span class="required">*</span></label><br>
                 <input type="password" id="new_pass" name="new_pass" placeholder="新しいパスワードを入力してください" maxlength="8" required>
-            </p>
-            <p>
+                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass')">
+            </div>
+
+            <div class="input-group">
                 <label for="new_pass_confirm">新しいパスワード(確認)<span class="required">*</span></label><br>
                 <input type="password" id="new_pass_confirm" name="new_pass_confirm" placeholder="新しいパスワードをもう一度入力してください" maxlength="8" required>
-            </p>
+                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass_confirm')">
+            </div>
 
             <div class="button-container">
-                <button type="submit" class="btn">RESET PASSWORD</button> <!-- RESET PASSWORDボタン -->
-                <button type="button" class="btn" onclick="location.href='G2-1.php'">RETURN</button> <!-- RETURNボタン -->
+                <button type="submit" class="button is-btn">RESET PASSWORD</button> <!-- RESET PASSWORDボタン -->
+                <button type="button" class="button is-medium" onclick="location.href='G2-1.php'">RETURN</button> <!-- RETURNボタン -->
             </div>
         </form>
     </div>
+
+    <script>
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+
 </body>
 </html>

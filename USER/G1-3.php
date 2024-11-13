@@ -15,9 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/G1-3.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
     <title>登録内容の確認</title>
 </head>
 <body>
+<!-- header挿入 -->
+<header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+</header>
 <div class="main">
     <h1>REGISTER</h1>
     <table>
@@ -41,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="user_mail" value="<?php echo htmlspecialchars($_SESSION['user_mail']); ?>">
             <input type="hidden" name="user_pass" value="<?php echo htmlspecialchars($_SESSION['user_pass']); ?>">
 
-            <button type="submit" class="btn-register">CREATE ACCOUNT</button>
+            <button type="submit" class="button is-btn">CREATE ACCOUNT</button>
         </form>
         <!-- RETURNボタンの修正 -->
-        <button class="btn-back" onclick="location.href='G1-2.php'">RETURN</button>
+        <button class="button is-medium" onclick="location.href='G1-2.php'">RETURN</button>
     </div>
 </div>
 
