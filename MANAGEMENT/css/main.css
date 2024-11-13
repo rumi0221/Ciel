@@ -96,6 +96,7 @@ p {
 
 .background-gradient {
     background: linear-gradient(to bottom, #D1DBFF 33.33%, #E9D1FF 33.33%, #E9D1FF 66.66%, #FFCDEB 66.66%);
+    position: relative;
     padding: 20px 0; /* Optional padding to separate content from header */
 }
 
@@ -136,6 +137,17 @@ h2 {
     outline: none;
     cursor: pointer;
     text-decoration: underline;
+    padding: 0;
+    /* position: absolute; */
+    top: 10px; /* 上からの距離 */
+    left: 10px; /* 左からの距離 */
+}
+
+.error-message {
+    text-align: center;
+    color: red; /* メッセージを赤色に */
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 /* テーブルの背景を白の半透明に設定 */
@@ -146,6 +158,7 @@ table {
     margin-top: 10px;
     background-color: rgba(255, 255, 255, 0.8); /* 白色（80%の不透明度） */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* テーブルの影 */
+    border-radius: 10px; /* 角を丸くする（オプション） */
 }
 /* テーブル全体の設定 */
 table {
@@ -161,9 +174,9 @@ table {
 table th {
     color: #000; /* 文字色を黒に設定 */
     padding: 12px 15px; /* 行の高さを調整 */
-    background-color: rgba(255, 255, 255, 1); /* ヘッダー行を完全な白に設定 */
+    background-color: rgba(232, 232, 255, 1); /* ヘッダー行を完全な白に設定 */
     font-weight: bold;
-    border: 1px solid #258; /* 境界線の色 */
+    border: 1px solid #5da9ff; /* 境界線の色 */
     text-shadow: none; /* 文字の影を削除 */
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1) inset; /* ヘッダーの影 */
 }
@@ -245,5 +258,6 @@ table tr:nth-child(2n+1) {
 }
 
 table tr:hover {
-    background: rgba(187, 212, 238, 0.8); /* ホバー時に半透明で強調表示 */
+    /* background: rgba(187, 212, 238, 0.8); ホバー時に半透明で強調表示 */
+    background: rgba(190, 187, 238, 0.5);
 }

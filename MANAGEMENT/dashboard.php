@@ -27,17 +27,6 @@ if ($conn->connect_error) {
     die("接続失敗: " . $conn->connect_error);
 }
 
-// 削除処理
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    if (!empty($_POST['user_ids'])) {
-        $ids = implode(',', array_map('intval', $_POST['user_ids']));
-        // $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
-        // デリーとフラグ更新
-        $sql = "UPDATE Users SET delete_flg = true WHERE user_id = $ids";
-        $conn->query($sql);
-    }
-}
-
 // ユーザーデータの取得
 $sql = "SELECT user_id, user_name, user_mail, user_pass, last_history, delete_flg FROM Users";
 $result = $conn->query($sql);
@@ -95,8 +84,32 @@ $result = $conn->query($sql);
 <div class="background-gradient">
 <div class="table-container">
     <h2>USER</h2>
-4-
+
+<!-- 削除処理 -->
+<div class="error-message">
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+        if (!empty($_POST['user_ids'])) {
+            $ids = implode(',', array_map('intval', $_POST['user_ids']));
+            // $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
+            // デリーとフラグ更新
+            $sql = "UPDATE Users SET delete_flg = true WHERE user_id IN ($ids)";
+            // $conn->query($sql);
+            // クエリの実行とエラーチェック
+            if ($conn->query($sql) === TRUE) {
+                echo "選択されたユーザーが削除されました。";
+            } else {
+                echo "エラーが発生しました: " . $conn->error;
+            }
+        } else {
+            echo "削除するユーザーを選択してください。";
+        }
+    }
+    ?>
+</div>
+
     <form method="POST" action="">
+    <button type="submit" name="delete" class="delete-btn">🗑delete</button>
         <table>
             <thead>
                 <tr>
@@ -128,7 +141,6 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </tbody>
         </table>
-        <button type="submit" name="delete" class="delete-btn">🗑delete</button>
     </form>
 </div>
 </div>
