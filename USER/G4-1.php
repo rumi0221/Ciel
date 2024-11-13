@@ -1,3 +1,10 @@
+<?php require_once 'db-connect.php';
+    $db = new PDO($connect, USER, PASS);
+
+	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+  ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,96 +18,35 @@
 </head>
 <body>
     <header>
+    <img src="./img/Ciel logo.png">
     <div class="menu-icon" onclick="toggleMenu()">
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
     </div>
     <div id="menu" class="menu">
-      <a href="#" class="show-all">全てのタグを表示</a>
+      <!-- <a href="#" class="show-all">全てのタグを表示</a> -->
       <ul class="tag-list">
       <li><span class="tag-color" style="background-color: #d4ff7f;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #ffeb7f;"></span>タグ名</li>
-      <li><span class="tag-color checked" style="background-color: #ff7fbf;"></span>タグ名</li>
+      <li><span class="tag-color" style="background-color: #ff7fbf;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #7fafff;"></span>タグ名</li>
-      <li><span class="tag-color" style="background-color: #d47fff;"></span>...</li>
+      <li><span class="tag-color" style="background-color: #d47fff;"></span>タグ名</li>
       </ul>
-      <button class="confirm-button">決定</button>
+      <a href="#" class="confirm-button">決定</a>
     </div>
 </header>
 
-<footer><?php include 'menu.php';?>
-<img src="./img/Ciel logo.png">
+<footer><?php include 'menu.php';?></footer>
 <div id="calendar">
-          <h2 id="current-month" onclick="toggleMonthSelector()">2024年10月</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>日</th>
-          <th>月</th>
-          <th>火</th>
-          <th>水</th>
-          <th>木</th>
-          <th>金</th>
-          <th>土</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-          <td>6</td>
-          <td>7</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>9</td>
-          <td>10</td>
-          <td>11</td>
-          <td>12</td>
-          <td>13</td>
-          <td>14</td>
-        </tr>
-        <tr>
-          <td>15</td>
-          <td>16</td>
-          <td>17</td>
-          <td>18</td>
-          <td>18</td>
-          <td>20</td>
-          <td>21</td>
-        </tr>
-        <tr>
-          <td>22</td>
-          <td>23</td>
-          <td>24</td>
-          <td>25</td>
-          <td>26</td>
-          <td>27</td>
-          <td>28</td>
-        </tr>
-        <tr>
-          <td>29</td>
-          <td>30</td>
-          <td>31</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <!-- 他の週も同様に追加 -->
-      </tbody>
-    </table>
+          <h2 id="current-month" onclick="toggleMonthSelector()">2024年11月</h2>
 
 
-    <!-- プラスボタン -->
-    <div class="floating-button">+</div>
+
     <!-- プラスボタン -->
     <div class="floating-button" onclick="goToNextPage()">+</div>
+    
+    <div id="calendar-table"></div>
 
     <div id="month-selector" class="month-selector">
         <div class="selector-header">
@@ -118,16 +64,13 @@
             <span class="month" onclick="selectMonth(7)">7月</span>
             <span class="month" onclick="selectMonth(8)">8月</span>
             <span class="month" onclick="selectMonth(9)">9月</span>
-            <span class="month selected" onclick="selectMonth(10)">10月</span>
-            <span class="month" onclick="selectMonth(11)">11月</span>
+            <span class="month" onclick="selectMonth(10)">10月</span>
+            <span class="month selected" onclick="selectMonth(11)">11月</span>
             <span class="month" onclick="selectMonth(12)">12月</span>
         </div>
 
-        <div id="calender-container"></div>
-
         <span class="close-selector" onclick="toggleMonthSelector()">×</span>
 </div>
-
   <script src="script/G4-1.js"></script>
 </body>
 </html>
