@@ -1,3 +1,10 @@
+<?php require_once 'db-connect.php';
+    $db = new PDO($connect, USER, PASS);
+
+	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+  ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,13 +18,14 @@
 </head>
 <body>
     <header>
+    <img src="./img/Ciel logo.png">
     <div class="menu-icon" onclick="toggleMenu()">
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
     </div>
     <div id="menu" class="menu">
-      <a href="#" class="show-all">全てのタグを表示</a>
+      <!-- <a href="#" class="show-all">全てのタグを表示</a> -->
       <ul class="tag-list">
       <li><span class="tag-color" style="background-color: #d4ff7f;"></span>タグ名</li>
       <li><span class="tag-color" style="background-color: #ffeb7f;"></span>タグ名</li>
@@ -29,15 +37,12 @@
     </div>
 </header>
 
-<footer><?php include 'menu.php';?>
-<img src="./img/Ciel logo.png">
+<footer><?php include 'menu.php';?></footer>
 <div id="calendar">
           <h2 id="current-month" onclick="toggleMonthSelector()">2024年11月</h2>
 
 
 
-    <!-- プラスボタン -->
-    <div class="floating-button">+</div>
     <!-- プラスボタン -->
     <div class="floating-button" onclick="goToNextPage()">+</div>
     

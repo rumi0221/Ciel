@@ -31,7 +31,6 @@ body {
 .tag-list {
     list-style: none;
     padding: 0;
-    width: 80%;
 }
 .tag-item {
     display: flex;

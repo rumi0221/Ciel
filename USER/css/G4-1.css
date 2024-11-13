@@ -177,6 +177,7 @@ td .tag {
   color: white;
   text-align: center;
   cursor: pointer;
+  z-index: 20;
 }
 
 .floating-button:hover {

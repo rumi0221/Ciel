@@ -85,10 +85,12 @@ if (calendarTable) {
 generateCalendar(selectedYear, selectedMonth);
 
 
+// 4-1
 function goToNextPage() {
-    window.location.href = "G4-2.html";
+    window.location.href = "G4-2.php";
 }
 
+// 4-2
 function NextPage() {
     window.location.href = "G4-1.php";
 }
