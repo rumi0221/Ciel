@@ -27,8 +27,7 @@
         $user_name = 'Test2';
         $user_pass = '';
 
-        $formattedDate = $_POST['formattedDate'] ?? date('Y-m-d');
-
+        $Date = $_POST['formattedDate'] ?? date('Y-m-d');
         $user_id = 8;
     ?>
 
@@ -38,7 +37,7 @@
         //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
         //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
         $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND start_date <= ? AND final_date >= ? AND todo_flg = 1');
-        $sql->execute([$user_id, $formattedDate, $formattedDate]);
+        $sql->execute([$user_id, $Date, $Date]);
         echo '
             <div class="term-container">
                 <div class="term-header" onclick="toggleTerm()">
@@ -72,7 +71,7 @@
             <?php
                 //日付の条件をつけて → sortで昇順にする
                 $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ?');
-                $sql2->execute([$user_id, $formattedDate]);
+                $sql2->execute([$user_id, $Date]);
                 foreach($sql2 as $row2){
                     $todo_id = $row2['todo_id'];
                     $sort = $row2['sort_id'];
@@ -167,7 +166,44 @@
             }
 
             updateTabs();
+            setFormattedDate();  // タブの日付をセット
+
+            // 新しい日付に基づいてTODOリストを取得して表示
+            loadTodos(getCenterTabDate());  // 中央のタブの日付に基づいてTODOを再取得
         }
+
+        // TODOリストを取得して更新する関数
+        function loadTodos(date) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'get_todos.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            // サーバーに日付を送信してTODOを取得
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const todos = JSON.parse(xhr.responseText);
+                    const sortableList = document.getElementById('sortable-list');
+                    sortableList.innerHTML = '';  // 現在のリストをクリア
+
+                    // 新しいTODOリストを表示
+                    todos.forEach(todo => {
+                        const todoItem = `
+                            <li class="normal-mode" data-id="${todo.todo_id}">
+                                <input type="checkbox" class="hide-checkbox" data-id="${todo.todo_id}" ${todo.completion_flg == 1 ? 'checked' : ''}>
+                                <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
+                                <span class="todo-text">${todo.todo}</span>
+                                <input type="text" class="edit-todo-input" value="${todo.todo}" style="display: none; margin-left:5px;">
+                                <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                            </li>
+                        `;
+                        sortableList.innerHTML += todoItem;
+                    });
+                }
+            };
+
+            xhr.send('formattedDate=' + date);
+        }
+        
 
         tabLeft.addEventListener('click', handleTabClick);
         tabRight.addEventListener('click', handleTabClick);
