@@ -57,7 +57,7 @@
         <label for="tag">タグ選択:</label>
         <?php 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                echo $_POST['tag_id_'];
+                echo $_POST['tag_id'];
             }
            
         ?>
