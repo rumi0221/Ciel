@@ -260,7 +260,7 @@ function renderDayCell(day) {
     const eventList = events.filter(event => {
         const startDate = new Date(event.start_date);
         const finalDate = new Date(event.final_date);
-// console.log(date);
+console.log(date);
 // console.log(startDate);
 // console.log(finalDate);
 // console.log(date >= startDate);
