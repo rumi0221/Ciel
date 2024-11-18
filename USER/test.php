@@ -156,6 +156,10 @@
             tabRight.innerText = formatDate(tomorrow);
         }
 
+        
+
+
+        // タブをクリックした際の動作
         function handleTabClick(event) {
             const clickedTab = event.target;
 
@@ -165,11 +169,15 @@
                 currentDay.setDate(currentDay.getDate() + 1);
             }
 
-            updateTabs();
-            setFormattedDate();  // タブの日付をセット
+            updateTabs();        //タブの日付を更新
+            setFormattedDate();  //中央タブの日付をhiddenフィールドにセット
 
-            // 新しい日付に基づいてTODOリストを取得して表示
-            loadTodos(getCenterTabDate());  // 中央のタブの日付に基づいてTODOを再取得
+            // 中央タブの日付に基づいてTODOリストを再取得して表示
+            const date = getCenterTabDate(); // 中央タブのYYYY-MM-DD形式の日付を取得
+            loadTodos(date);                // サーバーからTODOを再取得して更新
+
+            // // 新しい日付に基づいてTODOリストを取得して表示
+            // loadTodos(getCenterTabDate());  // 中央のタブの日付に基づいてTODOを再取得
         }
 
         // TODOリストを取得して更新する関数
@@ -203,6 +211,13 @@
 
             xhr.send('formattedDate=' + date);
         }
+
+        // ページ初期化時に中央タブの日付のTODOを表示
+        window.onload = function() {
+            setFormattedDate();  // hiddenフィールドに現在の日付をセット
+            const date = getCenterTabDate(); // 中央タブの日付
+            loadTodos(date);                // TODOリストを取得して表示
+        };
         
 
         tabLeft.addEventListener('click', handleTabClick);
@@ -216,6 +231,8 @@
         const sortableList = document.getElementById('sortable-list');
         const todoForm = document.getElementById('todo-form');
         const todoInput = document.getElementById('todo-input');
+
+        //編集モードの状態を管理
         let isEditMode = false;
 
 
@@ -230,6 +247,12 @@
             todoInput.style.display = 'none';  // 編集モード時は非表示
         } else {
             todoInput.style.display = 'block';  // 通常モード時は表示
+        }
+
+        // 編集モードに応じてterm-containerの表示切り替え
+        const termContainer = document.querySelector('.term-container');
+        if (termContainer) {
+            termContainer.style.display = isEditMode ? 'none' : 'block';
         }
 
         const todoItems = sortableList.querySelectorAll('li');
