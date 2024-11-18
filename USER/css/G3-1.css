@@ -1,0 +1,240 @@
+.logo {
+    display: flex;
+    margin: 0em auto;
+    height: 5em;
+    width: auto;
+}
+
+
+/* G3-1-1 */
+.tab-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+.tab {
+    padding: 10px 20px;
+    background-color: #f5deb3;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    white-space: nowrap;
+}
+
+.tab.active {
+    background-color: #E1DBFF;
+    transform: scale(1.1);
+}
+
+.tab-list {
+    display: flex;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.tab.hidden {
+    display: none !important;
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+ul {
+    list-style-type: none;
+    margin: 10px;
+}
+
+/* li {
+    padding: 8px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-align: left;
+} */
+
+li {
+    list-style-type: none; /* オプション: デフォルトのリストの記号を削除 */
+    padding-left: 0; /* 左側のパディングをなくして左寄せに */
+    cursor: grab;
+}
+
+li input[type="checkbox"] {
+    margin-right: 10px; /* チェックボックスとテキストの間に適度なスペースを調整 */
+}
+
+li.dragging {
+    opacity: 0.5;/* ドラッグ中のアイテムを半透明に */
+}
+
+li:not(.dragging) {
+    transition: transform 0.2s ease; /* 他のアイテムがスムーズに動くように */
+}
+
+.background {
+    background-color: #E1DBFF;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+/* term */
+.term-container {
+    display: block;
+    margin: auto;
+    width: 300px;
+    background-color: #D7B8F5;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+.term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background-color: #D7B8F5;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.term-title {
+    transition: all 0.5s ease;
+    position: relative;
+    font-family: Impact;
+    font-size: larger;
+}
+
+.term-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, padding 0.5s ease;
+    padding: 0;
+}
+
+.term-item {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.term-list {
+    font-size: larger;
+}
+
+.due-date {
+    color: red;
+}
+
+.open {
+    max-height: 200px;
+    padding: 10px;
+}
+
+#arrow {
+    transition: transform 0.5s ease;
+}
+
+.rotated {
+    transform: rotate(180deg);
+}
+
+.term-title.move-to-top-left {
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    font-size: 16px;
+}
+
+/* .termblock {
+    margin: 20px auto;
+    padding: 10px;
+    width: 80%;
+    background-color: #DBB5FF;
+    border: none;
+    border-radius: 10px;
+} */
+
+.tododiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: fixed;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px;
+}
+
+.todo-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.todo-inp {
+    height: 3em;
+    width: 20em;
+    border-radius: 5px;
+}
+
+.todo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background-color: #FFF;
+    border-radius: 10px;
+}
+
+.edit-todo-input {
+    border: none;
+    background-color: #E1DBFF;
+    font-size: 20px;
+    width: 100%;
+}
+
+.normal-mode {
+    text-align: left; /* 通常モードで項目を左寄せにする */
+    font-size: 20px;
+}
+
+.edit-mode {
+    text-align: left; /* 編集モードでも左寄せにする */
+    display: flex;
+    margin: 0.5em;
+}
+
+.edit-mode-icon {
+    margin: auto;
+    width: 15px;
+    height: 15px;
+}
+
+.hide-checkbox {
+    display: inline-block;
+    margin: 0 10px;
+    transform: scale(1.4);
+}
+
+.delete-button {
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+    display: none;
+}
