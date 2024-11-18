@@ -5,4 +5,5 @@
      const PASS = '3rd1004';
   
      $connect = 'mysql:host='.SERVER.';dbname='.DBNAME.';charset=utf8';
+
 ?>
