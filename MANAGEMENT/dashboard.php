@@ -1,19 +1,7 @@
-<!-- <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <title>ユーザー管理画面</title>
-</head>
-<body class="user">
-    <h2>USER</h2>
-        <input type="button" class="delete" value="delete">
-    <table>
-        
-    </table>
-</body>
-</html> -->
+<?php 
+ob_start();
+
+session_start(); ?>
 
 <?php
 // データベース接続
@@ -31,6 +19,29 @@ if ($conn->connect_error) {
 $sql = "SELECT user_id, user_name, user_mail, user_pass, last_history, delete_flg FROM Users";
 $result = $conn->query($sql);
 ?>
+<?php
+    // 削除処理
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+        if (!empty($_POST['user_ids'])) {
+            $ids = implode(',', array_map('intval', $_POST['user_ids']));
+            // $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
+            // デリーとフラグ更新
+            $sql = "UPDATE Users SET delete_flg = true WHERE user_id IN ($ids)";
+            // $conn->query($sql);
+            // クエリの実行とエラーチェック
+            if ($conn->query($sql) === TRUE) {
+                $_SESSION["message"] = "選択されたユーザーが削除されました。";
+            } else {
+                $_SESSION["message"] = "エラーが発生しました: " . $conn->error;
+            }
+        } else {
+            $_SESSION["message"] = "削除するユーザーを選択してください。";
+        }
+        header("location:dashboard.php");
+        exit;
+    }
+    ?>
+</div>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -39,41 +50,6 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <title>ユーザー管理画面</title>
-    <!-- <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .header
-            padding: 20px;
-            text-align: center;
-        }
-        .table-container {
-            margin: 20px auto;
-            width: 80%;
-            border-collapse: collapse;
-        }
-        table {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .delete-btn {
-            color: blue;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .delete-btn:hover {
-            color: darkblue;
-        }
-    </style> -->
 </head>
 <body>
 
@@ -84,30 +60,14 @@ $result = $conn->query($sql);
 <div class="background-gradient">
 <div class="table-container">
     <h2>USER</h2>
-
-<!-- 削除処理 -->
-<div class="error-message">
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-        if (!empty($_POST['user_ids'])) {
-            $ids = implode(',', array_map('intval', $_POST['user_ids']));
-            // $sql = "DELETE FROM Users WHERE user_id IN ($ids)";
-            // デリーとフラグ更新
-            $sql = "UPDATE Users SET delete_flg = true WHERE user_id IN ($ids)";
-            // $conn->query($sql);
-            // クエリの実行とエラーチェック
-            if ($conn->query($sql) === TRUE) {
-                echo "選択されたユーザーが削除されました。";
-            } else {
-                echo "エラーが発生しました: " . $conn->error;
-            }
-        } else {
-            echo "削除するユーザーを選択してください。";
-        }
-    }
-    ?>
-</div>
-
+    <div class="error-message">
+        <?php if (!empty($_SESSION['message'])):?>
+        <p style="color:red;">
+            <?php echo htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8')?></p>
+            <?php unset($_SESSION['message']); //表示後にメッセージを削除
+                endif;
+            ?>
+    </div>
     <form method="POST" action="">
     <button type="submit" name="delete" class="delete-btn">🗑delete</button>
         <table>
