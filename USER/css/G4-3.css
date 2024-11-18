@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.header {
+    width: 100%;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-left: 170%;
+}
+.header h1 {
+    font-family: 'Cursive',sans-serif;
+    margin: 0;
+
+}
+.confirm-button{
+    margin-left: 70%;
+    text-decoration: none;
+    color: black;
+    position: relative;
+    top: -30px;
+}
+.tag-list {
+    list-style: none;
+    padding: 0;
+}
+.tag-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    color: #999;
+}
+.tag-item.selected {
+    color: #000;
+    background-color: #f0f0f0;
+}
+.tag-item .color-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.tag-item .checkmark {
+    font-size: 20px;
+    color: #999;
+    margin-right: 10px;
+    visibility: hidden;
+}
+.tag-item.selected .checkmark {
+    visibility: visible;
+    color: #6b6b6b;
+}
+img{
+    height: 100px;
+    width: 200px;
+  }
+
+  .back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    padding:0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 30px;
+    color: #333;
+    transition: background-color 0.3s;
+    margin-right: 70%;
+}
+.back-button:focus {
+    outline: none; /* フォーカス時のアウトラインを消す */
+}
+/* ホバー時のスタイル */
+.back-button:hover {
+    background-color: #ffffff;
+}

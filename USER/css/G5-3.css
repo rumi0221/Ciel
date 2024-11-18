@@ -1,0 +1,73 @@
+body{
+  width: 100%;
+  height: 100%;
+  background-color: #FFCDEB;
+  display: flex;
+}
+
+.main{
+  width: 76%;
+    margin: 20% 5% 0;
+    padding: 10% 6% 10%;
+    background-color: #FFD9E8;
+    position: absolute;
+}
+
+/* ヘッダーのスタイル */
+.header {
+  position: fixed;
+  margin-top: -2%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: #fff;
+    padding: 0% 0% 2% 0%;
+    text-align: center;
+    z-index: 1000; /* ヘッダーが常に最前面に表示されるようにする */
+    display: flex;
+}
+
+.logo{
+  width: 25%;
+  height: auto;
+  margin: 0% auto;
+}
+
+button.headerbutton {
+  background-color: #FFF;
+  border: none;
+  color:#000;
+  font-size: x-large;
+  padding-left: 8%;
+  margin-right: 5%;
+}
+
+
+input.headersubmit {
+  border: none;
+  background-color: #FFF;
+  color:#000;
+  font-size: large;
+  margin-top: 2%;
+  margin-right: 5%;
+} 
+
+.profilebutton {
+  text-align: right;
+}
+
+
+/* フッターメニューのスタイル */
+.footer {
+  position: fixed;
+  bottom: -1%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 8px;
+    background-color: #d2e3fc;
+    height: 80px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

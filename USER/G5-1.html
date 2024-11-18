@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/G5-1.css">
+    <title>設定画面</title>
+</head>
+<body>
+    <!-- header挿入 -->
+        <header class="header">
+            <img src="img/Ciel logo.png" alt="Ciel" class="logo"></a>
+        </header>
+    <div class="main">
+    <!-- profile -->
+        <div class="profile">
+            <form action="G5-2.html" method="POST">
+                <table>
+                    
+                    <input type="hidden" name="user_id" value="' , $user_id ,'">
+                    <tr><td>user ：</td><td></td></tr>                            
+                    <tr><td>email：</td><td></td></tr>
+                    
+                </table> 
+                <button type="submit">profile update-></button>
+                </form>
+        </div>
+    <!-- tag -->
+        <div class="tag">
+          <form action="G5-3.php" method="POST">  
+            tag<br>                          
+            <button type="submit">rename a tag-></button>
+            </form>
+        </div>
+
+        <!-- logout -->
+        <div class="logout">
+          <button id="click-btn">logout</button>
+          <div id="popup-wrapper">
+              <div id="popup-inside">
+                  <div id="close">x</div>
+                  <div id="message">
+                      <h2>ログアウトしますか？</h2>
+                      <form action="G5-1.php" method="POST">
+                          <input type="submit" value="ログアウト" class="logoutsubmit">
+                          <input type="hidden" name="logout_flg" value="true">
+                      </form>
+                  </div>
+              </div>
+          </div>
+      
+      </div>
+
+    </div>
+    <!-- footer挿入 -->
+        <footer class="footer">
+            <div class="menu-bar">
+                <a href="G4-1.php">
+                  <div class="icon">
+                    <img src="img/calendar.png">
+                  </div>
+                </a>
+                <a href="G3-1-1.php">
+                  <div class="icon">
+                    <img src="img/todo.png">
+                  </div>
+                </a>
+                <a href="G5-1.php">
+                  <div class="icon">
+                    <img src="img/settings.png">
+                  </div>
+                </a>
+              </div>
+        </footer>
+
+        <!-- JavaScriptファイルの読み込み -->
+    <script src="script/G5-1.js"></script>
+    
+</body>
+</html>

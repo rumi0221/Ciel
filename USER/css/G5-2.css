@@ -1,0 +1,94 @@
+body{
+  width: 100%;
+  height: 100%;
+  background-color: #FFCDEB;
+  display: flex;
+}
+
+/* メインコンテンツのスタイル */
+.main{
+  width: 90%;
+  margin: 0 auto;
+  padding: 20% 3% 0%;
+  position: absolute;
+}
+
+
+/* ヘッダーのスタイル */
+.header {
+  position: fixed;
+    margin-top: -2%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: #fff;
+    padding: 0% 0% 2% 0%;
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+}
+
+button.headerbutton {
+  background-color: #FFF;
+  border: none;
+  color: #000;
+  font-size: x-large;
+  padding-left: 8%;
+  margin-right: 5%;
+}
+
+.logo {
+  width: 25%; /* ロゴのサイズ調整 */
+  height: auto;
+  margin: 0% auto;
+}
+
+input.headersubmit {
+  border: none;
+  background-color: #FFF;
+  color: #000;
+  font-size: large;
+  margin-top: 2%;
+  margin-right: 5%;
+} 
+
+.profilebutton {
+  text-align: right;
+}
+
+/* プロフィールセクションのスタイル */
+.profile {
+  background-color: #FFD9E8;
+  border-radius: 15px;
+  padding: 5%;
+  text-align: left;
+}
+
+.profile td {
+  font-size: 20px;
+  color: #000;
+}
+
+.fa {
+  border: none;
+  background-color: #FFD9E8;
+}
+
+p{
+  text-align: center;
+}
+
+/* フッターメニューのスタイル */
+.footer {
+  position: fixed;
+  bottom: -1%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 8px;
+    background-color: #d2e3fc;
+    height: 80px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
