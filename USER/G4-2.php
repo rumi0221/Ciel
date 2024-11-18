@@ -74,6 +74,7 @@
         <label for="tag">タグ選択:</label>
         <?php 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
                 $tag_id = $_POST['tag_id'];
                 $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
                 $colorstmt = $db->prepare($colorsql);
@@ -83,6 +84,7 @@
                 echo "<div style='display: flex; flex-wrap: wrap;'>";
                 echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
                 echo "</div>"
+
             }
            
         ?>
