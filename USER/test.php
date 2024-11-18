@@ -299,6 +299,48 @@
     });
 
 
+    //編集モード時のタブ非表示　　(ならなかった)
+    function toggleEditMode(isEditing) {
+        const leftTab = document.getElementById('tab-left');
+        const rightTab = document.getElementById('tab-right');
+
+        if (isEditing) {
+            // 編集モードの場合、hiddenクラスを追加
+            leftTab.classList.add('hidden');
+            rightTab.classList.add('hidden');
+        } else {
+            // 通常モードの場合、hiddenクラスを削除
+            leftTab.classList.remove('hidden');
+            rightTab.classList.remove('hidden');
+        }
+    }
+
+    // 編集モード開始イベント
+    function enterEditMode() {
+        toggleEditMode(true);
+    }
+
+    // 編集モード終了イベント
+    function exitEditMode() {
+        toggleEditMode(false);
+    }
+
+    // DOM読み込み後のイベント設定
+    document.addEventListener('DOMContentLoaded', function () {
+        const editButtons = document.querySelectorAll('.edit-button');
+        const saveButtons = document.querySelectorAll('.save-button');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', enterEditMode);
+        });
+
+        saveButtons.forEach(button => {
+            button.addEventListener('click', exitEditMode);
+        });
+    });
+
+
+
     //編集モードの並び替え
     function enableDragAndDrop() {
         let draggedItem = null;
