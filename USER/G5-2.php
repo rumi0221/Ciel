@@ -77,8 +77,8 @@ require_once 'db-connect.php';
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
     ?>
-    <!-- profile　 -->
-        
+
+    <!-- profile　 -->    
         <div class="profile">
           <table>
           <form action="G5-2.php" method="POST" id="update">
