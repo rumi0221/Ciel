@@ -74,6 +74,10 @@ input.headersubmit {
   background-color: #FFD9E8;
 }
 
+p{
+  text-align: center;
+}
+
 /* フッターメニューのスタイル */
 .footer {
   position: fixed;
