@@ -42,6 +42,10 @@
     display: none !important;
 }
 
+.formbtng3-2 {
+    display: inline;
+}
+
 
 html, body {
     margin: 0;
