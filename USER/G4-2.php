@@ -4,7 +4,11 @@
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $user_id = 8;
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_flg'])){
-        
+        if(isset($_POST['tag'])){
+            $user_tag = $_POST["tag"];
+        }else{
+            $todo_flg = 13;
+        }
         // $user_id = $_POST[''];
         $user_id = 8;
         $title = $_POST['title'];
@@ -12,23 +16,36 @@
         $final_date = $_POST['end'];
         $memo = $_POST["memo"];
         $todo_flg = $_POST["term"];
-        // $user_tag = $_POST["tag"];
-        $user_tag = 7;
         $start = date('Y-m-d H:i:s', strtotime($start_date));
         $final = date('Y-m-d H:i:s', strtotime($final_date));
 
-        $sql = 'INSERT INTO Plans (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,:user_tag)';
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':memo', $memo);
-        $stmt->bindParam(':todo_flg', $todo_flg);
-        $stmt->bindParam(':user_tag', $user_tag);
-        $stmt->bindParam(':start', $start);
-        $stmt->bindParam(':final', $final);
-        $stmt->execute();
-        header("Location: G4-1.php");
-        exit;
+        if(!isset($todo_flg)){
+            $sql = 'INSERT INTO Plans (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,:user_tag)';
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':memo', $memo);
+            $stmt->bindParam(':todo_flg', $todo_flg);
+            $stmt->bindParam(':user_tag', $user_tag);
+            $stmt->bindParam(':start', $start);
+            $stmt->bindParam(':final', $final);
+            $stmt->execute();
+            header("Location: G4-1.php");
+            exit;
+        }else{
+            $sql = 'INSERT INTO Plans (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,13)';
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':memo', $memo);
+            $stmt->bindParam(':todo_flg', $todo_flg);
+            $stmt->bindParam(':start', $start);
+            $stmt->bindParam(':final', $final);
+            $stmt->execute();
+            header("Location: G4-1.php");
+            exit;
+        }
+        
     }
 
    
@@ -57,7 +74,17 @@
         <label for="tag">タグ選択:</label>
         <?php 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                echo $_POST['tag_id'];
+
+                $tag_id = $_POST['tag_id'];
+                $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
+                $colorstmt = $db->prepare($colorsql);
+                $colorstmt->bindParam(':tag_id', $tag_id);
+                $colorstmt->execute();
+                $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
+                echo "<div style='display: flex; flex-wrap: wrap;'>";
+                echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
+                echo "</div>"
+
             }
            
         ?>

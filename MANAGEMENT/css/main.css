@@ -1,0 +1,263 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* height: 85vh; 画面全体の高さ */
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 60px;
+    font-family: Serif;
+}
+ 
+.text {
+    width: 100%;
+}
+
+/* .input {
+    font-family: Serif;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 0.5em;
+    font-size: 1.2em;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+} */
+
+.input {
+    font-family: Serif;
+    width: 300px;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 0.5em;
+    font-size: 1.2em;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 20px;
+}
+ 
+/* .login-button {
+    font-size: 20px;
+    font-family: serif;
+    background: #FFF;
+    width: 11em;
+    height: 2.8em;
+    border: 2px solid #FF72C6;
+    border-radius: 15px;
+} */
+
+.login-button {
+    font-size: 20px;
+    font-family: serif;
+    background: #FFF;
+    width: 100%;
+    max-width: 11em; /* ボタンの最大幅 */
+    height: 2.8em;
+    border: 2px solid #FF72C6;
+    border-radius: 15px;
+}
+ 
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+ 
+p {
+    text-align: center;
+    color:#ff0000;
+}
+
+.header {
+    background-color: white;
+    text-align: center;
+    /* padding: 20px; */
+}
+
+.background-gradient-login {
+    background: linear-gradient(to bottom, #D1DBFF 33.33%, #E9D1FF 33.33%, #E9D1FF 66.66%, #FFCDEB 66.66%);
+    padding: 20px;
+    width: 100%;
+    height: 80vh; /* 画面全体の高さを指定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.background-gradient {
+    background: linear-gradient(to bottom, #D1DBFF 33.33%, #E9D1FF 33.33%, #E9D1FF 66.66%, #FFCDEB 66.66%);
+    position: relative;
+    padding: 20px 0; /* Optional padding to separate content from header */
+}
+
+/* body {
+    background: linear-gradient(to bottom, #D1DBFF 33.33%, #E9D1FF 33.33%, #E9D1FF 66.66%, #FFCDEB 66.66%);
+} */
+ 
+.user {
+    text-align: left;
+    width: 100%;
+    min-height: 100vh; /* 画面の高さを占める */
+    background: linear-gradient(#D1DBFF 33.5%, #E9D1FF 0, #E9D1FF 66.5%, #FFCDEB 0);
+    display: flex;
+    justify-content: center; /* 水平方向に中央配置 */
+    align-items: center; /* 垂直方向に中央配置 */
+    flex-direction: column;
+}
+ 
+.table-container {
+    width: 80%;
+    max-width: 800px; /* 表の最大幅を指定 */
+    margin: 0 auto;
+}
+ 
+h2 {
+    text-align: center;
+    font-family: Serif;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+ 
+.delete-btn {
+    font-size: 30px;
+    font-family: Serif;
+    color: #5da9ff;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    /* position: absolute; */
+    top: 10px; /* 上からの距離 */
+    left: 10px; /* 左からの距離 */
+}
+
+.error-message {
+    text-align: center;
+    color: red; /* メッセージを赤色に */
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* テーブルの背景を白の半透明に設定 */
+table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* 白色（80%の不透明度） */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* テーブルの影 */
+    border-radius: 10px; /* 角を丸くする（オプション） */
+}
+/* テーブル全体の設定 */
+table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: white; /* テーブルの背景を完全な白に設定 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* テーブルの影 */
+}
+
+/* ヘッダー行の設定 */
+table th {
+    color: #000; /* 文字色を黒に設定 */
+    padding: 12px 15px; /* 行の高さを調整 */
+    background-color: rgba(232, 232, 255, 1); /* ヘッダー行を完全な白に設定 */
+    font-weight: bold;
+    border: 1px solid #5da9ff; /* 境界線の色 */
+    text-shadow: none; /* 文字の影を削除 */
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1) inset; /* ヘッダーの影 */
+}
+
+/* table th {
+    color: #fff;
+    padding: 12px 15px;
+    background: #258;
+    background: -moz-linear-gradient(rgba(34,85,136,0.7), rgba(34,85,136,0.9) 50%);
+    font-weight: bold;
+    border-left: 1px solid #258;
+    border-top: 1px solid #258;
+    border-bottom: 1px solid #258;
+    line-height: 120%;
+    text-shadow: 0 -1px 0 rgba(34,85,136,0.9);
+    box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+} */
+ 
+table th:first-child {
+    border-radius: 5px 0 0 0;
+}
+ 
+table th:last-child {
+    border-radius: 0 5px 0 0;
+    border-right: 1px solid #258;
+    box-shadow: 2px 2px 1px rgba(0,0,0,0.1), 0px 1px 1px rgba(255,255,255,0.3) inset;
+}
+ 
+/* table tr td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #84b2e0;
+    border-left: 1px solid #84b2e0;
+    text-align: center;
+} */
+ 
+table tr td:last-child {
+    border-right: 1px solid #84b2e0;
+    box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+}
+ 
+table tr {
+    background: #fff;
+}
+ 
+/* table tr:nth-child(2n+1) {
+    background: #f1f6fc;
+} */
+ 
+table tr:last-child td {
+    box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+}
+ 
+table tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+}
+ 
+table tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
+}
+ 
+/* table tr:hover {
+    background: #bbd4ee;
+    cursor: pointer;
+} */
+
+
+table td {
+    padding: 12px 15px; /* 行の高さを調整 */
+    border-bottom: 1px solid #84b2e0;
+    border-left: 1px solid #84b2e0;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.6); /* セルも白の半透明に設定 */
+    filter:alpha(opacity=50);
+}
+
+table tr:nth-child(2n+1) {
+    background-color: rgba(241, 246, 252, 0.6); /* 奇数行に薄い白の半透明 */
+    filter:alpha(opacity=50);
+}
+
+table tr:hover {
+    /* background: rgba(187, 212, 238, 0.8); ホバー時に半透明で強調表示 */
+    background: rgba(190, 187, 238, 0.5);
+}
