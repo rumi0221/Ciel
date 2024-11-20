@@ -42,6 +42,12 @@
     display: none !important;
 }
 
+.formbtng3-2 {
+    background-color: #fff;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
 
 html, body {
     margin: 0;
