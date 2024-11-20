@@ -1,4 +1,48 @@
 <?php
+//  require_once 'db-connect.php';
+//     $db = new PDO($connect, USER, PASS);
+
+// 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+  ?>
+
+<!-- <div class="main"> -->
+    <!-- tag　 -->
+     <!-- <h1>tag</h1>
+        <form action="G4-3.php" method="POST" id="tag">
+        <div class="tag"> -->
+        <?php
+            // echo '<input type="hidden" name="user_id" value="' , $user_id ,'">';
+            // echo '<input type="hidden" name="user_flg" value="true">';
+
+            //仮タグ生成
+            // $tag_name = [];
+
+            // if($tag_name){
+            //     //usertagテーブル出力
+            //     $i = 0;
+            //     foreach ($colorresults as $colorresult) {
+            //         echo "<div style='display: flex; flex-wrap: wrap;'>";
+            //         echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
+            //         echo '<input type="text" name="tag_name_' . $i+1 . '"value="'. htmlspecialchars($tag_name[$i]).'"required>';
+            //         echo '<input type="hidden" name="tag_id_' . $i+1 . '"value="'. htmlspecialchars($tag_id[$i]).'">';
+            //         echo "</div>";
+            //         $i++;
+            //         if($i == 13){
+            //             break;
+            //         }
+            //     }
+            //  }  else{
+                
+            //  }
+            ?>
+          <!-- </div>
+    </form>
+    </div> -->
+
+
+
+<?php
    require_once 'db-connect.php';
     $db = new PDO($connect, USER, PASS);
  
@@ -39,6 +83,7 @@
         padding: 10px 20px;
         background-color: #fff;
         border-bottom: 3px solid #f8cce2; /* Pink underline */
+        margin: 0 auto;
     }
  
     .headerbutton {
@@ -168,7 +213,7 @@
         echo"<span class='color-circle' style='background-color: #". htmlspecialchars($colorresult["color"]).";'></span>";
         echo"<span class='checkmark'>&#10003;</span>";
         echo"<span>".  htmlspecialchars($tag_name[$i])."</span>";
-        echo '<input type="hidden" name="tag_id_"value="'. htmlspecialchars($tag_id[$i]).'">';
+        echo '<input type="hidden" name="tag_id_" value="'. htmlspecialchars($tag_id[$i]).'">';
         echo"</li>";
         $i++;
         if($i == 13){
@@ -179,6 +224,7 @@
     echo"</div>";
     ?>
 </ul>
+echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
 </form>
 <script src="script/G4-3.js"></script>
 </body>
