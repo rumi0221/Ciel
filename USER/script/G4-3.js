@@ -3,6 +3,20 @@ function selectTag(element) {
         item.classList.remove('selected');
     });
     element.classList.add('selected');
+
+    // hidden要素の value 値を取得
+    const hiddenInput = element.querySelector('input[type="hidden"]');
+    const tagId = hiddenInput ? hiddenInput.value : null;
+
+    // 取得した値を別の hidden 要素の value に設定
+    const targetHiddenInput = document.getElementById('tag_color_no');
+    if (tagId !== null && targetHiddenInput) {
+        targetHiddenInput.value = tagId;
+        // alert(`hidden要素 "tag_color_no" の値が設定されました: ${tagId}`);
+    } else {
+        // alert("hidden要素が見つからない、または設定できませんでした");
+    }
+
 }
 
 // 全てのタグ項目を取得

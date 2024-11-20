@@ -104,7 +104,6 @@ $tags = $tagstmt->fetchAll(PDO::FETCH_ASSOC);
       <div class="bar"></div>
     </div>
     <div id="menu" class="menu">
-      <!-- <a href="#" class="show-all">全てのタグを表示</a> -->
         <div id="popup-wrapper">
             <div id="popup-inside">
                 <div class="close" id="close" onclick="toggleMenu()">×</div>
@@ -260,11 +259,7 @@ function renderDayCell(day) {
     const eventList = events.filter(event => {
         const startDate = new Date(event.start_date);
         const finalDate = new Date(event.final_date);
-// console.log(date);
-// console.log(startDate);
-// console.log(finalDate);
-// console.log(date >= startDate);
-// console.log(date <= finalDate);
+console.log(date);
         return date >= startDate && date <= finalDate; 
     });
 
@@ -272,10 +267,11 @@ console.log(eventList);
 
     let cellContent = `<div class="day-number">${day}</div>`;
     //最終てきに予定出してる
+    "<div class='month-grid'>";
     eventList.forEach(event => {
-        cellContent += `<div class="event" style="background-color:#${event.color};">${event.plan}</div>`;
+        cellContent += `<div onclick="DetailedDisplay()" class="event" style="background-color:#${event.color};">${event.plan}</div>`;
     });
-
+    "</div>";
     return cellContent;
 }
 

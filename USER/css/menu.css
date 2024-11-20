@@ -8,6 +8,7 @@
     padding: 20px 0;
     display: flex;
     justify-content: space-around;
+    z-index: 2;
   }
   
   .menu-bar a {
