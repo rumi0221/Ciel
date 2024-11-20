@@ -43,7 +43,9 @@
 }
 
 .formbtng3-2 {
-    display: inline;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-left: 10px;
 }
 
 

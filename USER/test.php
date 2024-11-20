@@ -19,14 +19,16 @@
             <div class="tab active" id="tab-center"></div>
             <div class="tab" id="tab-right"></div>
         </div>        
+        <div id="todocalendar">
+            <form action="G3-2" method="POST">
+                <button type="submit" class="formbtng3-2">
+                <img src="img/calendar.png" style="height:30px; width:30px;"><br>
+                ToDo
+                </button>
+            </form>
+        </div>
     </div>
-
-    <form action="G3-2" method="POST">
-        <button type="submit" style="formbtng3-2">
-        <img src="img/calendar.png" style="height:30px; width:30px;"><br>
-        ToDo
-        </button>
-    </form>
+    
 
     <?php
         $pdo = new PDO($connect, USER, PASS);
@@ -231,6 +233,7 @@
         // 編集モード時に非表示にする要素を取得
         const termContainer = document.querySelector('.term-container');
         const todoInput = document.getElementById('todo-input');
+        const todoCalendar = document.getElementById('todocalendar');
 
         let isEditMode = false;
 
@@ -243,12 +246,14 @@
                 tabRight.style.display = 'none'; // 編集モードでは非表示
                 termContainer.style.display = 'none';
                 todoInput.style.display = 'none';
+                todoCalendar.style.display= 'none';
                 // toggleModeButton.textContent = '通常モードに戻る';
             } else {
                 tabLeft.style.display = '';  // 通常モードでは表示
                 tabRight.style.display = ''; // 通常モードでは表示
                 termContainer.style.display = '';
                 todoInput.style.display = '';
+                todoCalendar.style.display= '';
                 // toggleModeButton.textContent = '編集モードへ移行する';
             }
 
