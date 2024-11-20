@@ -292,3 +292,10 @@ td:last-child {
 .close{
   text-align: right;
 }
+
+/* 詳細表示 */
+.Detailed{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
