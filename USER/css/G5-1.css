@@ -1,6 +1,6 @@
 body{
   width: 80%;
-    max-height: 812px;
+    /* max-height: 812px; */
     height: 100%;
     background-color: #FFCDEB;
     display: flex;
@@ -35,14 +35,15 @@ body{
 }
 
 .succces{
-  padding: 1% 1% 0% 3%;
-  margin-top: -21%;
+  padding: 1% 1% 0% 8%;
+  margin-top: -26%;
   text-align: center;
   position: fixed;
-  width: 100%;
+  width: 90%;
   left: -2%;
   z-index: 1000;
   color: green;
+  border-color: #FFCDEB;
 }
 
 /* プロフィールセクションのスタイル */
@@ -118,7 +119,7 @@ button#click-btn{
   border-color: #d7b4fc;
   font-size: 18px;
   padding: 10px;
-  margin-top: 55%;
+  margin-top: 10%;
   width: 35%;
 }
 

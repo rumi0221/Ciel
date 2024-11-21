@@ -178,7 +178,7 @@ td .tag {
   color: white;
   text-align: center;
   cursor: pointer;
-  z-index: 20;
+  z-index: 1;
 }
 
 .floating-button:hover {
@@ -255,4 +255,41 @@ td:last-child {
   cursor: pointer;
   font-size: 1.5em;
   color: gray;
+}
+
+
+/* --- */
+
+.event {
+  margin-top: 5px;
+  padding: 2px;
+  color: #fff;
+  font-size: 0.8em;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.day-number {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* ハンバーガーメニュー */
+/* -radioボタン追加- */
+.radio-none-dsplay {
+  display: none;
+}
+/* ×追加 */
+/*メニューが閉じている時は非表示 */
+.popup-hidden {
+  display: none;
+}
+
+/* メニューが開いた時に表示*/ 
+.popup-visible {
+  display: flex;
+}
+
+.close{
+  text-align: right;
 }
