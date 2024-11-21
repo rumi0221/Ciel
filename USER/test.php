@@ -371,6 +371,58 @@
             document.getElementById('formatted-date').value = formattedDate;
         }
     });
+
+
+
+
+
+
+明日試す
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const todoForm = document.getElementById('todo-form');
+        const todoInput = document.getElementById('todo-input');
+        const formattedDateField = document.getElementById('formatted-date');
+        const sortableList = document.getElementById('sortable-list');
+
+        todoForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const todoText = todoInput.value.trim();
+            const formattedDate = formattedDateField.value;
+
+            if (todoText === '') {
+                alert('TODOを空にはできません！');
+                return;
+            }
+
+            // AJAX POSTリクエスト
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'insert_todo.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+
+                    if (response.status === 'success') {
+                        const newTodoItem = `
+                            <li class="normal-mode">
+                                <input type="checkbox" class="hide-checkbox">
+                                <span class="todo-text">${todoText}</span>
+                            </li>`;
+                        sortableList.innerHTML += newTodoItem;
+                        todoInput.value = '';
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            };
+
+            xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
+        });
+    });
+
 </script>
 </body>
 </html>
