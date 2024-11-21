@@ -11,8 +11,9 @@ body {
 }
 
 img{
-  height: 100px;
-  width: 200px;
+  height: 70px;
+  width: 150px;
+  margin-right:80px;
 }
 
 header {
