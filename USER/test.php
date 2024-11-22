@@ -45,7 +45,7 @@
     <?php
         //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
         //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
-        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND start_date <= ? AND final_date >= ? AND todo_flg = 1');
+        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND DATE(start_date) <= ? AND DATE(final_date) >= ? AND todo_flg = 0');
         $sql->execute([$user_id, $Date, $Date]);
         echo '
             <div class="term-container">
@@ -58,7 +58,7 @@
         foreach($sql as $row){
             $plan_id = $row['plan_id']; // plan_idを取得
             $plan = $row['plan'];
-            $fdate = $row['final_date'];
+            $fdate = DATE($row['final_date']);
             $date = new DateTime($fdate);    // DateTimeオブジェクトに変換
             $formattedDate = $date->format('m/d'); // 月/日 の形式に変換
             $completion = $row['completion_flg'];
@@ -377,51 +377,51 @@
 
 
 
-明日試す
+// 明日試す
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const todoForm = document.getElementById('todo-form');
-        const todoInput = document.getElementById('todo-input');
-        const formattedDateField = document.getElementById('formatted-date');
-        const sortableList = document.getElementById('sortable-list');
+//     document.addEventListener('DOMContentLoaded', function () {
+//         const todoForm = document.getElementById('todo-form');
+//         const todoInput = document.getElementById('todo-input');
+//         const formattedDateField = document.getElementById('formatted-date');
+//         const sortableList = document.getElementById('sortable-list');
 
-        todoForm.addEventListener('submit', function (event) {
-            event.preventDefault();
+//         todoForm.addEventListener('submit', function (event) {
+//             event.preventDefault();
 
-            const todoText = todoInput.value.trim();
-            const formattedDate = formattedDateField.value;
+//             const todoText = todoInput.value.trim();
+//             const formattedDate = formattedDateField.value;
 
-            if (todoText === '') {
-                alert('TODOを空にはできません！');
-                return;
-            }
+//             if (todoText === '') {
+//                 alert('TODOを空にはできません！');
+//                 return;
+//             }
 
-            // AJAX POSTリクエスト
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'insert_todo.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//             // AJAX POSTリクエスト
+//             const xhr = new XMLHttpRequest();
+//             xhr.open('POST', 'insert_todo.php', true);
+//             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
+//             xhr.onreadystatechange = function () {
+//                 if (xhr.readyState === 4 && xhr.status === 200) {
+//                     const response = JSON.parse(xhr.responseText);
 
-                    if (response.status === 'success') {
-                        const newTodoItem = `
-                            <li class="normal-mode">
-                                <input type="checkbox" class="hide-checkbox">
-                                <span class="todo-text">${todoText}</span>
-                            </li>`;
-                        sortableList.innerHTML += newTodoItem;
-                        todoInput.value = '';
-                    } else {
-                        alert(response.message);
-                    }
-                }
-            };
+//                     if (response.status === 'success') {
+//                         const newTodoItem = `
+//                             <li class="normal-mode">
+//                                 <input type="checkbox" class="hide-checkbox">
+//                                 <span class="todo-text">${todoText}</span>
+//                             </li>`;
+//                         sortableList.innerHTML += newTodoItem;
+//                         todoInput.value = '';
+//                     } else {
+//                         alert(response.message);
+//                     }
+//                 }
+//             };
 
-            xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
-        });
-    });
+//             xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
+//         });
+//     });
 
 </script>
 </body>
