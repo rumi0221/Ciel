@@ -1,9 +1,19 @@
 <?php session_start();?>
-<?php
-    require_once 'db-connect.php';
-    $db = new PDO($connect, USER, PASS);
+<?php    
+// データベース接続設定
+const SERVER = 'mysql310.phy.lolipop.lan';
+const DBNAME = 'LAA1517478-3rd';
+const USER = 'LAA1517478';
+const PASS = '3rd1004';
 
-	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$connect = 'mysql:host='.SERVER.';dbname='.DBNAME.';charset=utf8';
+$db = new PDO($connect, USER, PASS);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])){
+//     echo 'OK!';
+//     exit;
+//   }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag']) != 0){
     function getPlansByDateRange($start_date, $end_date) {
@@ -259,9 +269,8 @@ foreach ($events as $event) {
                     listItem.innerHTML = `
                         <span class="event-time">${event.starttime || "終日"} ～ ${event.endtime || "終日"}</span>
                         <form action="G4-2.php" method="post">
-                            <input type="hidden" id="popup" name="plan_id" value="${event.id}">
-                            <input type="hidden" name="update" value="update">
-                            <input type="hidden" name="user_flg" value="false">
+                            <input type="hidden" id="popup" name="id" value="${event.id}">
+                            <input type="hidden" name="update" value="update"><br>
                             <button class="link-style-btn">
                                 <span>${event.content}</span>
                             </button>
