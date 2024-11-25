@@ -130,6 +130,14 @@ li:not(.dragging) {
     padding: 0;
 }
 
+#term-content {
+    display: none;
+}
+
+#term-content.open {
+    display: block;
+}
+
 .term-item {
     display: flex;
     justify-content: left;
@@ -164,15 +172,6 @@ li:not(.dragging) {
     left: 10px;
     font-size: 16px;
 }
-
-/* .termblock {
-    margin: 20px auto;
-    padding: 10px;
-    width: 80%;
-    background-color: #DBB5FF;
-    border: none;
-    border-radius: 10px;
-} */
 
 .tododiv {
     display: flex;

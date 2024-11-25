@@ -37,15 +37,25 @@
         $user_pass = '';
 
         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
+        var_dump($Date);
         $user_id = 8;
     ?>
 
     <div class="background">
     <br>
     <?php
+        $sqll=$pdo->prepare("SELECT date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b  FROM Plans WHERE user_id = ?");
+        $sqll->execute([$user_id]);
+        foreach($sqll as $roww){
+            $a = $roww['a'];
+            var_dump($a);
+        }
+
+
+
         //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
         //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
-        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND DATE(start_date) <= ? AND DATE(final_date) >= ? AND todo_flg = 0');
+        $sql=$pdo->prepare("SELECT *, date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b FROM Plans WHERE user_id = ? AND DATE_FORMAT(start_date, '%Y-%m-%d') <= ? AND DATE_FORMAT(final_date, '%Y-%m-%d') >= ? AND todo_flg = 0");
         $sql->execute([$user_id, $Date, $Date]);
         echo '
             <div class="term-container">
@@ -128,14 +138,14 @@
 
             if (content.classList.contains('open')) {
                 content.classList.remove('open');
-                arrow.classList.remove('rotated');
                 title.classList.remove('move-to-top');
-                title.textContent = "term(2)";
+                title.textContent = "term";
+                arrow.textContent = "▼"; 
             } else {
                 content.classList.add('open');
-                arrow.classList.add('rotated');
                 title.classList.add('move-to-top');
                 title.textContent = "term";
+                arrow.textContent = "▲";
             }
         }
 
