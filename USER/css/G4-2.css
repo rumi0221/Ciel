@@ -12,7 +12,7 @@ img{
   }
 form {
     max-width: 400px;
-    margin: 20px auto;
+    /* margin: 20px auto; */
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -72,13 +72,6 @@ textarea {
     margin-bottom: 15px;
 }
 
-/*.cancel-buttom{
-    top:30px;
-}
-.confirm-buttom{
-    top:30px;
-}*/
-
 .header {
     display: flex;
     justify-content: space-between; /* 左右に配置 */
@@ -93,10 +86,20 @@ textarea {
     cursor: pointer;
 }
 
+input.confirm-button {
+    background-color: transparent;
+    border: none;
+}
+
 /* 削除ボタン */
-.DeleteBtn{
+input.DeleteBtn{
     cursor: pointer;
     border: none;
     background: none;
+    margin-right: 90%;
   }
   
+  .tag_button {
+    display: flex;
+    margin: 2% 0% 5% 40%;
+}

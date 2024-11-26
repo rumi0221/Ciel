@@ -4,11 +4,13 @@
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $user = $_SESSION['user'];
+    $user_id = $user['user_id'];
 
-    $user_id = 8;
-
-    //update OR insert (true:update)
-if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
+    //crud分け
+if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
+    $user = $_SESSION['user'];
+    $user_id = $user['user_id'];
     //update処理 OR updatehtml
     if($_SERVER['REQUEST_METHOD'] == 'POST' && ($_POST['user_flg'] == 'true' && $_POST['tag_returnflg'] == 'false')){
 
@@ -18,9 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
         }else{
             $tag = 13;
         }
-        
-        // $user_id = $_POST[''];
-        $user_id = 8;
+
         $plan_id = $_POST['id'];
         $title = $_POST['title'];
         $start_date = $_POST['start'];
@@ -30,7 +30,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
         $start = date('Y-m-d H:i:s', strtotime($start_date));
         $final = date('Y-m-d H:i:s', strtotime($final_date));
 
-            $sql = 'update Plans set plan = :title, start_date = :start, final_date = :final, memo = :memo, todo_flg = :todo_flg, usertag_id = :tag
+            $sql = 'update Plans set 
+                    plan = :title, start_date = :start, final_date = :final, memo = :memo, todo_flg = :todo_flg, usertag_id = :tag
                     where plan_id=:plan_id && user_id=:user_id';
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
@@ -52,12 +53,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
         global $db;
     
         $stmt = $db->prepare("
-            SELECT 
-                *
-            FROM 
-                Plans 
-            WHERE  
-                plan_id = :plan_id
+            SELECT * FROM Plans 
+            WHERE plan_id = :plan_id
         ");
         $stmt->bindParam(':plan_id', $plan_id);
         $stmt->execute();
@@ -90,21 +87,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
                 echo "<label for='tag'>タグ選択:</label>";
                 
                 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
-
+                    //更新後
                     $tag_id = $_POST['tag_id'];
                     $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
                     $colorstmt = $db->prepare($colorsql);
                     $colorstmt->bindParam(':tag_id', $tag_id);
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
-                    echo "<div style='display: flex; flex-wrap: wrap;'>";
-                    echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    echo "</div>";
-                    echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
-                }
-                
+                    echo '<div class = "tag_button">';
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></span>";
                     echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋"><br>';
-
+                    echo '</div>';
+                    echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
+                }else{
+                    //更新前
+                    $color_id = $plans['usertag_id'];
+                    $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
+                    $colorstmt = $db->prepare($colorsql);
+                    $colorstmt->bindParam(':tag_id', $color_id);
+                    $colorstmt->execute();
+                    $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
+                    echo '<div class = "tag_button">';
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></span>";
+                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋"><br>';
+                    echo '</div>';
+                }
+                    
                 echo "<label>TERMに追加する:</label>";
                 echo '<input type="radio" id="term_yes" name="term" value="1">YES';
                 echo '<input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>';
@@ -119,29 +127,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
                 echo '<input type="hidden" name="id" value="' .$plans['plan_id']. '">';
                 ?>
                 <input type="hidden" name="user_flg" value="true">
-                <input type="hidden" name="update" value="update">
+                <input type="hidden" name="crud" value="update">
                 <input type="hidden" name="tag_returnflg" value="false">
             </form>
 
             <!-- 削除 -->
 
-            <footer>
+            <div class = "footer">
             <form action="G4-2.php" method = "POST">
                 <input type = "submit" value = "削除" class="DeleteBtn">
                 <?php echo '<input type="hidden" name="plan_id" value="' .$plans['plan_id']. '">';
-                      echo '<input type="hidden" name="user_id" value="' .$user_id. '">'; 
+                      echo '<input type="hidden" name="user_id" value="' .$user_id. '">';
                 ?>
-                <input type="hidden" name="update" value="delete">
+                <input type="hidden" name="crud" value="delete">
             </form>
-            </footer>
+            </div>
 
-            <script src="script/G4-1.js"></script>
+            <script src="script/G4-2.js"></script>
             </body>
             </html>
 <?php
     }
 
-}else if($_POST['update'] == "insert"){
+}else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "insert"){
     //insert処理
     if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['user_flg'] == 'true'){
 
@@ -151,8 +159,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
             $tag = 13;
         }
 
-        // $user_id = $_POST[''];
-        $user_id = 8;
+        $user = $_SESSION['user'];
+        
+        $user_id = $user['user_id'];
         $title = $_POST['title'];
         $start_date = $_POST['start'];
         $final_date = $_POST['end'];
@@ -161,7 +170,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
         $start = date('Y-m-d H:i:s', strtotime($start_date));
         $final = date('Y-m-d H:i:s', strtotime($final_date));
 
-            $sql = 'INSERT INTO Plans (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,:tag)';
+            $sql = 'INSERT INTO Plans 
+                    (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) 
+                    VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,:tag)';
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
             $stmt->bindParam(':title', $title);
@@ -173,7 +184,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
             $stmt->execute();
             header("Location: G4-1.php");
             exit;
-    }else{
+
+    }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // inserthtml
         ?>
         <!DOCTYPE html>
@@ -227,22 +239,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['update'] == "update" ){
 
             <textarea name="memo">メモ</textarea><br><br>
             <input type="hidden" name="user_flg" value="true">
-            <input type="hidden" name="update" value="insert">
+            <input type="hidden" name="crud" value="insert">
             <input type="hidden" name="tag_returnflg" value="false">
         </form>
-        <script src="script/G4-1.js"></script>
+        <script src="script/G4-2.js"></script>
         </body>
         </html>
 <?php
     }
-}else{
+}else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "delete"){
     //delete処理
-    $sql = 'Delete FROM Plans where plan_id = :plan_id';
-            $Deletestmt = $db->prepare($sql);
-            $Deletestmt->bindParam(':user_id', $user_id);
-            $Deletestmt->bindParam(':plan_id', $plan_id);
-            $Deletestmt->execute();
-            header("Location: G4-1.php");
-            exit;
+        $plan_id = $_POST['plan_id'];
+        $sql = 'Delete FROM Plans where plan_id = :plan_id';
+        $Deletestmt = $db->prepare($sql);
+        $Deletestmt->bindParam(':plan_id', $plan_id);
+        $Deletestmt->execute();
+        header("Location: G4-1.php");
+        exit;
+}else{
+    echo 'error';
 }
 ?>

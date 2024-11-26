@@ -54,6 +54,8 @@ header {
 
 .menu.open {
   display: block; /* openクラスが追加されたら表示 */
+  visibility: visible;
+  opacity: 1;
 }
 .menu-icon {
   cursor: pointer;
@@ -78,7 +80,13 @@ header {
   background-color: rgba(255, 255, 255, 1);
   z-index: 1000;
   position: absolute;
+
+
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease-in-out;
 }
+
 
 .menu a {
   display: block;
@@ -165,12 +173,8 @@ td .tag {
     justify-content: space-around;
 }
 
-.confirm-button{
-  margin-left: 35%;
-}
-
 input.reset {
-  margin: 1% 50% 0% 10%;
+  margin: 1% 30% 0% 10%;
 }
 
 /* プラスボタンのスタイル */
@@ -181,6 +185,7 @@ input.reset {
   width: 60px;
   height: 60px;
   background-color: #d4c1ff;
+  border: none;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -288,9 +293,13 @@ td:last-child {
 
 /* ハンバーガーメニュー */
 /* -radioボタン追加- */
-.radio-none-dsplay {
-  display: none;
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
+
 /* ×追加 */
 /*メニューが閉じている時は非表示 */
 .popup-hidden {
@@ -303,7 +312,7 @@ td:last-child {
 }
 
 .close{
-  padding-left: 178%;
+  padding-left: 90%;
 }
 
 /* ------ 予定詳細 ------ */
