@@ -132,10 +132,16 @@ li:not(.dragging) {
 
 #term-content {
     display: none;
+    transition: max-height 0.3s ease, opacity 0.3s ease; /* アニメーションを追加 */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
 }
 
 #term-content.open {
     display: block;
+    max-height: 500px; /* 必要に応じて調整 */
+    opacity: 1;
 }
 
 .term-item {

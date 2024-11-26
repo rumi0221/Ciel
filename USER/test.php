@@ -37,19 +37,18 @@
         $user_pass = '';
 
         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
-        var_dump($Date);
         $user_id = 8;
     ?>
 
     <div class="background">
     <br>
     <?php
-        $sqll=$pdo->prepare("SELECT date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b  FROM Plans WHERE user_id = ?");
-        $sqll->execute([$user_id]);
-        foreach($sqll as $roww){
-            $a = $roww['a'];
-            var_dump($a);
-        }
+        // $sqll=$pdo->prepare("SELECT date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b  FROM Plans WHERE user_id = ?");
+        // $sqll->execute([$user_id]);
+        // foreach($sqll as $roww){
+        //     $a = $roww['a'];
+        //     var_dump($a);
+        // }
 
 
 
@@ -89,7 +88,7 @@
         <ul id="sortable-list">
             <?php
                 //日付の条件をつけて → sortで昇順にする
-                $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ?');
+                $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ? ORDER BY sort_id ASC' );
                 $sql2->execute([$user_id, $Date]);
                 foreach($sql2 as $row2){
                     $todo_id = $row2['todo_id'];
@@ -132,6 +131,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Termの既存コード
         function toggleTerm() {
+            console.log('toggleTerm called');
             const content = document.getElementById('term-content');
             const arrow = document.getElementById('arrow');
             const title = document.getElementById('term-title');
@@ -148,6 +148,9 @@
                 arrow.textContent = "▲";
             }
         }
+
+        // グローバルに登録
+        window.toggleTerm = toggleTerm;
 
         // タブ関連のコード
         const tabLeft = document.getElementById('tab-left');
@@ -380,59 +383,13 @@
             const formattedDate = getCenterTabDate();
             document.getElementById('formatted-date').value = formattedDate;
         }
+
+
+
+
+
+        
     });
-
-
-
-
-
-
-// 明日試す
-
-//     document.addEventListener('DOMContentLoaded', function () {
-//         const todoForm = document.getElementById('todo-form');
-//         const todoInput = document.getElementById('todo-input');
-//         const formattedDateField = document.getElementById('formatted-date');
-//         const sortableList = document.getElementById('sortable-list');
-
-//         todoForm.addEventListener('submit', function (event) {
-//             event.preventDefault();
-
-//             const todoText = todoInput.value.trim();
-//             const formattedDate = formattedDateField.value;
-
-//             if (todoText === '') {
-//                 alert('TODOを空にはできません！');
-//                 return;
-//             }
-
-//             // AJAX POSTリクエスト
-//             const xhr = new XMLHttpRequest();
-//             xhr.open('POST', 'insert_todo.php', true);
-//             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-//             xhr.onreadystatechange = function () {
-//                 if (xhr.readyState === 4 && xhr.status === 200) {
-//                     const response = JSON.parse(xhr.responseText);
-
-//                     if (response.status === 'success') {
-//                         const newTodoItem = `
-//                             <li class="normal-mode">
-//                                 <input type="checkbox" class="hide-checkbox">
-//                                 <span class="todo-text">${todoText}</span>
-//                             </li>`;
-//                         sortableList.innerHTML += newTodoItem;
-//                         todoInput.value = '';
-//                     } else {
-//                         alert(response.message);
-//                     }
-//                 }
-//             };
-
-//             xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
-//         });
-//     });
-
 </script>
 </body>
 </html>
