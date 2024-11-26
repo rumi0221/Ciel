@@ -82,7 +82,6 @@
         justify-content: space-between;
         padding: 10px 20px;
         background-color: #fff;
-        border-bottom: 3px solid #f8cce2; /* Pink underline */
         margin: 0 auto;
     }
  

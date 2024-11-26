@@ -13,7 +13,7 @@ body {
     padding: 10px;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ddd;
+    
     margin-left: 170%;
 }
 .header h1 {
@@ -31,7 +31,23 @@ body {
 .tag-list {
     list-style: none;
     padding: 0;
+    position: relative;
+    box-shadow: 0 0 30px #ccc;
+    color: #333;
 }
+.tag-list::before{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 60px;
+    width: 10px;
+    background-color: #87ceeba8;
+    content: '';
+}
+.tag-list p{
+    line-height: 1.5;
+}
+
 .tag-item {
     display: flex;
     align-items: center;
