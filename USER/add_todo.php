@@ -1,6 +1,9 @@
 <?php
 require 'db-connect.php';
 
+// エラーメッセージをJSON以外に出力しないよう設定
+header('Content-Type: application/json; charset=utf-8');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // 入力データを取得

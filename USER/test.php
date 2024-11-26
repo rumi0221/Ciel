@@ -38,6 +38,14 @@
 
         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
         $user_id = 8;
+
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($response);
     ?>
 
     <div class="background">
@@ -386,6 +394,48 @@
 
 
 
+        const todoList = document.getElementById('todo-list');
+
+        // エンターキー押下時の処理
+        todoInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') { // エンターキーが押下された場合
+                event.preventDefault(); // フォーム送信を防止
+
+                const todoText = todoInput.value.trim();
+                if (!todoText) {
+                    alert('TODOを入力してください');
+                    return;
+                }
+
+                const formattedDate = new Date().toISOString().split('T')[0]; // 現在の日付を取得 (YYYY-MM-DD)
+
+                // AJAXでPHPにデータを送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'add_todo.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+
+                        if (response.status === 'success') {
+                            // TODOを画面に追加
+                            const li = document.createElement('li');
+                            li.textContent = todoText;
+                            todoList.appendChild(li);
+
+                            todoInput.value = ''; // 入力フィールドをクリア
+                        } else {
+                            alert('エラーが発生しました: ' + response.message);
+                            xhr.onerror = function () {
+                                console.error('AJAXリクエストが失敗しました');
+                            };
+                        }
+                    }
+                };
+
+                xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
+            }
+        });
 
 
         
