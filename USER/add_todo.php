@@ -4,6 +4,13 @@ require 'db-connect.php';
 // エラーメッセージをJSON以外に出力しないよう設定
 header('Content-Type: application/json; charset=utf-8');
 
+try {
+    // データベース処理などを実行
+    echo json_encode(['status' => 'success']);
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // 入力データを取得

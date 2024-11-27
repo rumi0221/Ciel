@@ -38,15 +38,69 @@
 
         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
         $user_id = 8;
-
-
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
-
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($response);
     ?>
+
+
+    <?php
+    //上のPHPを元に修正する
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // $dsn = 'mysql:host=localhost;dbname=your_db;charset=utf8';
+        // $user = 'your_user';
+        // $password = 'your_password';
+
+        try {
+            // $pdo = new PDO($dsn, $user, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $action = $_POST['action'] ?? '';
+            $user_id = 8; // ログインユーザーのIDを取得する必要があります
+            $todo = $_POST['todo'] ?? '';
+            $date = $_POST['formattedDate'] ?? date('Y-m-d');
+
+            if ($action === 'add_todo' && $todo && $date) {
+                // 現在の日付とユーザーに基づいてsort_idを計算
+                $stmt = $pdo->prepare('SELECT COUNT(*) AS count FROM Todos WHERE user_id = ? AND input_date = ?');
+                $stmt->execute([$user_id, $date]);
+                $sortsum = $stmt->fetchColumn();
+
+                // 新しいTODOを追加
+                $insertStmt = $pdo->prepare('INSERT INTO Todos (`user_id`, `sort_id`, `todo`, `completion_flg`, `input_date`) VALUES (?, ?, ?, DEFAULT, ?)');
+                $insertStmt->execute([$user_id, $sortsum, $todo, $date]);
+
+                // 最新のTODOリストを取得してHTML生成
+                $listStmt = $pdo->prepare('SELECT * FROM Todos WHERE user_id = ? AND input_date = ? ORDER BY sort_id ASC');
+                $listStmt->execute([$user_id, $date]);
+                foreach ($listStmt as $row2) {
+                    $todo_id = $row2['todo_id'];
+                    $sort = $row2['sort_id'];
+                    $todo = htmlspecialchars($row2['todo']); // XSS防止
+                    $completion = $row2['completion_flg'];
+                    $check = ($completion == 1) ? 'checked' : '';
+
+                    echo '
+                        <li class="normal-mode" data-id="', $todo_id, '">
+                            <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
+                            <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
+                            <span class="todo-text">', $todo, '</span>
+                            <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none; margin-left:5px;">
+                            <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                        </li>
+                    ';
+                }
+            } else {
+                http_response_code(400);
+                echo '無効なリクエスト';
+            }
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo 'エラー: ' . htmlspecialchars($e->getMessage());
+        }
+        exit;
+    }
+    ?>
+
+
+
 
     <div class="background">
     <br>
@@ -396,6 +450,8 @@
 
         const todoList = document.getElementById('todo-list');
 
+        const currentDate = new Date().toISOString().split('T')[0];
+
         // エンターキー押下時の処理
         todoInput.addEventListener('keypress', function (event) {
             if (event.key === 'Enter') { // エンターキーが押下された場合
@@ -415,25 +471,37 @@
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        const response = JSON.parse(xhr.responseText);
+                        try{
+                            const response = JSON.parse(xhr.responseText);
 
-                        if (response.status === 'success') {
-                            // TODOを画面に追加
-                            const li = document.createElement('li');
-                            li.textContent = todoText;
-                            todoList.appendChild(li);
+                            if (response.status === 'success') {
+                                // TODOを画面に追加
+                                const li = document.createElement('li');
+                                li.textContent = todoText;
+                                todoList.appendChild(li);
 
-                            todoInput.value = ''; // 入力フィールドをクリア
-                        } else {
-                            alert('エラーが発生しました: ' + response.message);
-                            xhr.onerror = function () {
-                                console.error('AJAXリクエストが失敗しました');
-                            };
+                                // レスポンスで最新のTODOリストHTMLを受け取る
+                                //sortableList.innerHTML = xhr.responseText;
+                                todoInput.value = ''; // 入力フィールドをクリア
+                            } else {
+                                alert('エラーが発生しました: ' + response.message);
+                                // xhr.onerror = function () {
+                                //     console.error('AJAXリクエストが失敗しました');
+                                // };
+                            }
+                        } catch(error){
+                            console.error('JSONのパースエラー:', error);
+                            console.error('サーバーからのレスポンス:', xhr.responseText);
                         }
+                    }else if(xhr.readyState === 4){
+                        console.error('HTTPリクエストエラー:', xhr.status, xhr.statusText);
                     }
                 };
 
-                xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
+                // xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
+                // データ送信
+                xhr.send(`action=add_todo&todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(currentDate)}`);
+            
             }
         });
 
