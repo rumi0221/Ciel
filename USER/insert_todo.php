@@ -11,12 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo = new PDO($connect, USER, PASS);
 
-            // sort_idを計算: 同じuser_idとinput_dateの行数 + 1
+            // sort_idを計算: 同じuser_idとinput_dateの行数
             $sortSql = 'SELECT COUNT(*) AS row_count FROM Todos WHERE user_id = ? AND input_date = ?';
             $sortStmt = $pdo->prepare($sortSql);
             $sortStmt->execute([$userId, $inputDate]);
             $sortResult = $sortStmt->fetch();
-            $sortId = $sortResult['row_count'] + 1;
+            $sortId = $sortResult['row_count'];
 
             // INSERT文を実行
             $insertSql = 'INSERT INTO Todos (user_id, sort_id, todo, input_date) VALUES (?, ?, ?, ?)';

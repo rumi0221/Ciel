@@ -472,6 +472,10 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         try{
+                            
+                            console.log("---------------------------");
+                            console.log(xhr.responseText);
+                            console.log("---------------------------");
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.status === 'success') {
