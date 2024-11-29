@@ -55,21 +55,21 @@
             $action = $_POST['action'] ?? '';
             $user_id = 8; // ログインユーザーのIDを取得する必要があります
             $todo = $_POST['todo'] ?? '';
-            $date = $_POST['formattedDate'] ?? date('Y-m-d');
+            $Ddate = $_POST['formattedDate'] ?? date('Y-m-d');
 
-            if ($action === 'add_todo' && $todo && $date) {
+            if ($action === 'add_todo' && $todo && $Ddate) {
                 // 現在の日付とユーザーに基づいてsort_idを計算
                 $stmt = $pdo->prepare('SELECT COUNT(*) AS count FROM Todos WHERE user_id = ? AND input_date = ?');
-                $stmt->execute([$user_id, $date]);
+                $stmt->execute([$user_id, $Ddate]);
                 $sortsum = $stmt->fetchColumn();
 
                 // 新しいTODOを追加
                 $insertStmt = $pdo->prepare('INSERT INTO Todos (`user_id`, `sort_id`, `todo`, `completion_flg`, `input_date`) VALUES (?, ?, ?, DEFAULT, ?)');
-                $insertStmt->execute([$user_id, $sortsum, $todo, $date]);
+                $insertStmt->execute([$user_id, $sortsum, $todo, $Ddate]);
 
                 // 最新のTODOリストを取得してHTML生成
                 $listStmt = $pdo->prepare('SELECT * FROM Todos WHERE user_id = ? AND input_date = ? ORDER BY sort_id ASC');
-                $listStmt->execute([$user_id, $date]);
+                $listStmt->execute([$user_id, $Ddate]);
                 foreach ($listStmt as $row2) {
                     $todo_id = $row2['todo_id'];
                     $sort = $row2['sort_id'];
@@ -105,17 +105,7 @@
     <div class="background">
     <br>
     <?php
-        // $sqll=$pdo->prepare("SELECT date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b  FROM Plans WHERE user_id = ?");
-        // $sqll->execute([$user_id]);
-        // foreach($sqll as $roww){
-        //     $a = $roww['a'];
-        //     var_dump($a);
-        // }
-
-
-
-        //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
-        //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
+        // term
         $sql=$pdo->prepare("SELECT *, date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b FROM Plans WHERE user_id = ? AND DATE_FORMAT(start_date, '%Y-%m-%d') <= ? AND DATE_FORMAT(final_date, '%Y-%m-%d') >= ? AND todo_flg = 0");
         $sql->execute([$user_id, $Date, $Date]);
         echo '
@@ -211,6 +201,28 @@
             }
         }
 
+        // termのチェックボックス更新処理
+        document.querySelectorAll('.term-container input[type="checkbox"]').forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const planId = this.dataset.id; // チェックボックスに紐づくplan_id
+                const isChecked = this.checked ? 1 : 0; // チェック状態を数値に変換
+
+                // AJAXリクエストで更新を送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_plan.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log(xhr.responseText); // 成功時のレスポンスを確認
+                    } else if (xhr.readyState === 4) {
+                        console.error('更新に失敗しました: ', xhr.status, xhr.statusText);
+                    }
+                };
+                xhr.send(`plan_id=${planId}&todo_flg=${isChecked}`);
+            });
+        });
+
+
         // グローバルに登録
         window.toggleTerm = toggleTerm;
 
@@ -257,6 +269,30 @@
             const date = getCenterTabDate();
             loadTodos(date);
         }
+
+
+        // チェックボックスのクリックイベント
+        sortableList.addEventListener('change', function (event) {
+            const target = event.target;
+            if (target.classList.contains('hide-checkbox')) {
+                const todoId = target.dataset.id;
+                const isChecked = target.checked ? 1 : 0;
+
+                // チェック状態をサーバーに送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_completion.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log('更新成功:', xhr.responseText);
+                    } else if (xhr.readyState === 4) {
+                        console.error('更新失敗:', xhr.status, xhr.statusText);
+                    }
+                };
+                xhr.send(`todo_id=${todoId}&completion_flg=${isChecked}`);
+            }
+        });
+
 
         // TODOリストを取得して更新する関数
         function loadTodos(date) {
