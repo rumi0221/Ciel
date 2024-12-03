@@ -50,6 +50,7 @@ if (isset($_POST['user_name']) && isset($_POST['user_pass'])) {
     $sql->execute([$_POST['user_name']]);
     
     $row = $sql->fetch();
+    //　password_verifyでハッシュしたパスワードが合っているのか調べている
     if (password_verify($_POST['user_pass'], $row['user_pass']) && $row['delete_flg'] == 0) {
         $_SESSION['user']=[
             'user_id'=>$row['user_id'],
