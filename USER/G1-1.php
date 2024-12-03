@@ -1,42 +1,74 @@
 <?php
+// session_start();
+
+// if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+//     unset($_SESSION['user_name']);
+//     unset($_SESSION['user_mail']);
+//     unset($_SESSION['user_pass']);
+// }
+
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $dsn = 'mysql:host=mysql310.phy.lolipop.lan;dbname=LAA1517478-3rd;charset=utf8';
+//     $user = 'LAA1517478';
+//     $password = '3rd1004';
+
+//     $user_name = $_POST['user_name'];
+//     $user_pass = $_POST['user_pass'];
+
+//     try {
+//         $dbh = new PDO($dsn, $user, $password);
+//         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+//         $stmt = $dbh->prepare("SELECT * FROM Users WHERE user_name = :user_name");
+//         $stmt->bindParam(':user_name', $user_name);
+//         $stmt->execute();
+//         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+//         if ($user && password_verify($user_pass, $user['user_pass'])) {
+//             $_SESSION['user'] = $user;
+//             header("Location: G3-1-1.php");
+//             exit();
+//         } else {
+//             $error_message = "ユーザー名、またはパスワードが間違っています。";
+//         }
+//     } catch (PDOException $e) {
+//         $error_message = "エラー: " . $e->getMessage();
+//     }
+
+//     $dbh = null;
+// }
+
+
 session_start();
+session_unset();
+require 'db-connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    unset($_SESSION['user_name']);
-    unset($_SESSION['user_mail']);
-    unset($_SESSION['user_pass']);
-}
+if (isset($_POST['user_name']) && isset($_POST['user_pass'])) {
+    $pdo = new PDO($connect, USER, PASS);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dsn = 'mysql:host=mysql310.phy.lolipop.lan;dbname=LAA1517478-3rd;charset=utf8';
-    $user = 'LAA1517478';
-    $password = '3rd1004';
-
-    $user_name = $_POST['user_name'];
-    $user_pass = $_POST['user_pass'];
-
-    try {
-        $dbh = new PDO($dsn, $user, $password);
-        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $stmt = $dbh->prepare("SELECT * FROM Users WHERE user_name = :user_name");
-        $stmt->bindParam(':user_name', $user_name);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($user_pass, $user['user_pass'])) {
-            $_SESSION['user'] = $user;
-            header("Location: G3-1-1.php");
-            exit();
-        } else {
-            $error_message = "ユーザー名、またはパスワードが間違っています。";
+    $sql = $pdo->prepare('SELECT * FROM Users WHERE user_name = ?');
+    $sql->execute([$_POST['user_name']]);
+    
+    $row = $sql->fetch();
+    if (password_verify($_POST['user_pass'], $row['user_pass']) && $row['delete_flg'] == 0) {
+        $_SESSION['user']=[
+            'user_id'=>$row['user_id'],
+            'user_name'=>$row['user_name'],
+            'mail'=>$row['user_mail'], 
+            'user_pass' => $row['user_pass']
+        ];
+        if (isset($_POST['login'])) {
+            $cookie_value = base64_encode(serialize($_SESSION['user']));
+            setcookie('login_me_cookie', $cookie_value, time() + (86400 * 30), "/", "", false, true); 
         }
-    } catch (PDOException $e) {
-        $error_message = "エラー: " . $e->getMessage();
-    }
 
-    $dbh = null;
+        header("Location: G3-1.php");
+        exit();
+    }
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -56,9 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="form-container">
     <h1>LOGIN</h1>
         <form action="G1-1.php" method="POST">
-            <?php if(isset($error_message)): ?>
+            <!-- <?php if(isset($error_message)): ?>
                 <div class="error-message"><?php echo $error_message; ?></div>
-            <?php endif; ?>
+            <?php endif; ?>  -->
             <div class="input-group">
                 <label for="user_name">user</label><br>
                 <input type="text" id="user_name" name="user_name" required>
