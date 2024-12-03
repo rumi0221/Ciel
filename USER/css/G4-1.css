@@ -168,20 +168,33 @@ td .tag {
 }
 
 .button{
-    padding: 0 0% 0% 5%;
+    padding: 0 5%;
     display: flex;
     justify-content: space-around;
 }
 
 input.reset {
-  margin: 1% 30% 0% 10%;
+  margin: 0% 0% 0% -10%;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #000;
+  font-size: large;
+}
+
+input.confirm-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #000;
+  font-size: medium;
 }
 
 /* プラスボタンのスタイル */
 .floating-button {
   position: fixed;
-  top: 500px;
-  right: 30px;
+  top: 80%;
+  right: 8%;
   width: 60px;
   height: 60px;
   background-color: #d4c1ff;
@@ -276,6 +289,9 @@ td:last-child {
 
 
 /* --- */
+.schedule-column {
+  flex: 3;
+}
 
 .event {
   margin-top: 5px;
@@ -369,6 +385,7 @@ input[type="radio"] {
 
 li {
   list-style: none;
+  display: flex;
 }
 
 /* 詳細予定リンクボタン */
@@ -377,4 +394,11 @@ button.link-style-btn{
   border: none;
   background: none;
   color: #0033cc;
+  font-size: larger;
 }
+
+span.memofont {
+  font-size: smaller;
+  color: gray;
+}
+

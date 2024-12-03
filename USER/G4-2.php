@@ -74,7 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
         <div class="header">
                 <div class="cancel-button" onclick="NextPage()">キャンセル</div>
-                <img src="./img/Ciel logo.png" style="margin-left:-30px;">
+                <img src="./img/Ciel logo.png" style="margin-left:-20px;">
                 <input type="submit" value="更新" form="update" class="confirm-button">
         </div>
             <form action="G4-2.php" method="POST" id="update">
@@ -84,7 +84,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
             
                 echo '<input type="text" value="' .$plans['plan'].'" id="title" name="title" required><br><br>';
 
-                echo "<label for='tag'>タグ選択:</label>";
+                echo '<div class="border"></div>';
+
+                echo '<div class = "tag_button">';
+                echo "<span class='tag'>タグ選択:</span>";
                 
                 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
                     //更新後
@@ -94,8 +97,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $colorstmt->bindParam(':tag_id', $tag_id);
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
-                    echo '<div class = "tag_button">';
-                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></span>";
+                    
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px 0% 0% 50%;'></span>";
                     echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋"><br>';
                     echo '</div>';
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
@@ -107,21 +110,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $colorstmt->bindParam(':tag_id', $color_id);
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
-                    echo '<div class = "tag_button">';
-                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></span>";
+                    // echo '<div class = "tag_button">';
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px 0% -1% 50%;'></span>";
                     echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋"><br>';
                     echo '</div>';
                 }
+
+                echo '<div class="border"></div>';
                     
                 echo "<label>TERMに追加する:</label>";
                 echo '<input type="radio" id="term_yes" name="term" value="1">YES';
                 echo '<input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>';
 
+                echo '<div class="border"></div>';
+
                 echo '<label for="start">開始日時:</label>';
-                echo '<input type="datetime-local" id="start" name="start" required value="' , $plans['start_date'] ,'" ><br><br>';
+                echo '<input type="datetime-local" id="start" name="start" required value="' , $plans['start_date'] ,'" ><br>';
 
                 echo '<label for="end">終了日時:</label>';
                 echo '<input type="datetime-local" id="end" name="end" value="' , $plans['final_date'] ,'" required><br><br>';
+
+                echo '<div class="border"></div>';
 
                 echo '<textarea name="memo">' .$plans['memo']. '</textarea><br><br>';
                 echo '<input type="hidden" name="id" value="' .$plans['plan_id']. '">';
@@ -200,15 +209,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
     <div class="header">
             <div class="cancel-button" onclick="NextPage()">キャンセル</div>
-            <img src="./img/Ciel logo.png" style="margin-left:-30px;">
+            <img src="./img/Ciel logo.png" style="margin-left:-20px;">
             <input type="submit" value="決定" form="insert" class="confirm-button">
     </div>
         <form action="G4-2.php" method="POST" id="insert">
 
             <h2>新しい予定</h2>
-            <input type="text" value="タイトルを入力" id="title" name="title" required><br><br>
+            <input type="text" placeholder="タイトルを入力" id="title" name="title" required><br><br>
 
-            <label for="tag">タグ選択:</label>
+            <div class="border"></div>
+
+            <div class = "tag_button">
+            <span class="tag">タグ選択:</span>
             <?php 
                 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
 
@@ -218,26 +230,48 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $colorstmt->bindParam(':tag_id', $tag_id);
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
-                    echo "<div style='display: flex; flex-wrap: wrap;'>";
-                    echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
-                    echo "</div>";
+
+                    $Usertagsql = 'SELECT tag_name FROM Usertags where tag_id = :tag_id and user_id = :user_id';
+                    $Usertagstmt = $db->prepare($Usertagsql);
+                    $Usertagstmt->bindParam(':tag_id', $tag_id);
+                    $Usertagstmt->bindParam(':user_id', $user_id);
+                    $Usertagstmt->execute();
+                    $Usertagresults = $Usertagstmt->fetch(PDO::FETCH_ASSOC);
+
+                    // echo '<div class = "tag_button">';
+                    ?>
+                    <input class="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋">
+                    <?php
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%;margin: 5px 0% -1% -15%;'></span>";
+                    echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span><br><br>";
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
+                }else{
+                    ?>
+                    <input class="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋"><br><br>
+                    <?php
                 }
             
             ?>
-            <input type="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋"><br><br>
+            
+            </div>
+
+            <div class="border"></div>
 
             <label>TERMに追加する:</label>
             <input type="radio" id="term_yes" name="term" value="1">YES
             <input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>
 
+            <div class="border"></div>
+
             <label for="start">開始日時:</label>
-            <input type="datetime-local" id="start" name="start" required><br><br>
+            <input type="datetime-local" id="start" name="start" required><br>
 
             <label for="end">終了日時:</label>
             <input type="datetime-local" id="end" name="end" required><br><br>
 
-            <textarea name="memo">メモ</textarea><br><br>
+            <div class="border"></div>
+
+            <textarea name="memo" placeholder="メモ"></textarea><br><br>
             <input type="hidden" name="user_flg" value="true">
             <input type="hidden" name="crud" value="insert">
             <input type="hidden" name="tag_returnflg" value="false">

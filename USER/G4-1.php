@@ -13,12 +13,12 @@
     $user = $_SESSION['user'];
     $user_id = $user['user_id'];
 
-if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['tag']) != 0){
+    if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['tag']) && $_GET['tag'] !== 'null' && $_GET['tag'] > 0) {
+
     function getPlansByDateRange($start_date, $end_date) {
         global $db;
         $user = $_SESSION['user'];
         $user_id = $user['user_id'];
-        // $user_id = 8;
     
         $stmt = $db->prepare("
             SELECT 
@@ -75,15 +75,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['tag']) != 0){
     }
 }
 
-// カレンダーで表示している期間
-// $selectedYear = date("Y");
-// $selectedMonth = date("n");
-// $start_date = "$selectedYear-$selectedMonth-01 00:00:00";
-// $end_date = date("Y-m-t 23:59:59", strtotime($start_date));
-
-// $events = getPlansByDateRange($start_date, $end_date);
-// ----
-
     $selectedYear = date("Y");
     $selectedMonth = date("n");
 
@@ -124,6 +115,12 @@ foreach ($events as $event) {
     $endDate = new DateTime($event['final_date']);
     $endDate -> setTime(23, 59, 59); // 終了日を1日の終わりに設定
 
+    if($event['memo'] === null || $event['memo'] === "メモ"){
+        $memo = "　";
+    }else{
+        $memo = $event['memo'].'<br><br>';
+    }
+
     while ($startDate <= $endDate) {
         $dateKey = $startDate->format("Y-m-d");
         $eventData[] = [
@@ -133,7 +130,7 @@ foreach ($events as $event) {
             'starttime' => $startDate->format("H:i"),
             'endtime' => $endDate->format("H:i"),
             'color' => $event['color'],
-            'memo' => $event['memo']
+            'memo' => $memo
         ];
         $startDate->modify('+1 day');
     }
@@ -185,7 +182,7 @@ foreach ($events as $event) {
                         </ul>
                         <div class="button">
                             <input type="reset" class="reset" value="リセット">
-                            <input type="submit" class="confirm-button" value="決定">
+                            <input type="submit" class="confirm-button" value="決定" />
                         </div>
                     </form>
                 </div>
@@ -194,7 +191,7 @@ foreach ($events as $event) {
     </header>
     <footer><?php include 'menu.php';?></footer>
     <div id="calendar">
-    <h2 id="current-month" onclick="toggleMonthSelector(<?= $selectedYear; ?>, <?= $selectedMonth; ?>, <?= isset($_GET['tag']) ? $_GET['tag'] : 'null'; ?>)">
+    <h2 id="current-month" onclick="toggleMonthSelector(<?= $selectedYear; ?>, <?= $selectedMonth; ?>, <?= isset($_GET['tag']) ? $_GET['tag'] : 'null' ; ?>)">
     <?= $selectedYear; ?>年<?= $selectedMonth; ?>月
 </h2>
         <!-- 予定新規 -->
@@ -268,10 +265,21 @@ foreach ($events as $event) {
                 const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const eventList = events.filter(event => event.date === dateKey);
 
-                let cellContent = `<div class="day-number">${day}</div>`;
-                eventList.forEach(event => {
-                    cellContent += `<div class="event" style="background-color:#${event.color};">${event.content}</div>`;
-                });
+            let cellContent = `<div class="day-number">${day}</div>`;
+
+            if (eventList.length > 0) {
+        // 最初の2つ表示
+        const limitedEventList = eventList.slice(0, 2);
+        limitedEventList.forEach(event => {
+            const shortContent = event.content.substring(0, 3);
+            cellContent += `<div class="event" style="background-color:#${event.color};">${shortContent}</div>`;
+        });
+
+        // 3つ以上の場合、「...」を追加
+        if (eventList.length > 2) {
+            cellContent += `<div class="event more-indicator">...</div>`;
+        }
+    }
 
                 //showEvents：詳細
                 table += `<td onclick="showEvents(${year}, ${month}, ${day})">${cellContent}</td>`;
@@ -300,15 +308,23 @@ foreach ($events as $event) {
                     //予定押下でG4-2に遷移
                     listItem.innerHTML = `
                         <span class="event-time">${event.starttime || "終日"} ～ ${event.endtime || "終日"}</span>
+
+                            <div class="schedule-column">
+
                         <form action="G4-2.php" method="post">
                             <input type="hidden" id="popup" name="plan_id" value="${event.id}">
                             <input type="hidden" name="crud" value="update">
                             <input type="hidden" name="user_flg" value="false">
                             <button class="link-style-btn">
-                                <span>${event.content}</span>
+                                <span class = "contentfont">${event.content}</span>
                             </button>
                         </form>
-                            <span>${event.memo}</span>`;
+                            <span class = "memofont">${event.memo}</span>
+                            
+                            </div>
+                            `;
+
+                            
 
                     eventListContainer.appendChild(listItem);
                 });
