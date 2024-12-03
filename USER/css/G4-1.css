@@ -165,10 +165,11 @@ td .tag {
 .floating-button {
   position: fixed;
   top: 500px;
+
   right: 30px;
   width: 80px;
   height: 80px;
-  background-color:#d4c1ffab;
+  background-color:#d4c1ffde;
   border-radius: 50%;
   display: flex;
   justify-content: center;
