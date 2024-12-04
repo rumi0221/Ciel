@@ -36,67 +36,68 @@
         $user_id =  $_SESSION['user']['user_id'];
         $user_name =  $_SESSION['user']['user_name'];
 
-        $Date = $_POST['formattedDate'] ?? date('Y-m-d');
-    ?>
+        // $Date = $_POST['formattedDate'] ?? date('Y-m-d');
 
-
-    <?php
-    //上のPHPを元に修正する
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // $dsn = 'mysql:host=localhost;dbname=your_db;charset=utf8';
-        // $user = 'your_user';
-        // $password = 'your_password';
-
-        try {
-            // $pdo = new PDO($dsn, $user, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            $action = $_POST['action'] ?? '';
-            $user_id = 8; // ログインユーザーのIDを取得する必要があります
-            $todo = $_POST['todo'] ?? '';
-            $Ddate = $_POST['formattedDate'] ?? date('Y-m-d');
-
-            if ($action === 'add_todo' && $todo && $Ddate) {
-                // 現在の日付とユーザーに基づいてsort_idを計算
-                $stmt = $pdo->prepare('SELECT COUNT(*) AS count FROM Todos WHERE user_id = ? AND input_date = ?');
-                $stmt->execute([$user_id, $Ddate]);
-                $sortsum = $stmt->fetchColumn();
-
-                // 新しいTODOを追加
-                $insertStmt = $pdo->prepare('INSERT INTO Todos (`user_id`, `sort_id`, `todo`, `completion_flg`, `input_date`) VALUES (?, ?, ?, DEFAULT, ?)');
-                $insertStmt->execute([$user_id, $sortsum, $todo, $Ddate]);
-
-                // 最新のTODOリストを取得してHTML生成
-                $listStmt = $pdo->prepare('SELECT * FROM Todos WHERE user_id = ? AND input_date = ? ORDER BY sort_id ASC');
-                $listStmt->execute([$user_id, $Ddate]);
-                foreach ($listStmt as $row2) {
-                    $todo_id = $row2['todo_id'];
-                    $sort = $row2['sort_id'];
-                    $todo = htmlspecialchars($row2['todo']); // XSS防止
-                    $completion = $row2['completion_flg'];
-                    $check = ($completion == 1) ? 'checked' : '';
-
-                    echo '
-                        <li class="normal-mode" data-id="', $todo_id, '">
-                            <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
-                            <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
-                            <span class="todo-text">', $todo, '</span>
-                            <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none; margin-left:5px;">
-                            <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
-                        </li>
-                    ';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if(isset($_POST['selected_date'])){
+                var_dump($_POST['selected_date']);
+                $Date = $_POST['selected_date'];
+            }else{
+                try {
+                    // $pdo = new PDO($dsn, $user, $password);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+                    $action = $_POST['action'] ?? '';
+                    $user_id = 8; // ログインユーザーのIDを取得する必要があります
+                    $todo = $_POST['todo'] ?? '';
+                    $Ddate = $_POST['formattedDate'] ?? date('Y-m-d');
+        
+                    var_dump($_POST['selected_date']);
+                    if ($action === 'add_todo' && $todo && $Ddate) {
+                        // 現在の日付とユーザーに基づいてsort_idを計算
+                        $stmt = $pdo->prepare('SELECT COUNT(*) AS count FROM Todos WHERE user_id = ? AND input_date = ?');
+                        $stmt->execute([$user_id, $Ddate]);
+                        $sortsum = $stmt->fetchColumn();
+        
+                        // 新しいTODOを追加
+                        $insertStmt = $pdo->prepare('INSERT INTO Todos (`user_id`, `sort_id`, `todo`, `completion_flg`, `input_date`) VALUES (?, ?, ?, DEFAULT, ?)');
+                        $insertStmt->execute([$user_id, $sortsum, $todo, $Ddate]);
+        
+                        // 最新のTODOリストを取得してHTML生成
+                        $listStmt = $pdo->prepare('SELECT * FROM Todos WHERE user_id = ? AND input_date = ? ORDER BY sort_id ASC');
+                        $listStmt->execute([$user_id, $Ddate]);
+                        foreach ($listStmt as $row2) {
+                            $todo_id = $row2['todo_id'];
+                            $sort = $row2['sort_id'];
+                            $todo = htmlspecialchars($row2['todo']); // XSS防止
+                            $completion = $row2['completion_flg'];
+                            $check = ($completion == 1) ? 'checked' : '';
+        
+                            echo '
+                                <li class="normal-mode" data-id="', $todo_id, '">
+                                    <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
+                                    <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
+                                    <span class="todo-text">', $todo, '</span>
+                                    <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none; margin-left:5px;">
+                                    <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                                </li>
+                            ';
+                        }
+                    } else {
+                        http_response_code(400);
+                        echo '無効なリクエスト';
+                    }
+                } catch (PDOException $e) {
+                    http_response_code(500);
+                    echo 'エラー: ' . htmlspecialchars($e->getMessage());
                 }
-            } else {
-                http_response_code(400);
-                echo '無効なリクエスト';
+                exit;
             }
-        } catch (PDOException $e) {
-            http_response_code(500);
-            echo 'エラー: ' . htmlspecialchars($e->getMessage());
         }
-        exit;
-    }
     ?>
+
+
+    
 
 
 
@@ -304,6 +305,7 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const todos = JSON.parse(xhr.responseText);
                     const sortableList = document.getElementById('sortable-list');
+
                     sortableList.innerHTML = ''; // 現在のリストをクリア
 
                     // 新しいTODOリストを表示

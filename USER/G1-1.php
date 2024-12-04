@@ -65,6 +65,8 @@ if (isset($_POST['user_name']) && isset($_POST['user_pass'])) {
 
         header("Location: G3-1.php");
         exit();
+    }else{
+        $error_message = "パスワードが間違っています。";
     }
 }
 
@@ -89,9 +91,9 @@ if (isset($_POST['user_name']) && isset($_POST['user_pass'])) {
     <div class="form-container">
     <h1>LOGIN</h1>
         <form action="G1-1.php" method="POST">
-            <!-- <?php if(isset($error_message)): ?>
+            <?php if(isset($error_message)): ?>
                 <div class="error-message"><?php echo $error_message; ?></div>
-            <?php endif; ?>  -->
+            <?php endif; ?> 
             <div class="input-group">
                 <label for="user_name">user</label><br>
                 <input type="text" id="user_name" name="user_name" required>
