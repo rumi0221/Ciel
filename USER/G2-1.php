@@ -4,23 +4,22 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start(); // セッションを開始
 
-// エラーメッセージ用の変数
-$error_message = '';
+// エラーメッセージをセッションから取得
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+unset($_SESSION['error_message']); // 一度表示したら削除
 
-// POSTメソッドで送信された場合の処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_name = $_POST['user_name'];
     $user_mail = $_POST['user_mail'];
 
-    // データベース接続
     $dsn = 'mysql:host=mysql310.phy.lolipop.lan;dbname=LAA1517478-3rd;charset=utf8';
     $user = 'LAA1517478';
     $password = '3rd1004';
+
     try {
         $dbh = new PDO($dsn, $user, $password);
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // ユーザー名とメールアドレスが登録されているか確認
         $stmt = $dbh->prepare("SELECT COUNT(*) FROM Users WHERE user_name = :user_name AND user_mail = :user_mail");
         $stmt->bindParam(':user_name', $user_name);
         $stmt->bindParam(':user_mail', $user_mail);
@@ -28,15 +27,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $count = $stmt->fetchColumn();
 
         if ($count > 0) {
-            // セッションにユーザー情報を保存
-            $_SESSION['user_name'] = $user_name;
-            $_SESSION['user_mail'] = $user_mail;
+            $token = bin2hex(random_bytes(16));
+            $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-            // ユーザー名とメールアドレスが一致した場合、G2-2.phpに遷移
-            header("Location: G2-2.php");
-            exit();
+            $stmt = $dbh->prepare("UPDATE Users SET token = :token, expires_at = :expires_at WHERE user_name = :user_name AND user_mail = :user_mail");
+            $stmt->bindParam(':token', $token);
+            $stmt->bindParam(':expires_at', $expires_at);
+            $stmt->bindParam(':user_name', $user_name);
+            $stmt->bindParam(':user_mail', $user_mail);
+            $stmt->execute();
+
+            $reset_link = "http://aso2201127.fem.jp/Ciel/USER/G2-2.php?token=$token";
+            $subject = "パスワード再設定リンク";
+            $message = "以下のリンクをクリックしてパスワードを再設定してください:\n\n$reset_link";
+            $headers = "From: no-reply@yourdomain.com";
+
+            if (mail($user_mail, $subject, $message, $headers)) {
+                $error_message = "再設定リンクを送信しました。メールをご確認ください。";
+            } else {
+                $error_message = "メール送信に失敗しました。";
+            }
         } else {
-            // エラーメッセージを設定
             $error_message = "ユーザー名またはメールアドレスが一致しません。";
         }
     } catch (PDOException $e) {
