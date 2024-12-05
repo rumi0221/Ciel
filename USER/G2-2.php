@@ -1,30 +1,37 @@
 <?php
-session_start(); // セッションを開始
-
-// セッションにユーザー名とメールアドレスが存在しない場合は、G2-1.phpに戻す
-if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_mail'])) {
-    header("Location: G2-1.php");
-    exit();
-}
-
-// エラーメッセージ用の変数
+session_start();
 $error_message = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $new_pass = $_POST['new_pass'];
-    $new_pass_confirm = $_POST['new_pass_confirm'];
+if (isset($_GET['token'])) {
+    $token = $_GET['token'];
 
-    // パスワードの文字数チェック
-    if (strlen($new_pass) < 6) {
-        $error_message = "パスワードは6文字以上である必要があります。";
-    } elseif ($new_pass !== $new_pass_confirm) {
-        $error_message = "パスワードが一致しません。";
-    } else {
-        // セッションにパスワードを保存し、G2-3.phpに遷移
-        $_SESSION['new_pass'] = $new_pass;
-        header("Location: G2-3.php");
+    $dsn = 'mysql:host=mysql310.phy.lolipop.lan;dbname=LAA1517478-3rd;charset=utf8';
+    $user = 'LAA1517478';
+    $password = '3rd1004';
+
+    try {
+        $dbh = new PDO($dsn, $user, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $dbh->prepare("SELECT user_name FROM Users WHERE token = :token AND expires_at > NOW()");
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            $_SESSION['error_message'] = "無効なトークン、またはトークンの有効期限が切れています。";
+            header("Location: G2-1.php");
+            exit();
+        }
+    } catch (PDOException $e) {
+        $_SESSION['error_message'] = "エラーが発生しました: " . $e->getMessage();
+        header("Location: G2-1.php");
         exit();
     }
+} else {
+    $_SESSION['error_message'] = "トークンが見つかりません。";
+    header("Location: G2-1.php");
+    exit();
 }
 ?>
 
@@ -51,13 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form action="G2-2.php" method="post"> <!-- 現在のページにPOSTメソッドで送信 -->
             <div class="input-group">
-                <label for="new_pass">新しいパスワード<span class="required">*</span></label><br>
+                <label for="new_pass">new password<span class="required">*</span></label><br>
                 <input type="password" id="new_pass" name="new_pass" placeholder="新しいパスワードを入力してください" maxlength="8" required>
                 <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass')">
             </div>
 
             <div class="input-group">
-                <label for="new_pass_confirm">新しいパスワード(確認)<span class="required">*</span></label><br>
+                <label for="new_pass_confirm">new password (確認)<span class="required">*</span></label><br>
                 <input type="password" id="new_pass_confirm" name="new_pass_confirm" placeholder="新しいパスワードをもう一度入力してください" maxlength="8" required>
                 <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass_confirm')">
             </div>
