@@ -36,11 +36,13 @@
         $user_id =  $_SESSION['user']['user_id'];
         $user_name =  $_SESSION['user']['user_name'];
 
-        // $Date = $_POST['formattedDate'] ?? date('Y-m-d');
+        $Date = $_POST['formattedDate'] ?? date('Y-m-d');
+
+        // G3-2から受け取る日付(Y-m-d)
+        $selectedDate = $_POST['selected_date'] ?? $Date;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if(isset($_POST['selected_date'])){
-                var_dump($_POST['selected_date']);
                 $Date = $_POST['selected_date'];
             }else{
                 try {
@@ -52,7 +54,6 @@
                     $todo = $_POST['todo'] ?? '';
                     $Ddate = $_POST['formattedDate'] ?? date('Y-m-d');
         
-                    var_dump($_POST['selected_date']);
                     if ($action === 'add_todo' && $todo && $Ddate) {
                         // 現在の日付とユーザーに基づいてsort_idを計算
                         $stmt = $pdo->prepare('SELECT COUNT(*) AS count FROM Todos WHERE user_id = ? AND input_date = ?');
@@ -180,6 +181,7 @@
     <footer><?php include 'menu.php'; ?></footer>
 
     <script>
+        const selectedDate = <?php echo json_encode($selectedDate); ?>; // PHP変数をJSに渡す
     document.addEventListener('DOMContentLoaded', function () {
         // Termの既存コード
         function toggleTerm() {
@@ -233,7 +235,7 @@
         const sortableList = document.getElementById('sortable-list');
 
         let today = new Date();
-        let currentDay = new Date(today);
+        let currentDay = selectedDate ? new Date(selectedDate) : new Date(today);
 
         function formatDate(date) {
             const month = date.getMonth() + 1;
@@ -251,6 +253,8 @@
             tabCenter.innerText = formatDate(currentDay);
             tabRight.innerText = formatDate(tomorrow);
         }
+
+        updateTabs();
 
         // タブをクリックした際の動作
         function handleTabClick(event) {
@@ -486,8 +490,9 @@
 
 
         const todoList = document.getElementById('todo-list');
+        const dateInput = document.getElementById('formatted-date'); // 隠しフィールドに設定される日付
 
-        const currentDate = new Date().toISOString().split('T')[0];
+        // const currentDate = new Date().toISOString().split('T')[0];
 
         // エンターキー押下時の処理
         todoInput.addEventListener('keypress', function (event) {
@@ -500,26 +505,38 @@
                     return;
                 }
 
-                const formattedDate = new Date().toISOString().split('T')[0]; // 現在の日付を取得 (YYYY-MM-DD)
+                // const formattedDate = new Date().toISOString().split('T')[0]; // 現在の日付を取得 (YYYY-MM-DD)
+                const currentDate = dateInput.value; // 画面上の日付を取得
 
                 // AJAXでPHPにデータを送信
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', 'add_todo.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         try{
-                            
-                            console.log("---------------------------");
-                            console.log(xhr.responseText);
-                            console.log("---------------------------");
                             const response = JSON.parse(xhr.responseText);
-
                             if (response.status === 'success') {
+                                const newTodo = response.todo;
                                 // TODOを画面に追加
                                 const li = document.createElement('li');
-                                li.textContent = todoText;
+                                li.className = 'normal-mode';
+                                li.setAttribute('data-id', newTodo.todo_id);
+                                li.innerHTML = `
+                                    <input type="checkbox" class="hide-checkbox" data-id="${newTodo.todo_id}">
+                                    <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
+                                    <span class="todo-text">${newTodo.todo}</span>
+                                    <input type="text" class="edit-todo-input" value="${newTodo.todo}" style="display: none; margin-left:5px;">
+                                    <button class="delete-button" style="display: none;">
+                                        <img src="img/dustbox.png" style="height: 23px; width: auto;">
+                                    </button>
+                                `;
                                 todoList.appendChild(li);
+
+
+                                // li.textContent = todoText;
+                                // todoList.appendChild(li);
 
                                 // レスポンスで最新のTODOリストHTMLを受け取る
                                 //sortableList.innerHTML = xhr.responseText;

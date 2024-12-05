@@ -1,8 +1,10 @@
 <?php
+session_start();
 ob_start(); // 出力バッファリングを開始
 
 require 'db-connect.php';
 $pdo = new PDO($connect, USER, PASS);
+$user_id =  $_SESSION['user']['user_id'];
 
 // // エラーメッセージをJSON以外に出力しないよう設定
 // header('Content-Type: application/json; charset=utf-8');
@@ -24,51 +26,96 @@ try {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json; charset=utf-8');
-
-    // JSONレスポンス用変数
-    $response = [
-        'status' => 'success',
-        'message' => 'TODOが追加されました'
-    ];
-
     try {
-        // データベース処理
         $todo = trim($_POST['todo'] ?? '');
         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
-        $userId = 8;
+        $userId = $user_id;
 
         if (empty($todo)) {
-            $response = [
-                'status' => 'error',
-                'message' => 'TODOは空ではいけません'
-            ];
-        } else {
-            // sort_idを計算: 同じuser_idとinput_dateの行数
-            $sortSql = 'SELECT COUNT(*) AS row_count FROM Todos WHERE user_id = ? AND input_date = ?';
-            $sortStmt = $pdo->prepare($sortSql);
-            $sortStmt->execute([$userId, $Date]);
-            $sortResult = $sortStmt->fetch();
-            $sortId = $sortResult['row_count'];
-
-            $stmt = $pdo->prepare("
-                INSERT INTO Todos (user_id, sort_id, todo, input_date)
-                VALUES (?, ?, ?, ?)
-            ");
-            $stmt->execute([$userId, $sortId, $todo, $Date]);
+            echo json_encode(['status' => 'error', 'message' => 'TODOは空ではいけません']);
+            exit;
         }
-    } catch (PDOException $e) {
-        $response = [
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ];
-    }
 
-    // 最後に1回だけレスポンスを出力
-    echo json_encode($response);
-    // レスポンス内容をログファイルに出力
-    file_put_contents('/path/to/debug.log', json_encode($response));
+        // sort_idを計算
+        $sortSql = 'SELECT COUNT(*) AS row_count FROM Todos WHERE user_id = ? AND input_date = ?';
+        $sortStmt = $pdo->prepare($sortSql);
+        $sortStmt->execute([$userId, $Date]);
+        $sortId = $sortStmt->fetchColumn();
+
+        // データベースに挿入
+        $stmt = $pdo->prepare("
+            INSERT INTO Todos (user_id, sort_id, todo, input_date)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt->execute([$userId, $sortId, $todo, $Date]);
+
+        // 追加されたTODOの情報を取得
+        $todoId = $pdo->lastInsertId();
+        $response = [
+            'status' => 'success',
+            'todo' => [
+                'todo_id' => $todoId,
+                'sort_id' => $sortId,
+                'todo' => htmlspecialchars($todo),
+                'completion_flg' => 0,
+                'input_date' => $Date,
+            ],
+        ];
+        echo json_encode($response);
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
     exit;
 }
+
+
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     header('Content-Type: application/json; charset=utf-8');
+
+//     // JSONレスポンス用変数
+//     $response = [
+//         'status' => 'success',
+//         'message' => 'TODOが追加されました'
+//     ];
+
+//     try {
+//         // データベース処理
+//         $todo = trim($_POST['todo'] ?? '');
+//         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
+//         $userId = 8;
+
+//         if (empty($todo)) {
+//             $response = [
+//                 'status' => 'error',
+//                 'message' => 'TODOは空ではいけません'
+//             ];
+//         } else {
+//             // sort_idを計算: 同じuser_idとinput_dateの行数
+//             $sortSql = 'SELECT COUNT(*) AS row_count FROM Todos WHERE user_id = ? AND input_date = ?';
+//             $sortStmt = $pdo->prepare($sortSql);
+//             $sortStmt->execute([$userId, $Date]);
+//             $sortResult = $sortStmt->fetch();
+//             $sortId = $sortResult['row_count'];
+
+//             $stmt = $pdo->prepare("
+//                 INSERT INTO Todos (user_id, sort_id, todo, input_date)
+//                 VALUES (?, ?, ?, ?)
+//             ");
+//             $stmt->execute([$userId, $sortId, $todo, $Date]);
+//         }
+//     } catch (PDOException $e) {
+//         $response = [
+//             'status' => 'error',
+//             'message' => $e->getMessage()
+//         ];
+//     }
+
+//     // 最後に1回だけレスポンスを出力
+//     echo json_encode($response);
+//     // レスポンス内容をログファイルに出力
+//     file_put_contents('/path/to/debug.log', json_encode($response));
+//     exit;
+// }
 
 ob_end_clean(); // バッファ内容をクリア
 echo json_encode($response); // 必要なJSONレスポンスのみ出力
