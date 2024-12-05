@@ -8,11 +8,14 @@ body {
   background-color: #f9f9f9;
   text-align: center;
   margin: 0;
+
+  padding-bottom: 100px;
+  box-sizing: border-box;
 }
 
 img{
-  height: 100px;
-  width: 200px;
+  width: 35%;
+  margin-right: 26%;
 }
 
 header {
@@ -156,8 +159,18 @@ td .tag {
   border: 2px solid purple;
 }
 
+.button{
+    padding: 0 0% 0% 5%;
+    display: flex;
+    justify-content: space-around;
+}
+
 .confirm-button{
-  margin-left: 70%;
+  margin-left: 35%;
+}
+
+input.reset {
+  margin: 1% 50% 0% 10%;
 }
 
 /* プラスボタンのスタイル */
@@ -262,7 +275,7 @@ td:last-child {
 .event {
   margin-top: 5px;
   padding: 2px;
-  color: #fff;
+  color: darkblue;
   font-size: 0.8em;
   border-radius: 4px;
   text-align: center;
@@ -290,7 +303,7 @@ td:last-child {
 }
 
 .close{
-  text-align: right;
+  padding-left: 178%;
 }
 
 /* ------ 予定詳細 ------ */
@@ -320,7 +333,7 @@ td:last-child {
 
 .event {
   background-color: #e6a8d7;
-  color: white;
+  color: black;
   margin: 2px 0;
   padding: 2px;
   border-radius: 4px;
@@ -347,4 +360,12 @@ td:last-child {
 
 li {
   list-style: none;
+}
+
+/* 詳細予定リンクボタン */
+button.link-style-btn{
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #0033cc;
 }

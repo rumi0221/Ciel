@@ -10,9 +10,12 @@ function toggleMenu() {
     }
 }
 
-//カレンダー切り替え
+
 let selectedYear = 2024;
 let selectedMonth = 11;
+// function toggleMonthSelector(year, month) {
+//     let selectedYear = year;
+// let selectedMonth = month;
 function toggleMonthSelector() {
     
     let monthSelector = document.getElementById("month-selector");
@@ -22,12 +25,12 @@ function toggleMonthSelector() {
         monthSelector.style.display = "block";
     }
 }
-// 年
+
 function changeYear(change) {
     selectedYear += change;
     document.getElementById("selected-year").innerText = selectedYear + "年";
 }
-// 月
+
 function selectMonth(month) {
     selectedMonth = month;
     document.getElementById("current-month").innerText = `${selectedYear}年${selectedMonth}月`;
@@ -36,6 +39,9 @@ function selectMonth(month) {
     generateCalendar(selectedYear,selectedMonth);
     toggleMonthSelector();
 }
+
+//ここから
+
 
 //------------------------------------------------------------
 // メニューの表示状態を切り替える関数
@@ -56,17 +62,6 @@ popupWrapper.addEventListener('click', e => {
 });
 
 //-------------------------------------------------
-
-//予定の詳細表示の開閉
-function DetailedDisplay(){
-    // let monthSelector = document.getElementById("month-selector");
-    let Detailed = 1;
-    if (Detailed.style.display === "block") {
-        Detailed.style.display = "none";
-    } else {
-        Detailed.style.display = "block";
-    }
-}
 
 
 // 4-1
