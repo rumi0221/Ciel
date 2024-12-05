@@ -69,7 +69,7 @@ session_start(); // セッションを開始
         </div>
 </p>
             <p>
-                <label for="user_pass_confirm">password(確認)<span class="required">*</span></label><br>
+                <label for="user_pass_confirm">password (確認)<span class="required">*</span></label><br>
                     <input type="password" id="user_pass_confirm" name="user_pass_confirm" placeholder="パスワードをもう一度入力してください" maxlength="8" required>
                     <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('user_pass_confirm')">
                     
