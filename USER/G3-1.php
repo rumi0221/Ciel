@@ -534,18 +534,9 @@
                                 `;
                                 todoList.appendChild(li);
 
-
-                                // li.textContent = todoText;
-                                // todoList.appendChild(li);
-
-                                // レスポンスで最新のTODOリストHTMLを受け取る
-                                //sortableList.innerHTML = xhr.responseText;
                                 todoInput.value = ''; // 入力フィールドをクリア
                             } else {
                                 alert('エラーが発生しました: ' + response.message);
-                                // xhr.onerror = function () {
-                                //     console.error('AJAXリクエストが失敗しました');
-                                // };
                             }
                         } catch(error){
                             console.error('JSONのパースエラー:', error);
