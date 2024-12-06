@@ -74,7 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
         <div class="header">
                 <div class="cancel-button" onclick="NextPage()">キャンセル</div>
-                <img src="./img/Ciel logo.png" style="margin-left:-20px;">
+                <img src="./img/Ciel logo.png">
                 <input type="submit" value="更新" form="update" class="confirm-button">
         </div>
             <form action="G4-2.php" method="POST" id="update">
@@ -97,10 +97,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $colorstmt->bindParam(':tag_id', $tag_id);
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
+
+                    $Usertagsql = 'SELECT tag_name FROM Usertags 
+                                    where tag_id = :tag_id and user_id = :user_id';
+                    $Usertagstmt = $db->prepare($Usertagsql);
+                    $Usertagstmt->bindParam(':tag_id', $tag_id);
+                    $Usertagstmt->bindParam(':user_id', $user_id);
+                    $Usertagstmt->execute();
+                    $Usertagresults = $Usertagstmt->fetch(PDO::FETCH_ASSOC);
                     
-                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px 0% 0% 50%;'></span>";
-                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋"><br>';
-                    echo '</div>';
+                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
+                    echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span>";
+                    echo '</div><br>';
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
                 }else{
                     //更新前
@@ -110,10 +119,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $colorstmt->bindParam(':tag_id', $color_id);
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
+
+                    $Usertagsql = 'SELECT tag_name FROM Usertags 
+                                    where tag_id = :tag_id and user_id = :user_id';
+                    $Usertagstmt = $db->prepare($Usertagsql);
+                    $Usertagstmt->bindParam(':tag_id', $color_id);
+                    $Usertagstmt->bindParam(':user_id', $user_id);
+                    $Usertagstmt->execute();
+                    $Usertagresults = $Usertagstmt->fetch(PDO::FETCH_ASSOC);
+
                     // echo '<div class = "tag_button">';
-                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px 0% -1% 50%;'></span>";
-                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋"><br>';
-                    echo '</div>';
+                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
+                    echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
+                    echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span>";
+                    echo '</div><br>';
                 }
 
                 echo '<div class="border"></div>';
@@ -143,7 +162,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
             <!-- 削除 -->
 
             <div class = "footer">
-            <form action="G4-2.php" method = "POST">
+            <form action="G4-2.php" method = "POST" class="update">
                 <input type = "submit" value = "削除" class="DeleteBtn">
                 <?php echo '<input type="hidden" name="plan_id" value="' .$plans['plan_id']. '">';
                       echo '<input type="hidden" name="user_id" value="' .$user_id. '">';
@@ -209,7 +228,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
     <div class="header">
             <div class="cancel-button" onclick="NextPage()">キャンセル</div>
-            <img src="./img/Ciel logo.png" style="margin-left:-20px;">
+            <img src="./img/Ciel logo.png">
             <input type="submit" value="決定" form="insert" class="confirm-button">
     </div>
         <form action="G4-2.php" method="POST" id="insert">
@@ -231,7 +250,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $colorstmt->execute();
                     $colorresults = $colorstmt->fetch(PDO::FETCH_ASSOC);
 
-                    $Usertagsql = 'SELECT tag_name FROM Usertags where tag_id = :tag_id and user_id = :user_id';
+                    $Usertagsql = 'SELECT tag_name FROM Usertags 
+                                    where tag_id = :tag_id and user_id = :user_id';
                     $Usertagstmt = $db->prepare($Usertagsql);
                     $Usertagstmt->bindParam(':tag_id', $tag_id);
                     $Usertagstmt->bindParam(':user_id', $user_id);

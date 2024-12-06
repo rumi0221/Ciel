@@ -14,13 +14,15 @@ body {
 }
 
 img{
-  width: 35%;
-  margin-right: 26%;
+  height: 35%;
+  width: 50%;
+  margin-right: 20%;
 }
 
 header {
   background-color: #fff;
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 0px 10px 10px 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -125,7 +127,8 @@ th {
 
 td {
   border: 1px solid #ddd;
-  height: 100px;
+  height: 100%;
+  margin-bottom: 4px;
   vertical-align: top;
   position: relative;
 }
@@ -220,13 +223,35 @@ input.confirm-button {
 }
 
 th:first-child,
-td:first-child {
+.sunday {
   color: red;
 }
 
 th:last-child,
-td:last-child {
+.saturday {
   color: blue;
+}
+
+.holiday-name {
+  font-size: 10px;
+  color: rgb(9, 178, 23);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.holiday-name-hidden {
+  visibility: hidden; /* 非表示にするが、スペースは確保 */
+  height: 10px;        /* 必要なら高さを明示的に指定 */
+  padding: 3px;       /* 必要なパディングを適用 */
+}
+
+
+/* 既存のholidayColorクラスの色を調整 */
+.holidayColor .day-number {
+  color: rgb(42, 208, 44);
 }
 
 /*月カレンダー表示*/
@@ -287,8 +312,6 @@ td:last-child {
   color: gray;
 }
 
-
-/* --- */
 .schedule-column {
   flex: 3;
 }
@@ -354,6 +377,10 @@ input[type="radio"] {
 #calendar-table th {
   background-color: #f5f5f5;
   height: 10%;
+}
+
+h4#selected-date {
+  margin-bottom: 5%;
 }
 
 .event {
