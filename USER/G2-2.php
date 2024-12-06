@@ -1,30 +1,43 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start(); // セッションを開始
 
-// セッションにユーザー名とメールアドレスが存在しない場合は、G2-1.phpに戻す
-if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_mail'])) {
-    header("Location: G2-1.php");
-    exit();
-}
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+unset($_SESSION['error_message']);
 
-// エラーメッセージ用の変数
-$error_message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['token'])) {
+    $token = $_GET['token'];
+    $_SESSION['token'] = $token; // トークンをセッションに保存
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $new_pass = $_POST['new_pass'];
-    $new_pass_confirm = $_POST['new_pass_confirm'];
+    $dsn = 'mysql:host=mysql310.phy.lolipop.lan;dbname=LAA1517478-3rd;charset=utf8';
+    $user = 'LAA1517478';
+    $password = '3rd1004';
 
-    // パスワードの文字数チェック
-    if (strlen($new_pass) < 6) {
-        $error_message = "パスワードは6文字以上である必要があります。";
-    } elseif ($new_pass !== $new_pass_confirm) {
-        $error_message = "パスワードが一致しません。";
-    } else {
-        // セッションにパスワードを保存し、G2-3.phpに遷移
-        $_SESSION['new_pass'] = $new_pass;
-        header("Location: G2-3.php");
+    try {
+        $dbh = new PDO($dsn, $user, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $dbh->prepare("SELECT user_name FROM Users WHERE token = :token AND expires_at > NOW()");
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            $_SESSION['error_message'] = "無効なトークン、またはトークンの有効期限が切れています。";
+            header("Location: G2-1.php");
+            exit();
+        }
+    } catch (PDOException $e) {
+        $_SESSION['error_message'] = "エラーが発生しました: " . $e->getMessage();
+        header("Location: G2-1.php");
         exit();
     }
+} else {
+    $_SESSION['error_message'] = "トークンが見つかりません。";
+    header("Location: G2-1.php");
+    exit();
 }
 ?>
 
@@ -33,48 +46,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/G2-2.css"/> <!-- スタイルシート -->
-    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/G2-2.css">
     <title>パスワード再設定</title>
 </head>
 <body>
-    <!-- header挿入 -->
     <header class="header">
         <img src="img/Ciel logo.png" alt="Ciel" class="logo">
     </header>
     <div class="main">
         <h1>PASSWORD<br>RESET</h1>
-
         <?php if (!empty($error_message)): ?>
-            <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div> <!-- エラーメッセージ表示 -->
+            <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
         <?php endif; ?>
-
-        <form action="G2-2.php" method="post"> <!-- 現在のページにPOSTメソッドで送信 -->
+        <form action="G2-3.php" method="post">
+            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token']); ?>">
             <div class="input-group">
-                <label for="new_pass">新しいパスワード<span class="required">*</span></label><br>
-                <input type="password" id="new_pass" name="new_pass" placeholder="新しいパスワードを入力してください" maxlength="8" required>
-                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass')">
+                <label for="new_pass">new password<span class="required">*</span></label> 
+                <input type="password" id="new_pass" name="new_pass" maxlength="8" required>
             </div>
-
             <div class="input-group">
-                <label for="new_pass_confirm">新しいパスワード(確認)<span class="required">*</span></label><br>
-                <input type="password" id="new_pass_confirm" name="new_pass_confirm" placeholder="新しいパスワードをもう一度入力してください" maxlength="8" required>
-                <img src="img/eye.png" alt="表示切替" class="toggle-password" onclick="togglePasswordVisibility('new_pass_confirm')">
+                <label for="new_pass_confirm">new password (確認)<span class="required">*</span></label> 
+                <input type="password" id="new_pass_confirm" name="new_pass_confirm" maxlength="8" required>
             </div>
-
             <div class="button-container">
-                <button type="submit" class="button is-btn">RESET PASSWORD</button> <!-- RESET PASSWORDボタン -->
-                <button type="button" class="button is-medium" onclick="location.href='G2-1.php'">RETURN</button> <!-- RETURNボタン -->
+                <button type="submit" class="button is-btn">RESET PASSWORD</button>
+                <button type="button" class="button is-medium" onclick="location.href='G2-1.php'">RETURN</button>
             </div>
         </form>
     </div>
-
-    <script>
-        function togglePasswordVisibility(fieldId) {
-            const passwordField = document.getElementById(fieldId);
-            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-        }
-    </script>
-
 </body>
 </html>
