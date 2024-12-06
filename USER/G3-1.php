@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php require 'db-connect.php'; ?>
 
 <!DOCTYPE html>
@@ -32,20 +33,81 @@
 
     <?php
         $pdo = new PDO($connect, USER, PASS);
-        //仮で入れている
-        $user_name = 'Test2';
-        $user_pass = '';
+        $user_id =  $_SESSION['user']['user_id'];
+        $user_name =  $_SESSION['user']['user_name'];
 
         $Date = $_POST['formattedDate'] ?? date('Y-m-d');
-        $user_id = 8;
+
+        // G3-2から受け取る日付(Y-m-d)
+        $selectedDate = $_POST['selected_date'] ?? $Date;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if(isset($_POST['selected_date'])){
+                $Date = $_POST['selected_date'];
+            }else{
+                try {
+                    // $pdo = new PDO($dsn, $user, $password);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+                    $action = $_POST['action'] ?? '';
+                    $user_id = 8; // ログインユーザーのIDを取得する必要があります
+                    $todo = $_POST['todo'] ?? '';
+                    $Ddate = $_POST['formattedDate'] ?? date('Y-m-d');
+        
+                    if ($action === 'add_todo' && $todo && $Ddate) {
+                        // 現在の日付とユーザーに基づいてsort_idを計算
+                        $stmt = $pdo->prepare('SELECT COUNT(*) AS count FROM Todos WHERE user_id = ? AND input_date = ?');
+                        $stmt->execute([$user_id, $Ddate]);
+                        $sortsum = $stmt->fetchColumn();
+        
+                        // 新しいTODOを追加
+                        $insertStmt = $pdo->prepare('INSERT INTO Todos (`user_id`, `sort_id`, `todo`, `completion_flg`, `input_date`) VALUES (?, ?, ?, DEFAULT, ?)');
+                        $insertStmt->execute([$user_id, $sortsum, $todo, $Ddate]);
+        
+                        // 最新のTODOリストを取得してHTML生成
+                        $listStmt = $pdo->prepare('SELECT * FROM Todos WHERE user_id = ? AND input_date = ? ORDER BY sort_id ASC');
+                        $listStmt->execute([$user_id, $Ddate]);
+                        foreach ($listStmt as $row2) {
+                            $todo_id = $row2['todo_id'];
+                            $sort = $row2['sort_id'];
+                            $todo = htmlspecialchars($row2['todo']); // XSS防止
+                            $completion = $row2['completion_flg'];
+                            $check = ($completion == 1) ? 'checked' : '';
+        
+                            echo '
+                                <li class="normal-mode" data-id="', $todo_id, '">
+                                    <input type="checkbox" class="hide-checkbox" data-id="', $todo_id, '" ', $check, '>
+                                    <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
+                                    <span class="todo-text">', $todo, '</span>
+                                    <input type="text" class="edit-todo-input" value="', $todo, '" style="display: none; margin-left:5px;">
+                                    <button class="delete-button" style="display: none;"><img src="img/dustbox.png" style="height: 23px; width: auto;"></button>
+                                </li>
+                            ';
+                        }
+                    } else {
+                        http_response_code(400);
+                        echo '無効なリクエスト';
+                    }
+                } catch (PDOException $e) {
+                    http_response_code(500);
+                    echo 'エラー: ' . htmlspecialchars($e->getMessage());
+                }
+                exit;
+            }
+        }
     ?>
+
+
+    
+
+
+
 
     <div class="background">
     <br>
     <?php
-        //条件の中にこの画面の日付がplanの日付の中に含まれているのかを書く
-        //とりあえず日付を10/23にしてtermが機能するのか試す　今日の日付にする場合（CURDATE()）
-        $sql=$pdo->prepare('SELECT * FROM Plans WHERE user_id = ? AND start_date <= ? AND final_date >= ? AND todo_flg = 1');
+        // term
+        $sql=$pdo->prepare("SELECT *, date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b FROM Plans WHERE user_id = ? AND DATE_FORMAT(start_date, '%Y-%m-%d') <= ? AND DATE_FORMAT(final_date, '%Y-%m-%d') >= ? AND todo_flg = 0");
         $sql->execute([$user_id, $Date, $Date]);
         echo '
             <div class="term-container">
@@ -58,7 +120,7 @@
         foreach($sql as $row){
             $plan_id = $row['plan_id']; // plan_idを取得
             $plan = $row['plan'];
-            $fdate = $row['final_date'];
+            $fdate = DATE($row['final_date']);
             $date = new DateTime($fdate);    // DateTimeオブジェクトに変換
             $formattedDate = $date->format('m/d'); // 月/日 の形式に変換
             $completion = $row['completion_flg'];
@@ -79,7 +141,7 @@
         <ul id="sortable-list">
             <?php
                 //日付の条件をつけて → sortで昇順にする
-                $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ?');
+                $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ? ORDER BY sort_id ASC' );
                 $sql2->execute([$user_id, $Date]);
                 foreach($sql2 as $row2){
                     $todo_id = $row2['todo_id'];
@@ -119,25 +181,52 @@
     <footer><?php include 'menu.php'; ?></footer>
 
     <script>
+        const selectedDate = <?php echo json_encode($selectedDate); ?>; // PHP変数をJSに渡す
     document.addEventListener('DOMContentLoaded', function () {
         // Termの既存コード
         function toggleTerm() {
+            console.log('toggleTerm called');
             const content = document.getElementById('term-content');
             const arrow = document.getElementById('arrow');
             const title = document.getElementById('term-title');
 
             if (content.classList.contains('open')) {
                 content.classList.remove('open');
-                arrow.classList.remove('rotated');
                 title.classList.remove('move-to-top');
-                title.textContent = "term(2)";
+                title.textContent = "term";
+                arrow.textContent = "▼"; 
             } else {
                 content.classList.add('open');
-                arrow.classList.add('rotated');
                 title.classList.add('move-to-top');
                 title.textContent = "term";
+                arrow.textContent = "▲";
             }
         }
+
+        // termのチェックボックス更新処理
+        document.querySelectorAll('.term-container input[type="checkbox"]').forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const planId = this.dataset.id; // チェックボックスに紐づくplan_id
+                const isChecked = this.checked ? 1 : 0; // チェック状態を数値に変換
+
+                // AJAXリクエストで更新を送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_plan.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log(xhr.responseText); // 成功時のレスポンスを確認
+                    } else if (xhr.readyState === 4) {
+                        console.error('更新に失敗しました: ', xhr.status, xhr.statusText);
+                    }
+                };
+                xhr.send(`plan_id=${planId}&todo_flg=${isChecked}`);
+            });
+        });
+
+
+        // グローバルに登録
+        window.toggleTerm = toggleTerm;
 
         // タブ関連のコード
         const tabLeft = document.getElementById('tab-left');
@@ -146,7 +235,7 @@
         const sortableList = document.getElementById('sortable-list');
 
         let today = new Date();
-        let currentDay = new Date(today);
+        let currentDay = selectedDate ? new Date(selectedDate) : new Date(today);
 
         function formatDate(date) {
             const month = date.getMonth() + 1;
@@ -164,6 +253,8 @@
             tabCenter.innerText = formatDate(currentDay);
             tabRight.innerText = formatDate(tomorrow);
         }
+
+        updateTabs();
 
         // タブをクリックした際の動作
         function handleTabClick(event) {
@@ -183,6 +274,30 @@
             loadTodos(date);
         }
 
+
+        // チェックボックスのクリックイベント
+        sortableList.addEventListener('change', function (event) {
+            const target = event.target;
+            if (target.classList.contains('hide-checkbox')) {
+                const todoId = target.dataset.id;
+                const isChecked = target.checked ? 1 : 0;
+
+                // チェック状態をサーバーに送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_completion.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log('更新成功:', xhr.responseText);
+                    } else if (xhr.readyState === 4) {
+                        console.error('更新失敗:', xhr.status, xhr.statusText);
+                    }
+                };
+                xhr.send(`todo_id=${todoId}&completion_flg=${isChecked}`);
+            }
+        });
+
+
         // TODOリストを取得して更新する関数
         function loadTodos(date) {
             const xhr = new XMLHttpRequest();
@@ -194,6 +309,7 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const todos = JSON.parse(xhr.responseText);
                     const sortableList = document.getElementById('sortable-list');
+
                     sortableList.innerHTML = ''; // 現在のリストをクリア
 
                     // 新しいTODOリストを表示
@@ -370,6 +486,76 @@
             const formattedDate = getCenterTabDate();
             document.getElementById('formatted-date').value = formattedDate;
         }
+
+
+
+        const todoList = document.getElementById('todo-list');
+        const dateInput = document.getElementById('formatted-date'); // 隠しフィールドに設定される日付
+
+        // const currentDate = new Date().toISOString().split('T')[0];
+
+        // エンターキー押下時の処理
+        todoInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') { // エンターキーが押下された場合
+                event.preventDefault(); // フォーム送信を防止
+
+                const todoText = todoInput.value.trim();
+                if (!todoText) {
+                    alert('TODOを入力してください');
+                    return;
+                }
+
+                // const formattedDate = new Date().toISOString().split('T')[0]; // 現在の日付を取得 (YYYY-MM-DD)
+                const currentDate = dateInput.value; // 画面上の日付を取得
+
+                // AJAXでPHPにデータを送信
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'add_todo.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        try{
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.status === 'success') {
+                                const newTodo = response.todo;
+                                // TODOを画面に追加
+                                const li = document.createElement('li');
+                                li.className = 'normal-mode';
+                                li.setAttribute('data-id', newTodo.todo_id);
+                                li.innerHTML = `
+                                    <input type="checkbox" class="hide-checkbox" data-id="${newTodo.todo_id}">
+                                    <img src="img/grip-lines.png" class="edit-mode-icon" style="display: none;">
+                                    <span class="todo-text">${newTodo.todo}</span>
+                                    <input type="text" class="edit-todo-input" value="${newTodo.todo}" style="display: none; margin-left:5px;">
+                                    <button class="delete-button" style="display: none;">
+                                        <img src="img/dustbox.png" style="height: 23px; width: auto;">
+                                    </button>
+                                `;
+                                todoList.appendChild(li);
+
+                                todoInput.value = ''; // 入力フィールドをクリア
+                            } else {
+                                alert('エラーが発生しました: ' + response.message);
+                            }
+                        } catch(error){
+                            console.error('JSONのパースエラー:', error);
+                            console.error('サーバーからのレスポンス:', xhr.responseText);
+                        }
+                    }else if(xhr.readyState === 4){
+                        console.error('HTTPリクエストエラー:', xhr.status, xhr.statusText);
+                    }
+                };
+
+                // xhr.send(`todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(formattedDate)}`);
+                // データ送信
+                xhr.send(`action=add_todo&todo=${encodeURIComponent(todoText)}&formattedDate=${encodeURIComponent(currentDate)}`);
+            
+            }
+        });
+
+
+        
     });
 </script>
 </body>
