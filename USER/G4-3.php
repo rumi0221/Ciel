@@ -4,7 +4,8 @@
     $db = new PDO($connect, USER, PASS);
 
 	$db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $user_id = 8;
+    $user = $_SESSION['user'];
+    $user_id = $user['user_id'];
 
     $colorsql='select * from Usertags where user_id = :user_id';
         $usertag = $db->prepare($colorsql);
@@ -181,7 +182,7 @@ $plan_id = $_GET['plan_id'];
         }
     }
     echo "</div>";
-    echo '<input type="hidden" name="update" value="update">';
+    echo '<input type="hidden" name="crud" value="update">';
     echo '<input type="hidden" name="user_flg" value="false">';
     echo '<input type="hidden" name="tag_returnflg" value="true">';
     echo '<input type="hidden" name="plan_id" value="'.$plan_id.'">';
@@ -211,7 +212,6 @@ echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
         justify-content: space-between;
         padding: 10px 20px;
         background-color: #fff;
-        border-bottom: 3px solid #f8cce2; /* Pink underline */
         margin: 0 auto;
     }
  
@@ -351,7 +351,7 @@ echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
  
     }
     echo"</div>";
-    echo '<input type="hidden" name="update" value="insert">';
+    echo '<input type="hidden" name="crud" value="insert">';
     echo '<input type="hidden" name="user_flg" value="false">';
     echo '<input type="hidden" name="tag_returnflg" value="true">';
     ?>
