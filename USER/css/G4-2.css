@@ -7,16 +7,24 @@ body {
     text-align: center;
 }
 img{
-    height: 100px;
-    width: 200px;
+
+    width: 35%;
+    margin-right: 5%;
   }
-form {
+/* form {
     max-width: 400px;
-    margin: 20px auto;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+} */
+
+form {
+    width: 90%;
+    padding: 0% 5% 0% 5%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     font-size: 16px;
 }
 
@@ -30,7 +38,13 @@ h2 {
 
 /* ラベルのスタイル */
 label {
-    margin: 10px 0 5px;
+    margin: 5% 5% 0% 0%;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+}
+
+span.tag {
     font-weight: bold;
     color: #333;
 }
@@ -43,14 +57,30 @@ textarea {
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
+    background-color: white;
+    -webkit-appearance: none;/* ブラウザが定義したスタイルを解除 */
+    height: 1em;
     border-radius: 5px;
     font-size: 14px;
     text-align: center;
 }
 
+/* tagの＋ボタン */
+input#tag {
+    border: none;
+    background: none;
+    font-family: -webkit-body;
+    font-size: larger;
+}
+
+span.tagname {
+    margin-left: 2%;
+}
+
 /* ラジオボタン */
 input[type="radio"] {
     margin-right: 5px;
+    margin-left: 5%;
 }
 
 /* ラジオボタンとそのラベル */
@@ -59,6 +89,7 @@ input[type="radio"] + label {
     margin-right: 15px;
     font-weight: normal;
 }
+
 /* メモ欄 */
 textarea {
     height: 80px;
@@ -72,19 +103,14 @@ textarea {
     margin-bottom: 15px;
 }
 
-/*.cancel-buttom{
-    top:30px;
-}
-.confirm-buttom{
-    top:30px;
-}*/
-
 .header {
     display: flex;
     justify-content: space-between; /* 左右に配置 */
     align-items: center;
     border-bottom: 1px solid #ddd;
+    margin-top: -2%;
 }
+
 /* キャンセルボタンと決定ボタンのスタイル */
 .header button {
     background-color: white;
@@ -93,10 +119,40 @@ textarea {
     cursor: pointer;
 }
 
+.cancel-button {
+    margin-left: 2%;
+}
+
+input.confirm-button {
+    background-color: transparent;
+    border: none;
+    margin-right: 5%;
+    color: black;
+    font-size: larger;
+}
+
 /* 削除ボタン */
-.DeleteBtn{
+input.DeleteBtn{
     cursor: pointer;
     border: none;
     background: none;
+    color: black;
+    margin-left: 80%;
+    font-size: larger;
   }
   
+  .tag_button {
+    text-align: left;
+}
+
+div.border {
+    border: 0.5px solid;
+    color: lightgray;
+    margin-bottom: 5%;
+}
+
+form.update {
+    box-shadow: none;
+    border: none;
+    margin-top: -8%;
+}
