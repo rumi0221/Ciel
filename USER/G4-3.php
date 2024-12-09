@@ -212,7 +212,6 @@ echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
         justify-content: space-between;
         padding: 10px 20px;
         background-color: #fff;
-        border-bottom: 3px solid #f8cce2; /* Pink underline */
         margin: 0 auto;
     }
  
