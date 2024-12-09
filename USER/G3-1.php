@@ -50,7 +50,6 @@
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
                     $action = $_POST['action'] ?? '';
-                    $user_id = 8; // ログインユーザーのIDを取得する必要があります
                     $todo = $_POST['todo'] ?? '';
                     $Ddate = $_POST['formattedDate'] ?? date('Y-m-d');
         
