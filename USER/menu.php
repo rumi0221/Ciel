@@ -4,7 +4,7 @@
       <img src="img/calendar.png">
     </div>
   </a>
-  <a href="G3-1-1.php">
+  <a href="G3-1.php">
     <div class="icon">
       <img src="img/todo.png">
     </div>

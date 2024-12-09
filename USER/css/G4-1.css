@@ -8,17 +8,22 @@ body {
   background-color: #f9f9f9;
   text-align: center;
   margin: 0;
+
+  padding-bottom: 100px;
+  box-sizing: border-box;
 }
 
 img{
-  height: 70px;
-  width: 150px;
-  margin-right:80px;
+
+  height: 35%;
+  width: 50%;
+  margin-right: 20%;
 }
 
 header {
   background-color: #fff;
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 0px 10px 10px 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -52,6 +57,8 @@ header {
 
 .menu.open {
   display: block; /* openクラスが追加されたら表示 */
+  visibility: visible;
+  opacity: 1;
 }
 .menu-icon {
   cursor: pointer;
@@ -76,7 +83,13 @@ header {
   background-color: rgba(255, 255, 255, 1);
   z-index: 1000;
   position: absolute;
+
+
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease-in-out;
 }
+
 
 .menu a {
   display: block;
@@ -115,7 +128,8 @@ th {
 
 td {
   border: 1px solid #ddd;
-  height: 100px;
+  height: 100%;
+  margin-bottom: 4px;
   vertical-align: top;
   position: relative;
 }
@@ -157,19 +171,42 @@ td .tag {
   border: 2px solid purple;
 }
 
-.confirm-button{
-  margin-left: 70%;
+.button{
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-around;
+}
+
+input.reset {
+  margin: 0% 0% 0% -10%;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #000;
+  font-size: large;
+}
+
+input.confirm-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #000;
+  font-size: medium;
 }
 
 /* プラスボタンのスタイル */
 .floating-button {
   position: fixed;
+
+  top: 80%;
+  right: 8%;
+  width: 60px;
+  height: 60px;
+  background-color: #d4c1ff;
+  border: none;
+
   top: 500px;
 
-  right: 30px;
-  width: 80px;
-  height: 80px;
-  background-color:#d4c1ffde;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -191,13 +228,35 @@ td .tag {
 }
 
 th:first-child,
-td:first-child {
+.sunday {
   color: red;
 }
 
 th:last-child,
-td:last-child {
+.saturday {
   color: blue;
+}
+
+.holiday-name {
+  font-size: 10px;
+  color: rgb(9, 178, 23);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.holiday-name-hidden {
+  visibility: hidden; /* 非表示にするが、スペースは確保 */
+  height: 10px;        /* 必要なら高さを明示的に指定 */
+  padding: 3px;       /* 必要なパディングを適用 */
+}
+
+
+/* 既存のholidayColorクラスの色を調整 */
+.holidayColor .day-number {
+  color: rgb(42, 208, 44);
 }
 
 /*月カレンダー表示*/
@@ -258,13 +317,14 @@ td:last-child {
   color: gray;
 }
 
-
-/* --- */
+.schedule-column {
+  flex: 3;
+}
 
 .event {
   margin-top: 5px;
   padding: 2px;
-  color: #fff;
+  color: darkblue;
   font-size: 0.8em;
   border-radius: 4px;
   text-align: center;
@@ -277,9 +337,13 @@ td:last-child {
 
 /* ハンバーガーメニュー */
 /* -radioボタン追加- */
-.radio-none-dsplay {
-  display: none;
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
+
 /* ×追加 */
 /*メニューが閉じている時は非表示 */
 .popup-hidden {
@@ -292,5 +356,81 @@ td:last-child {
 }
 
 .close{
-  text-align: right;
+  padding-left: 90%;
 }
+
+/* ------ 予定詳細 ------ */
+#calendar-container {
+  width: 100%;
+  text-align: center;
+}
+
+#calendar-table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 90%;
+}
+
+#calendar-table th, #calendar-table td {
+  border: 1px solid #ccc;
+  padding: 0px;
+  width: 14%;
+  height: 80px;
+  text-align: center;
+}
+
+#calendar-table th {
+  background-color: #f5f5f5;
+  height: 10%;
+}
+
+h4#selected-date {
+  margin-bottom: 5%;
+}
+
+.event {
+  background-color: #e6a8d7;
+  color: black;
+  margin: 2px 0;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#event-details {
+  margin-top: 20px;
+    padding: 10px;
+    margin: 20px auto;
+    background-color: white;
+    width: 85%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.event-time {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+li {
+  list-style: none;
+  display: flex;
+}
+
+/* 詳細予定リンクボタン */
+button.link-style-btn{
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #0033cc;
+  font-size: larger;
+}
+
+span.memofont {
+  font-size: smaller;
+  color: gray;
+}
+
