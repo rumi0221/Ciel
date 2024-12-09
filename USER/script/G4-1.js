@@ -157,14 +157,10 @@ function generateCalendar(year, month) {
 function showEvents(year, month, day) {
     const selectedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     console.log(`Showing events for ${selectedDate}`);
-
-     // 祝日情報を取得
-     const holidayName = holidays[selectedDate] || ""; // 祝日名を取得（ない場合は空文字）
-
     const eventList = events.filter(event => event.date === selectedDate);
 
     document.getElementById("event-details").classList.remove("hidden");
-    document.getElementById("selected-date").innerText = `${year}年${month}月${day}日 ${holidayName}`;
+    document.getElementById("selected-date").innerText = `${year}年${month}月${day}日`;
 
     const eventListContainer = document.getElementById("event-list");
     eventListContainer.innerHTML = "";
