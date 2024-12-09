@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php require 'db-connect.php'; ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -197,8 +198,23 @@
 
             // 日付をクリックしたときのイベントを追加
             date.addEventListener("click", (e) => {
-                    alert(`選択された日付: ${e.target.dataset.date}`);
-                    // ここで取得した日付をさらに処理に渡すことが可能
+                const selectedDate = e.target.dataset.date; // クリックされた日付 (YYYY-MM-DD形式)
+
+                // フォームを動的に作成してPOSTリクエストを送信
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "G3-1.php";
+
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "selected_date";
+                input.value = selectedDate; // クリックされた日付をセット
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+
+                // フォームを送信してページ遷移
+                form.submit();
             });
 
             calendar.appendChild(date);
