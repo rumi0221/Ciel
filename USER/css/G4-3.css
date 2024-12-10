@@ -32,7 +32,7 @@ body {
     list-style: none;
     padding: 0;
     position: relative;
-    box-shadow: 0 0 30px #ccc;
+    /* box-shadow: 0 0 30px #ccc; */
     color: #333;
 }
 .tag-list::before{

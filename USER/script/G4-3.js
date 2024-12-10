@@ -33,3 +33,6 @@ tagItems.forEach(item => {
     });
 });
 
+function goBackUpdate() {
+    window.location.href = document.referrer;
+}

@@ -67,3 +67,74 @@
 function NextPage() {
     window.location.href = "G4-1.php";
 }
+
+function InputTagPage(plan, startDate, finalDate, memo, termName) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'G4-3.php';
+
+    // const planIdValue = document.getElementById(planId).value;
+    const title = document.getElementById(plan).value ?? null ;
+    const start = document.getElementById(startDate).value ?? null;
+    const final = document.getElementById(finalDate).value ?? null;
+    const memoValue = document.getElementById(memo).value ?? null;
+    const crud = "insert";
+
+ // ラジオボタンの値を取得
+ const todoFlg = getRadioValue(termName);
+
+    const fields = { title, start, final, memoValue, todoFlg, crud };
+
+       // フィールド内容をデバッグ
+       console.log(fields);
+
+    for (const [name, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function UpdateTagPage(plan_id,plan, startDate, finalDate, memo, termName) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'G4-3.php';
+
+    const planId = plan_id;
+    const title = document.getElementById(plan).value ?? null ;
+    const start = document.getElementById(startDate).value ?? null;
+    const final = document.getElementById(finalDate).value ?? null;
+    const memoValue = document.getElementById(memo).value ?? null;
+    const crud = "update";
+
+ // ラジオボタンの値を取得
+ const todoFlg = getRadioValue(termName);
+
+    const fields = {planId, title, start, final, memoValue, todoFlg, crud };
+
+    for (const [name, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function getRadioValue(name) {
+    const radios = document.getElementsByName(name);
+    for (const radio of radios) {
+        if (radio.checked) {
+            return radio.value;
+        }
+    }
+    return null; // ラジオボタンが選択されていない場合
+}

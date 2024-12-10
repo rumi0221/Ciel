@@ -7,6 +7,23 @@
     $user = $_SESSION['user'];
     $user_id = $user['user_id'];
 
+    // POSTデータをセッションに保存
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_SESSION['plan_data'] = [
+        'plan_id' => $_POST['planId'] ?? null,
+        'plan' => $_POST['title'] ?? null,
+        'start_date' => $_POST['start'] ?? null,
+        'final_date' => $_POST['final'] ?? null,
+        'memo' => $_POST['memoValue'] ?? null,
+        'todo_flg' => $_POST['todoFlg'] ?? null,
+        'crud' => $_POST['crud'] ?? null,
+    ];
+
+    //sessionデータ検証用
+// echo '<pre>'; print_r($_SESSION['plan_data']); echo '</pre>';
+
+    }
+
     $colorsql='select * from Usertags where user_id = :user_id';
         $usertag = $db->prepare($colorsql);
         $usertag->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -25,9 +42,9 @@
             $i++;
         }
 
-if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['plan_id'])){
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['plan_id']) !== null && $_SESSION['plan_data']['crud'] === "update"){
 //update
-$plan_id = $_GET['plan_id'];
+$plan_id = $_SESSION['plan_data']['plan_id'];
 ?>
     <!DOCTYPE html>
 <html lang="ja">
@@ -185,17 +202,25 @@ $plan_id = $_GET['plan_id'];
     echo '<input type="hidden" name="crud" value="update">';
     echo '<input type="hidden" name="user_flg" value="false">';
     echo '<input type="hidden" name="tag_returnflg" value="true">';
-    echo '<input type="hidden" name="plan_id" value="'.$plan_id.'">';
+    // echo '<input type="hidden" name="plan_id" value="'.$plan_id.'">';
+    
+    echo '<input type="hidden" name="plan_id" value="'.$_SESSION['plan_data']['plan_id'].'">';
+    echo '<input type="hidden" name="plan" value="'.$_SESSION['plan_data']['plan'].'">';
+    echo '<input type="hidden" name="start_date" value="'.$_SESSION['plan_data']['start_date'].'">';
+    echo '<input type="hidden" name="final_date" value="'.$_SESSION['plan_data']['final_date'].'">';
+    echo '<input type="hidden" name="memo" value="'.$_SESSION['plan_data']['memo'].'">';
+    echo '<input type="hidden" name="todo_flg" value="'.$_SESSION['plan_data']['todo_flg'].'">';
     ?>
 </ul>
-echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
+<!-- echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">'; -->
+<input id="tag_color_no" type="hidden" name="tag_id" value="">
 </form>
 <script src="script/G4-3.js"></script>
 </body>
 </html>
  
 <?php
-}else{
+}else if($_POST['crud'] == "insert"){
     // insert遷移
 ?>
     <!DOCTYPE html>
@@ -354,9 +379,16 @@ echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
     echo '<input type="hidden" name="crud" value="insert">';
     echo '<input type="hidden" name="user_flg" value="false">';
     echo '<input type="hidden" name="tag_returnflg" value="true">';
+
+    echo '<input type="hidden" name="plan" value="'.$_SESSION['plan_data']['plan'].'">';
+    echo '<input type="hidden" name="start_date" value="'.$_SESSION['plan_data']['start_date'].'">';
+    echo '<input type="hidden" name="final_date" value="'.$_SESSION['plan_data']['final_date'].'">';
+    echo '<input type="hidden" name="memo" value="'.$_SESSION['plan_data']['memo'].'">';
+    echo '<input type="hidden" name="todo_flg" value="'.$_SESSION['plan_data']['todo_flg'].'">';
     ?>
 </ul>
-echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">';
+<!-- echo '<input id="tag_color_no" type="hidden" name="tag_id" value="">'; -->
+<input id="tag_color_no" type="hidden" name="tag_id" value="">
 </form>
 <script src="script/G4-3.js"></script>
 </body>
