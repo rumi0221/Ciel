@@ -387,6 +387,62 @@
                 const checkbox = item.querySelector('.hide-checkbox');
                 const editModeIcon = item.querySelector('.edit-mode-icon');
 
+                // 入力欄にフォーカスが外れたときに変更を保存
+                editInput.addEventListener('blur', function () {
+                    const newTodoText = editInput.value.trim();
+
+                    if (newTodoText !== todoText.textContent.trim()) {
+                        // TODO文を更新
+                        todoText.textContent = newTodoText;
+
+                        // サーバーに更新リクエストを送信
+                        const todoId = item.dataset.id;
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'update_todo.php', true);
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                        xhr.onload = function () {
+                            if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
+                                console.log('TODO updated successfully');
+                            } else {
+                                console.error('Failed to update TODO');
+                            }
+                        };
+
+                        xhr.send('todo_id=' + todoId + '&todo=' + encodeURIComponent(newTodoText));
+                    }
+
+                    // 入力欄を非表示にして元の状態に戻す
+                    editInput.style.display = 'inline-block';
+                    todoText.style.display = 'none';
+                });
+
+                // TODO文をクリックすると編集モードに
+                todoText.addEventListener('click', function () {
+                    todoText.style.display = 'none';
+                    editInput.style.display = 'inline-block';
+                    editInput.focus();
+                });
+            
+
+
+
+                deleteButton.addEventListener('click', function () {
+                    const todoId = item.dataset.id;
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'delete_todo.php', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    
+                    xhr.onload = function () {
+                        if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
+                            item.remove(); // リストから削除
+                        }
+                    };
+                    xhr.send('todo_id=' + todoId); // todoを削除
+                });
+
+
                 if (isEditMode) {
                     item.classList.add('edit-mode');
                     todoText.style.display = 'none';
@@ -415,25 +471,6 @@
                     item.classList.remove('edit-mode');
                     item.removeAttribute('draggable');
                 }
-            });
-
-            if (!deleteButton) {
-                console.error('Delete button not found for item:', item);
-                return; // deleteButton が見つからない場合、スキップ
-            }
-
-
-            deleteButton.addEventListener('click', function () {
-                const todoId = item.dataset.id;
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'delete_todo.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onload = function () {
-                    if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
-                        item.remove(); // リストから削除
-                    }
-                };
-                xhr.send('todo_id=' + todoId); // todoを削除
             });
 
             if (isEditMode) {
