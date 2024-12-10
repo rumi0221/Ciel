@@ -165,9 +165,7 @@
             <form id="todo-form" class="todo-form">
                 <input type="text" class="todo-inp" id="todo-input" placeholder=" TODOを追加する">
                 <input type="hidden" id="formatted-date" name="formattedDate"> <!-- タブの日付をここにセット -->
-                <button class="todo-btn" id="addTodo" style="display: none;">
-                    <img src="img/add.png" style="height:30px; width:30px;">
-                </button>
+                <button class="todo-btn" id="addTodo" style="display: none;"></button>
                 <button class="todo-btn" id="toggleMode">
                     <img src="img/edit.png" style="height:30px; width:30px;">
                 </button>
@@ -181,6 +179,15 @@
 
     <script>
         const selectedDate = <?php echo json_encode($selectedDate); ?>; // PHP変数をJSに渡す
+        function setFormattedDate() {
+            const formattedDateElement = document.getElementById('formatted-date');
+            if (formattedDateElement) {
+                const formattedDate = getCenterTabDate();
+                formattedDateElement.value = formattedDate;
+            } else {
+                console.error('Formatted date input element not found');
+            }
+        }
     document.addEventListener('DOMContentLoaded', function () {
         // Termの既存コード
         function toggleTerm() {
@@ -410,6 +417,25 @@
                 }
             });
 
+            if (!deleteButton) {
+                console.error('Delete button not found for item:', item);
+                return; // deleteButton が見つからない場合、スキップ
+            }
+
+
+            deleteButton.addEventListener('click', function () {
+                const todoId = item.dataset.id;
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'delete_todo.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
+                        item.remove(); // リストから削除
+                    }
+                };
+                xhr.send('todo_id=' + todoId); // todoを削除
+            });
+
             if (isEditMode) {
                 enableDragAndDrop();
             }
@@ -418,8 +444,10 @@
         // ドラッグ＆ドロップ処理
         function enableDragAndDrop() {
             let draggedItem = null;
+            console.log(sortableList); // null の場合、正しい要素が取得できていません
 
             sortableList.addEventListener('dragstart', function (e) {
+                console.log('dragstart event triggered');
                 if (e.target.tagName === 'LI') {
                     draggedItem = e.target;
                     draggedItem.classList.add('dragging');
@@ -435,7 +463,7 @@
 
             sortableList.addEventListener('dragover', function (e) {
                 e.preventDefault();
-                const closestItem = getClosestListItem(e.clientY);
+                const closestItem = getClosestListItem(e.clientY); // ドロップ位置を決定
                 if (closestItem && closestItem !== draggedItem) {
                     sortableList.insertBefore(draggedItem, closestItem.nextElementSibling);
                 }
@@ -444,7 +472,7 @@
             sortableList.addEventListener('drop', function (e) {
                 e.preventDefault();
                 if (draggedItem !== null) {
-                    updateSortOrder();
+                    updateSortOrder();  // 並び順をデータベースに送信する
                 }
             });
         }
@@ -469,7 +497,7 @@
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', 'update_sort.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.send('todo_id=' + todoId + '&sort_id=' + index);
+                xhr.send('todo_id=' + todoId + '&sort_id=' + index);    // 並び順を更新
             });
         }
 
