@@ -428,15 +428,19 @@
 
 
                 deleteButton.addEventListener('click', function () {
-                    const todoId = item.dataset.id;
+                    const todoId = item.dataset.id; // TODO IDを取得
 
+                    // サーバーに削除リクエストを送信
                     const xhr = new XMLHttpRequest();
                     xhr.open('POST', 'delete_todo.php', true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     
                     xhr.onload = function () {
                         if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
+                            console.log('TODO deleted successfully');
                             item.remove(); // リストから削除
+                        }else{
+                            console.error('Failed to delete TODO');
                         }
                     };
                     xhr.send('todo_id=' + todoId); // todoを削除
