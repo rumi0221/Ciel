@@ -505,8 +505,10 @@
             sortableList.addEventListener('dragover', function (e) {
                 e.preventDefault();
                 const closestItem = getClosestListItem(e.clientY); // ドロップ位置を決定
+
+                // closestItemが存在する場合のみinsertBeforeを実行
                 if (closestItem && closestItem !== draggedItem) {
-                    sortableList.insertBefore(draggedItem, closestItem.nextElementSibling);
+                    sortableList.insertBefore(draggedItem, closestItem.nextElementSibling || closestItem);
                 }
             });
 
@@ -520,6 +522,9 @@
 
         function getClosestListItem(y) {
             const items = [...sortableList.querySelectorAll('li:not(.dragging)')];
+            if (items.length === 0) return null; // リストが空ならnullを返す
+
+
             return items.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
                 const offset = y - box.top - box.height / 2;
