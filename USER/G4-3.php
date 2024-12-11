@@ -30,7 +30,7 @@
         $usertag->execute();
         $usertags = $usertag->fetchAll(PDO::FETCH_ASSOC);
  
-        $colorsql = 'SELECT * FROM Tags';
+        $colorsql = 'SELECT * FROM Tags limit 12';
             $colorstmt = $db->prepare($colorsql);
             $colorstmt->execute();
             $colorresults = $colorstmt->fetchAll(PDO::FETCH_ASSOC);
@@ -71,9 +71,9 @@ $plan_id = $_SESSION['plan_data']['plan_id'];
         cursor: pointer;
     }
  
-    .logo {
+    /* .logo { */
         height: 40px; /* Adjust height as needed */
-    }
+    /* } */
  
     .headersubmit {
         background: none;
@@ -245,10 +245,6 @@ $plan_id = $_SESSION['plan_data']['plan_id'];
         border: none;
         font-size: 20px;
         cursor: pointer;
-    }
- 
-    .logo {
-        height: 40px; /* Adjust height as needed */
     }
  
     .headersubmit {

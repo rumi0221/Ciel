@@ -21,6 +21,11 @@ body {
     margin: 0;
 
 }
+
+.logo {
+    height: 40%; /* Adjust height as needed */
+}
+
 .confirm-button{
     margin-left: 70%;
     text-decoration: none;
@@ -28,6 +33,15 @@ body {
     position: relative;
     top: -30px;
 }
+
+.headersubmit {
+    color: black;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 .tag-list {
     list-style: none;
     padding: 0;

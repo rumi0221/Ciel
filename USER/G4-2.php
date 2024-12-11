@@ -225,11 +225,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
     //insert処理
     if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['user_flg'] == 'true'){
 
-        if(isset($_POST['tag'])){
+        if(isset($_POST['tag']) > 0 && isset($_POST['tag']) < 13){
             $tag = $_POST["tag"];
         }else{
             $tag = 13;
         }
+// echo var_dump($tag);
 
         $user = $_SESSION['user'];
         
@@ -244,7 +245,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
 
             $sql = 'INSERT INTO Plans 
                     (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) 
-                    VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,:tag)';
+                    VALUES (:user_id, :title, :start, :final, :memo,:todo_flg,:tag)';
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
             $stmt->bindParam(':title', $title);
@@ -321,6 +322,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%;margin: 5px 0% -1% -15%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span><br><br>";
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
+
+echo var_dump($tag_id);
 
                     echo '<div class="border"></div>';
 

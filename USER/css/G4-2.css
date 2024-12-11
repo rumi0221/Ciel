@@ -69,7 +69,7 @@ textarea {
 input#tag {
     border: none;
     background: none;
-    font-family: -webkit-body;
+    /* font-family: -webkit-body; */
     font-size: larger;
 }
 
