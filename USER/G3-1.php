@@ -137,7 +137,7 @@
 
     ?>
 
-        <ul id="sortable-list">
+        <ul id="sortable-list" style="padding-top: 10px;">
             <?php
                 //日付の条件をつけて → sortで昇順にする
                 $sql2=$pdo->prepare('select * from Todos where user_id = ? and input_date = ? ORDER BY sort_id ASC' );
@@ -489,10 +489,27 @@
 
             sortableList.addEventListener('dragstart', function (e) {
                 console.log('dragstart event triggered');
-                if (e.target.tagName === 'LI') {
-                    draggedItem = e.target;
-                    draggedItem.classList.add('dragging');
-                }
+
+                    // ドラッグ対象をLI要素のみに限定
+                    const target = e.target.closest('li'); // 親のLIを取得
+                    if (target && target.tagName === 'LI') {
+                        draggedItem = target;
+                        console.log('Dragged Item:', draggedItem);
+                        draggedItem.classList.add('dragging');
+                    } else {
+                        console.warn('Drag started on non-LI element');
+                        e.preventDefault(); // 非LI要素の場合はドラッグをキャンセル
+                    }
+
+                // // ドラッグ対象を確認
+                // if (e.target && e.target.tagName === 'LI') {
+                //     draggedItem = e.target;
+                //     console.log('Dragged Item:', draggedItem);
+                //     draggedItem.classList.add('dragging');
+                // } else {
+                //     console.warn('Drag started on non-LI element');
+                //     e.preventDefault(); //　不正な要素ではドラッグを防止
+                // }
             });
 
             sortableList.addEventListener('dragend', function () {
@@ -503,13 +520,35 @@
             });
 
             sortableList.addEventListener('dragover', function (e) {
-                e.preventDefault();
+                e.preventDefault(); // ドロップ可能にする
                 const closestItem = getClosestListItem(e.clientY); // ドロップ位置を決定
 
-                // closestItemが存在する場合のみinsertBeforeを実行
-                if (closestItem && closestItem !== draggedItem) {
-                    sortableList.insertBefore(draggedItem, closestItem.nextElementSibling || closestItem);
+                // closestItemがnullの場合は何もしない
+                if (!closestItem) {
+                    console.warn('No closestItem found, skipping insert.');
+                    return;
                 }
+
+   
+                // ドラッグ対象が正しくない場合にスキップ
+                if (!draggedItem || closestItem === draggedItem) {
+                    console.warn('Cannot insert before itself or draggedItem is null.');
+                    return;
+                }
+
+                // 要素を移動
+                console.log(`Inserting ${draggedItem.textContent} before ${closestItem.textContent}`);
+                sortableList.insertBefore(draggedItem, closestItem);
+
+
+                // // デバッグ用ログ
+                // console.log('closestItem:', closestItem);
+                // console.log('draggedItem:', draggedItem);
+
+                // // closestItemが存在する場合のみinsertBeforeを実行
+                // if (closestItem && closestItem !== draggedItem) {
+                //     sortableList.insertBefore(draggedItem, closestItem.nextElementSibling || closestItem);
+                // }
             });
 
             sortableList.addEventListener('drop', function (e) {
@@ -522,18 +561,37 @@
 
         function getClosestListItem(y) {
             const items = [...sortableList.querySelectorAll('li:not(.dragging)')];
-            if (items.length === 0) return null; // リストが空ならnullを返す
+            if (items.length === 0){
+                console.warn('No items available for comparison.');
+                return null; // リストが空ならnullを返す
+            } 
 
+            let closest = null;
+            let closestOffset = Number.POSITIVE_INFINITY;
 
-            return items.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
+            items.forEach(item => {
+                const box = item.getBoundingClientRect();
+                const offset = Math.abs(y - (box.top + box.height / 2)); // 中央点を基準に計算
+
+                if (offset < closestOffset) {
+                    closestOffset = offset;
+                    closest = item;
                 }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
+            });
+
+            // console.log('Closest item:', closest ? closest.textContent : 'None');
+            // return closest;
+
+
+            // return items.reduce((closest, child) => {
+            //     const box = child.getBoundingClientRect();
+            //     const offset = y - box.top - box.height / 2;
+            //     if (offset < 0 && offset > closest.offset) {
+            //         return { offset: offset, element: child };
+            //     } else {
+            //         return closest;
+            //     }
+            // }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
         function updateSortOrder() {
