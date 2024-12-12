@@ -10,5 +10,7 @@ if (isset($_POST['todo_id']) && isset($_POST['sort_id'])) {
     $sql->execute([$sort_id, $todo_id]);
 
     echo 'success';
+} else {
+    echo 'error';
 }
 ?>
