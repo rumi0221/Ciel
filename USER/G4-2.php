@@ -172,6 +172,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span>";
                     echo '</div><br>';
+                    echo '<input type="hidden" name="tag" value="' , $color_id ,'">';
 
                     echo '<div class="border"></div>';
                     
