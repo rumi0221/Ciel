@@ -176,7 +176,7 @@ $plan_id = $_SESSION['plan_data']['plan_id'];
 <body>
  
 <header class="header">
-    <button type="button" onclick="history.back()" class="headerbutton">←</button>
+    <!-- <button type="button" onclick="history.back()" class="headerbutton">←</button> -->
     <img src="img/Ciel logo.png" alt="Ciel" class="logo">
     <input type="submit" value="決定" form="select" class="headersubmit">
 </header>
@@ -348,7 +348,7 @@ $plan_id = $_SESSION['plan_data']['plan_id'];
 <body>
  
 <header class="header">
-    <button type="button" onclick="history.back()" class="headerbutton">←</button>
+    <!-- <button type="button" onclick="goBackUpdate()" class="headerbutton">←</button> -->
     <img src="img/Ciel logo.png" alt="Ciel" class="logo">
     <input type="submit" value="決定" form="select" class="headersubmit">
 </header>

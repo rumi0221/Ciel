@@ -166,7 +166,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
                     $Usertagstmt->execute();
                     $Usertagresults = $Usertagstmt->fetch(PDO::FETCH_ASSOC);
 
-                    echo '<input class="button" onclick="UpdateTagPage(\'' . $plan_id . '\', \'title\', \'start\', \'end\', \'memo\', \'term\')" id="tag" name="tag" value="＋">';
+                    echo '<input class="button" onclick="UpdateTagPage(\'' . $plan_id . '\', \'title\', \'start\', \'end\', \'memo\', \'term\')" id="tag" name="tagbutton" value="＋">';
 
                     // echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
@@ -224,13 +224,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
 }else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "insert"){
     //insert処理
     if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['user_flg'] == 'true'){
-
-        if(isset($_POST['tag']) > 0 && isset($_POST['tag']) < 13){
-            $tag = $_POST["tag"];
-        }else{
+// echo '<pre>';print_r($_POST['tag']); echo '</pre>';
+        // if(isset($_POST['tag']) > 0 && isset($_POST['tag']) < 13){
+        //     $tag = $_POST["tag"];
+        // }else{
+        //     $tag = 13;
+        // }
+        if (isset($_POST['tag']) && filter_var($_POST['tag'], FILTER_VALIDATE_INT) && $_POST['tag'] > 0 && $_POST['tag'] < 13) {
+            $tag = (int)$_POST['tag'];
+        } else {
             $tag = 13;
         }
-// echo var_dump($tag);
 
         $user = $_SESSION['user'];
         
@@ -317,13 +321,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
 
                     // echo '<div class = "tag_button">';
                     ?>
-                    <input class="button" onclick="InputTagPage('title', 'start', 'end', 'memo', 'term')" id="tag" name="tag" value="＋">
+                    <input class="button" onclick="InputTagPage('title', 'start', 'end', 'memo', 'term')" id="tag" name="tagbutton" value="＋">
                     <?php
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%;margin: 5px 0% -1% -15%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span><br><br>";
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
 
-echo var_dump($tag_id);
+// echo '<pre>';print_r($_POST); echo '</pre>';
 
                     echo '<div class="border"></div>';
 
@@ -356,7 +360,7 @@ echo var_dump($tag_id);
                     <div class = "tag_button">
                     <span class="tag">タグ選択:</span>
                     <!-- <input class="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋"><br><br> -->
-                    <input class="button" onclick="InputTagPage('title', 'start', 'end', 'memo', 'term')" id="tag" name="tag" value="＋">
+                    <input class="button" onclick="InputTagPage('title', 'start', 'end', 'memo', 'term')" id="tag" name="tagbutton" value="＋">
 
             </div>
 

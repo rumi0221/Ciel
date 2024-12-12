@@ -34,6 +34,3 @@ tagItems.forEach(item => {
 });
 
 //戻る
-function goBackUpdate() {
-    window.location.href = document.referrer;
-}

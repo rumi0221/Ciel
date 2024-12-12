@@ -159,3 +159,7 @@ button#click-btn{
   cursor: pointer;
   border-radius: 10px;
 }
+
+h2 {
+  font-family: monospace;
+}
