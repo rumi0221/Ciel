@@ -93,8 +93,9 @@ $colorstmt->execute();
 $colorresults = $colorstmt->fetchAll(PDO::FETCH_ASSOC); 
 
 // タグ名の準備
-$tagsql = 'SELECT * FROM Usertags';
+$tagsql = 'SELECT * FROM Usertags where user_id = :user_id';
 $tagstmt = $db->prepare($tagsql);
+$tagstmt->bindParam(':user_id',$user_id,PDO::PARAM_INT);
 $tagstmt->execute();
 $tags = $tagstmt->fetchAll(PDO::FETCH_ASSOC);
 
