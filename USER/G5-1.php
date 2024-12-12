@@ -123,7 +123,7 @@
                     <div id="close">x</div>
                       <h2>ログアウトしますか？</h2>
                       <form action="G5-1.php" method="POST">
-                          <input type="submit" value="ログアウト" class="logoutsubmit">
+                          <input type="submit" value="logout" class="logoutsubmit">
                           <input type="hidden" name="logout_flg" value="true">
                       </form>
                     </div>
