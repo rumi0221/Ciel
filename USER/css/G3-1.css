@@ -79,12 +79,11 @@ li input[type="checkbox"] {
     margin-right: 10px; /* チェックボックスとテキストの間に適度なスペースを調整 */
 }
 
-li.dragging {
-    opacity: 0.5;/* ドラッグ中のアイテムを半透明に */
+li[draggable="true"] {
+    cursor: grab;
 }
-
-li:not(.dragging) {
-    transition: transform 0.2s ease; /* 他のアイテムがスムーズに動くように */
+li.dragging {
+    opacity: 0.5; /* ドラッグ中の要素を半透明に */
 }
 
 .background {
