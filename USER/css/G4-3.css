@@ -21,6 +21,13 @@ body {
     margin: 0;
 
 }
+
+.logo {
+    height: 40%; /* Adjust height as needed */
+    margin-left: auto;
+    margin-right: 20%;
+}
+
 .confirm-button{
     margin-left: 70%;
     text-decoration: none;
@@ -28,11 +35,20 @@ body {
     position: relative;
     top: -30px;
 }
+
+.headersubmit {
+    color: black;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 .tag-list {
     list-style: none;
     padding: 0;
     position: relative;
-    box-shadow: 0 0 30px #ccc;
+    /* box-shadow: 0 0 30px #ccc; */
     color: #333;
 }
 .tag-list::before{
