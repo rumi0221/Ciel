@@ -86,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
                 <h2>予定更新</h2>
             <?php
                 
-                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
+                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id']) && filter_var($_POST['tag_id'], FILTER_VALIDATE_INT) && $_POST['tag_id'] > 0 && $_POST['tag_id'] < 13){
 
                     //更新後   
                     echo '<input type="text" value="' .$_POST['plan'].'" id="title" name="title" required><br><br>';
@@ -172,6 +172,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span>";
                     echo '</div><br>';
+                    echo '<input type="hidden" name="tag" value="' , $color_id ,'">';
 
                     echo '<div class="border"></div>';
                     
@@ -295,7 +296,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
             <div class = "tag_button">
             <span class="tag">タグ選択:</span> -->
             <?php 
-                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
+                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id']) && filter_var($_POST['tag_id'], FILTER_VALIDATE_INT) && $_POST['tag_id'] > 0 && $_POST['tag_id'] < 13){
 
                     echo '<input type="text" value="' .$_POST['plan'].'" id="title" name="title" required><br><br>';
 

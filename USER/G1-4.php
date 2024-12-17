@@ -47,30 +47,29 @@ try {
         $user_id = $user['user_id'];  // 新規登録されたユーザーのIDを取得
 
         // Tagsテーブルから全てのタグを取得
-        $stmt = $dbh->prepare("SELECT * FROM Tags LIMIT 12");
-        $stmt->execute();
-        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
+        $tagssql = "SELECT * FROM Tags";
+        $tagsstmt = $dbh->prepare($tagssql);
+        $tagsstmt->execute();
+        $tags = $tagsstmt->fetchAll(PDO::FETCH_ASSOC);
 
         // usertagsテーブルに挿入
-        // Usertagsテーブルに挿入
-
+        
         foreach ($tags as $tag) {
-            // 既に同じ user_id と tag_id のペアが存在するかチェック
-            $stmt = $dbh->prepare("SELECT COUNT(*) FROM Usertags WHERE user_id = :user_id AND tag_id = :tag_id");
-            $stmt->bindParam(':user_id', $user_id);
-            $stmt->bindParam(':tag_id', $tag['tag_id']);
-            $stmt->execute();
-            $count = $stmt->fetchColumn();
+             // 重複チェック
+            $checksql = "SELECT COUNT(*) FROM Usertags WHERE user_id = :user_id AND tag_id = :tag_id";
+            $checkstmt = $dbh->prepare($checksql);
+            $checkstmt->bindParam(':user_id', $user_id);
+            $checkstmt->bindParam(':tag_id', $tag['tag_id']);
+            $checkstmt->execute();
+            $exists = $checkstmt->fetchColumn();
 
-            // 存在しない場合のみ INSERT を実行
-            if ($count == 0) {
-                $stmt = $dbh->prepare("INSERT INTO Usertags (user_id, tag_id, tag_name) VALUES (:user_id, :tag_id, :tag_name)");
-                $stmt->bindParam(':user_id', $user_id);
-                $stmt->bindParam(':tag_id', $tag['tag_id']);
-                $stmt->bindParam(':tag_name', $tag['tag_name']);
-                $stmt->execute();
+            if ($exists == 0) { // データが存在しない場合のみ挿入
+                $tagsql = "INSERT INTO Usertags (user_id, tag_id, tag_name) VALUES (:user_id, :tag_id, :tag_name)";
+                $tagstmt = $dbh->prepare($tagsql);
+                $tagstmt->bindParam(':user_id', $user_id);
+                $tagstmt->bindValue(':tag_id', $tag['tag_id']);
+                $tagstmt->bindValue(':tag_name', $tag['tag_name']);
+                $tagstmt->execute();
             }
         }
 

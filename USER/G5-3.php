@@ -121,8 +121,8 @@
                 //usertagテーブル出力
                 $i = 0;
                 foreach ($colorresults as $colorresult) {
-                    echo "<div style='display: flex; flex-wrap: wrap;'>";
-                    echo "<div style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
+                    echo "<div class='usertag' style='display: flex; flex-wrap: wrap;'>";
+                    echo "<div class='tagcolor' style='display: inline-block; background-color: #" . htmlspecialchars($colorresult["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 5px;'></div>";
                     echo '<input type="text" name="tag_name_' . $i+1 . '"value="'. htmlspecialchars($tag_name[$i]).'"required>';
                     echo '<input type="hidden" name="tag_id_' . $i+1 . '"value="'. htmlspecialchars($tag_id[$i]).'">';
                     echo "</div>";
