@@ -8,7 +8,7 @@
     $user_id = $user['user_id'];
 
     //crud分け
-if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
+if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] === "update" ){
     $user = $_SESSION['user'];
     $user_id = $user['user_id'];
     //update処理 OR updatehtml
@@ -33,6 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
             $sql = 'update Plans set 
                     plan = :title, start_date = :start, final_date = :final, memo = :memo, todo_flg = :todo_flg, usertag_id = :tag
                     where plan_id=:plan_id && user_id=:user_id';
+
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
             $stmt->bindParam(':plan_id', $plan_id);
@@ -61,6 +62,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
     
         $plans = $stmt->fetch(PDO::FETCH_ASSOC);
 
+//POST送信検証用        
+// echo '<pre>';print_r($_POST); echo '</pre>';
+
     ?>
     <!DOCTYPE html>
     <html lang="ja">
@@ -81,16 +85,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
                 <h2>予定更新</h2>
             <?php
-            
-                echo '<input type="text" value="' .$plans['plan'].'" id="title" name="title" required><br><br>';
-
-                echo '<div class="border"></div>';
-
-                echo '<div class = "tag_button">';
-                echo "<span class='tag'>タグ選択:</span>";
                 
-                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
-                    //更新後
+                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id']) && filter_var($_POST['tag_id'], FILTER_VALIDATE_INT) && $_POST['tag_id'] > 0 && $_POST['tag_id'] < 13){
+
+                    //更新後   
+                    echo '<input type="text" value="' .$_POST['plan'].'" id="title" name="title" required><br><br>';
+
+                    echo '<div class="border"></div>';
+
+                    echo '<div class = "tag_button">';
+                    echo "<span class='tag'>タグ選択:</span>";
+                    
                     $tag_id = $_POST['tag_id'];
                     $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
                     $colorstmt = $db->prepare($colorsql);
@@ -106,13 +111,46 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $Usertagstmt->execute();
                     $Usertagresults = $Usertagstmt->fetch(PDO::FETCH_ASSOC);
                     
-                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
+                    echo '<input class="button" onclick="UpdateTagPage(\'' . $plan_id . '\', \'title\', \'start\', \'end\', \'memo\', \'term\')" id="tag" name="tag" value="＋">';
+
+                    // echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span>";
                     echo '</div><br>';
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
+
+                    echo '<div class="border"></div>';
+                    
+                    echo "<label>TERMに追加する:</label>";
+                    if($_POST['todo_flg'] == 1){
+                        echo '<input type="radio" id="term_yes" name="term" value="1" checked>YES';
+                        echo '<input type="radio" id="term_no" name="term" value="0">NO<br><br>';
+                    }else{
+                        echo '<input type="radio" id="term_yes" name="term" value="1">YES';
+                        echo '<input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>';
+                    }
+
+                    echo '<div class="border"></div>';
+
+                    echo '<label for="start">開始日時:</label>';
+                    echo '<input type="datetime-local" id="start" name="start" required value="' , $_POST['start_date'] ,'" ><br>';
+
+                    echo '<label for="end">終了日時:</label>';
+                    echo '<input type="datetime-local" id="end" name="end" value="' , $_POST['final_date'] ,'" required><br><br>';
+
+                    echo '<div class="border"></div>';
+
+                    echo '<textarea id="memo" name="memo">' .$_POST['memo']. '</textarea><br><br>';
                 }else{
-                    //更新前
+//更新前
+
+                    echo '<input type="text" value="' .$plans['plan'].'" id="title" name="title" required><br><br>';
+
+                    echo '<div class="border"></div>';
+
+                    echo '<div class = "tag_button">';
+                    echo "<span class='tag'>タグ選択:</span>";
+
                     $color_id = $plans['usertag_id'];
                     $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
                     $colorstmt = $db->prepare($colorsql);
@@ -128,30 +166,37 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
                     $Usertagstmt->execute();
                     $Usertagresults = $Usertagstmt->fetch(PDO::FETCH_ASSOC);
 
-                    // echo '<div class = "tag_button">';
-                    echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
+                    echo '<input class="button" onclick="UpdateTagPage(\'' . $plan_id . '\', \'title\', \'start\', \'end\', \'memo\', \'term\')" id="tag" name="tagbutton" value="＋">';
+
+                    // echo '<input type="button" onclick="location.href=\'G4-3.php?plan_id=' . $plan_id . '\'" id="tag" name="tag" value="＋">';
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%; margin: 0% 0% -1% 30%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span>";
                     echo '</div><br>';
-                }
+                    echo '<input type="hidden" name="tag" value="' , $color_id ,'">';
 
-                echo '<div class="border"></div>';
+                    echo '<div class="border"></div>';
                     
-                echo "<label>TERMに追加する:</label>";
-                echo '<input type="radio" id="term_yes" name="term" value="1">YES';
-                echo '<input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>';
+                    echo "<label>TERMに追加する:</label>";
+                    if($plans['todo_flg'] === 1){
+                        echo '<input type="radio" id="term_yes" name="term" value="1" checked>YES';
+                        echo '<input type="radio" id="term_no" name="term" value="0">NO<br><br>';
+                    }else{
+                        echo '<input type="radio" id="term_yes" name="term" value="1">YES';
+                        echo '<input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>';
+                    }
 
-                echo '<div class="border"></div>';
+                    echo '<div class="border"></div>';
 
-                echo '<label for="start">開始日時:</label>';
-                echo '<input type="datetime-local" id="start" name="start" required value="' , $plans['start_date'] ,'" ><br>';
+                    echo '<label for="start">開始日時:</label>';
+                    echo '<input type="datetime-local" id="start" name="start" required value="' , $plans['start_date'] ,'" ><br>';
 
-                echo '<label for="end">終了日時:</label>';
-                echo '<input type="datetime-local" id="end" name="end" value="' , $plans['final_date'] ,'" required><br><br>';
+                    echo '<label for="end">終了日時:</label>';
+                    echo '<input type="datetime-local" id="end" name="end" value="' , $plans['final_date'] ,'" required><br><br>';
 
-                echo '<div class="border"></div>';
+                    echo '<div class="border"></div>';
 
-                echo '<textarea name="memo">' .$plans['memo']. '</textarea><br><br>';
+                    echo '<textarea id="memo" name="memo">' .$plans['memo']. '</textarea><br><br>';
+                }
                 echo '<input type="hidden" name="id" value="' .$plans['plan_id']. '">';
                 ?>
                 <input type="hidden" name="user_flg" value="true">
@@ -171,7 +216,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
             </form>
             </div>
 
-            <script src="script/G4-2.js"></script>
+            <script src="script/G4-2.js" defer></script>
             </body>
             </html>
 <?php
@@ -180,10 +225,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 }else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "insert"){
     //insert処理
     if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['user_flg'] == 'true'){
-
-        if(isset($_POST['tag'])){
-            $tag = $_POST["tag"];
-        }else{
+// echo '<pre>';print_r($_POST['tag']); echo '</pre>';
+        // if(isset($_POST['tag']) > 0 && isset($_POST['tag']) < 13){
+        //     $tag = $_POST["tag"];
+        // }else{
+        //     $tag = 13;
+        // }
+        if (isset($_POST['tag']) && filter_var($_POST['tag'], FILTER_VALIDATE_INT) && $_POST['tag'] > 0 && $_POST['tag'] < 13) {
+            $tag = (int)$_POST['tag'];
+        } else {
             $tag = 13;
         }
 
@@ -200,7 +250,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
             $sql = 'INSERT INTO Plans 
                     (user_id, plan, start_date, final_date, memo, todo_flg, usertag_id) 
-                    VALUES (:user_id, :title, :start,:final, :memo,:todo_flg,:tag)';
+                    VALUES (:user_id, :title, :start, :final, :memo,:todo_flg,:tag)';
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
             $stmt->bindParam(':title', $title);
@@ -214,9 +264,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
             exit;
 
     }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        // inserthtml
+// inserthtml
+
+//POST送信検証用        
+// echo '<pre>';print_r($_POST); echo '</pre>';
+        
+
         ?>
-        <!DOCTYPE html>
+    <!DOCTYPE html>
     <html lang="ja">
     <head>
         <meta charset="UTF-8">
@@ -234,14 +289,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
         <form action="G4-2.php" method="POST" id="insert">
 
             <h2>新しい予定</h2>
-            <input type="text" placeholder="タイトルを入力" id="title" name="title" required><br><br>
+            <!-- <input type="text" placeholder="タイトルを入力" id="title" name="title" required><br><br>
 
             <div class="border"></div>
 
             <div class = "tag_button">
-            <span class="tag">タグ選択:</span>
+            <span class="tag">タグ選択:</span> -->
             <?php 
-                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id'])){
+                if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tag_id']) && filter_var($_POST['tag_id'], FILTER_VALIDATE_INT) && $_POST['tag_id'] > 0 && $_POST['tag_id'] < 13){
+
+                    echo '<input type="text" value="' .$_POST['plan'].'" id="title" name="title" required><br><br>';
+
+                    echo '<div class="border"></div>';
+
+                    echo '<div class = "tag_button">';
+                    echo "<span class='tag'>タグ選択:</span>";
 
                     $tag_id = $_POST['tag_id'];
                     $colorsql = 'SELECT color FROM Tags where tag_id = :tag_id';
@@ -260,19 +322,47 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
                     // echo '<div class = "tag_button">';
                     ?>
-                    <input class="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋">
+                    <input class="button" onclick="InputTagPage('title', 'start', 'end', 'memo', 'term')" id="tag" name="tagbutton" value="＋">
                     <?php
                     echo "<span style='display: inline-block; background-color: #" . htmlspecialchars($colorresults["color"])."; width: 20px; height: 20px; border-radius: 50%;margin: 5px 0% -1% -15%;'></span>";
                     echo "<span class='tagname'>".$Usertagresults["tag_name"]."</span><br><br>";
                     echo '<input type="hidden" name="tag" value="' , $tag_id ,'">';
+
+// echo '<pre>';print_r($_POST); echo '</pre>';
+
+                    echo '<div class="border"></div>';
+
+                    echo "<label>TERMに追加する:</label>";
+                    if($_POST['todo_flg'] == 1){
+                        echo '<input type="radio" id="term_yes" name="term" value="1" checked>YES';
+                        echo '<input type="radio" id="term_no" name="term" value="0">NO<br><br>';
+                    }else{
+                        echo '<input type="radio" id="term_yes" name="term" value="1">YES';
+                        echo '<input type="radio" id="term_no" name="term" value="0" checked>NO<br><br>';
+                    }
+
+                    echo '<div class="border"></div>';
+
+                    echo '<label for="start">開始日時:</label>';
+                    echo '<input type="datetime-local" id="start" name="start" required value="' , $_POST['start_date'] ,'" ><br>';
+
+                    echo '<label for="end">終了日時:</label>';
+                    echo '<input type="datetime-local" id="end" name="end" value="' , $_POST['final_date'] ,'" required><br><br>';
+
+                    echo '<div class="border"></div>';
+
+                    echo '<textarea id="memo" name="memo">' .$_POST['memo']. '</textarea><br><br>';
                 }else{
                     ?>
-                    <input class="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋"><br><br>
-                    <?php
-                }
-            
-            ?>
-            
+                    <input type="text" placeholder="タイトルを入力" id="title" name="title" required><br><br>
+
+                    <div class="border"></div>
+
+                    <div class = "tag_button">
+                    <span class="tag">タグ選択:</span>
+                    <!-- <input class="button" onclick="location.href='G4-3.php'" id="tag" name="tag" value="＋"><br><br> -->
+                    <input class="button" onclick="InputTagPage('title', 'start', 'end', 'memo', 'term')" id="tag" name="tagbutton" value="＋">
+
             </div>
 
             <div class="border"></div>
@@ -291,12 +381,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
 
             <div class="border"></div>
 
-            <textarea name="memo" placeholder="メモ"></textarea><br><br>
+            <textarea id="memo" name="memo" placeholder="メモ"></textarea><br><br>
+                    <?php
+                }
+            
+            ?>
+            
+            
             <input type="hidden" name="user_flg" value="true">
             <input type="hidden" name="crud" value="insert">
             <input type="hidden" name="tag_returnflg" value="false">
         </form>
-        <script src="script/G4-2.js"></script>
+        <script src="script/G4-2.js" defer></script>
         </body>
         </html>
 <?php
@@ -311,6 +407,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['crud'] == "update" ){
         header("Location: G4-1.php");
         exit;
 }else{
+    //POST送信検証用        
+echo '<pre>';print_r($_POST); echo '</pre>';
     echo 'error';
 }
 ?>

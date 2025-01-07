@@ -1,4 +1,4 @@
-/* //アニメーションありfooterの上固定CSS */
+/* アニメーションなし発表時のCSS */
 * {
   margin: 0;
   padding: 0;
@@ -9,11 +9,13 @@ body {
   background-color: #f9f9f9;
   text-align: center;
   margin: 0;
+
   padding-bottom: 100px;
   box-sizing: border-box;
 }
 
-img {
+img{
+
   height: 35%;
   width: 50%;
   margin-right: 20%;
@@ -21,6 +23,7 @@ img {
 
 header {
   background-color: #fff;
+  /* padding: 10px; */
   padding: 0px 10px 10px 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -31,6 +34,7 @@ h1 {
 }
 
 /*ハンバーガーメニュー*/
+
 header {
   display: flex;
   justify-content: flex-end;
@@ -53,15 +57,13 @@ header {
 }
 
 .menu.open {
-  display: block;
+  display: block; /* openクラスが追加されたら表示 */
   visibility: visible;
   opacity: 1;
 }
-
 .menu-icon {
   cursor: pointer;
 }
-
 .bar {
   width: 25px;
   height: 3px;
@@ -69,6 +71,7 @@ header {
   margin: 4px 0;
 }
 
+/* メニューの初期状態は非表示 */
 .menu {
   display: none;
   position: absolute;
@@ -81,10 +84,13 @@ header {
   background-color: rgba(255, 255, 255, 1);
   z-index: 1000;
   position: absolute;
+
+
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.3s ease-in-out;
 }
+
 
 .menu a {
   display: block;
@@ -96,10 +102,10 @@ header {
   background-color: #f1f1f1;
 }
 
+/* メニューが表示された時のスタイル */
 .menu.active {
   display: block;
 }
-
 .calendar {
   margin: 20px auto;
   width: 90%;
@@ -138,7 +144,6 @@ td .tag {
   border-radius: 3px;
   font-size: 12px;
 }
-
 .show-all {
   color: blue;
   display: block;
@@ -167,10 +172,10 @@ td .tag {
   border: 2px solid purple;
 }
 
-.button {
-  padding: 0 5%;
-  display: flex;
-  justify-content: space-around;
+.button{
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-around;
 }
 
 input.reset {
@@ -190,15 +195,19 @@ input.confirm-button {
   font-size: medium;
 }
 
+/* プラスボタンのスタイル */
 .floating-button {
   position: fixed;
+
   top: 80%;
   right: 8%;
   width: 60px;
   height: 60px;
   background-color: #d4c1ff;
   border: none;
+
   top: 500px;
+
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -212,11 +221,11 @@ input.confirm-button {
 }
 
 .floating-button:hover {
-  background-color: #b39ddb;
+  background-color: #b39ddb; /* ボタンのホバー時の色変更 */
 }
 
 .floating-button:active {
-  background-color: #9575cd;
+  background-color: #9575cd; /* ボタンのクリック時の色 */
 }
 
 th:first-child,
@@ -240,15 +249,18 @@ th:last-child,
 }
 
 .holiday-name-hidden {
-  visibility: hidden;
-  height: 10px;
-  padding: 3px;
+  visibility: hidden; /* 非表示にするが、スペースは確保 */
+  height: 10px;        /* 必要なら高さを明示的に指定 */
+  padding: 3px;       /* 必要なパディングを適用 */
 }
 
+
+/* 既存のholidayColorクラスの色を調整 */
 .holidayColor .day-number {
   color: rgb(42, 208, 44);
 }
 
+/*月カレンダー表示*/
 #calendar {
   text-align: center;
 }
@@ -267,8 +279,6 @@ th:last-child,
   width: 90%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  
-  bottom: 11%;
 }
 
 .selector-header {
@@ -326,6 +336,8 @@ th:last-child,
   margin-bottom: 5px;
 }
 
+/* ハンバーガーメニュー */
+/* -radioボタン追加- */
 input[type="radio"] {
   position: absolute;
   opacity: 0;
@@ -333,18 +345,22 @@ input[type="radio"] {
   height: 0;
 }
 
+/* ×追加 */
+/*メニューが閉じている時は非表示 */
 .popup-hidden {
   display: none;
 }
 
+/* メニューが開いた時に表示*/ 
 .popup-visible {
   display: flex;
 }
 
-.close {
+.close{
   padding-left: 90%;
 }
 
+/* ------ 予定詳細 ------ */
 #calendar-container {
   width: 100%;
   text-align: center;
@@ -382,20 +398,13 @@ h4#selected-date {
   cursor: pointer;
 }
 
-/* Updated Event Details Style */
 #event-details {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-  max-height: 20vh;
-  overflow-y: auto;
-  z-index: 10;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  border-radius: 10px;
+  margin-top: 20px;
+    padding: 10px;
+    margin: 20px auto;
+    background-color: white;
+    width: 85%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .hidden {
@@ -412,7 +421,8 @@ li {
   display: flex;
 }
 
-button.link-style-btn {
+/* 詳細予定リンクボタン */
+button.link-style-btn{
   cursor: pointer;
   border: none;
   background: none;
@@ -424,3 +434,4 @@ span.memofont {
   font-size: smaller;
   color: gray;
 }
+

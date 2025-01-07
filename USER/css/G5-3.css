@@ -57,6 +57,25 @@ input.headersubmit {
   text-align: right;
 }
 
+.tag {
+  margin: 0% 3% 3% 3%;
+  background-color: #FFD9E8;
+}
+
+input[type="text"] {
+  background-color: #FFD9E8;
+  border: none;
+  font-size: medium;
+}
+
+.usertag {
+  /* margin: 2%; */
+  padding-top: 2%;
+}
+
+.tagcolor{
+  padding: 2%;
+}
 
 /* フッターメニューのスタイル */
 .footer {
