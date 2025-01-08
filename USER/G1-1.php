@@ -40,7 +40,6 @@
 
 
 session_start();
-// session_unset();
 require 'db-connect.php';
 
 if (isset($_POST['user_name']) && isset($_POST['user_pass'])) {
@@ -50,29 +49,28 @@ if (isset($_POST['user_name']) && isset($_POST['user_pass'])) {
     $sql->execute([$_POST['user_name']]);
     
     $row = $sql->fetch();
-    //　password_verifyでハッシュしたパスワードが合っているのか調べている
-    if (password_verify($_POST['user_pass'], $row['user_pass']) && $row['delete_flg'] == 0) {
-        $_SESSION['user']=[
-            'user_id'=>$row['user_id'],
-            'user_name'=>$row['user_name'],
-            'mail'=>$row['user_mail'], 
+
+    if ($row && password_verify($_POST['user_pass'], $row['user_pass']) && $row['delete_flg'] == 0) {
+        $_SESSION['user'] = [
+            'user_id' => $row['user_id'],
+            'user_name' => $row['user_name'],
+            'mail' => $row['user_mail'],
             'user_pass' => $row['user_pass']
         ];
         if (isset($_POST['login'])) {
             $cookie_value = base64_encode(serialize($_SESSION['user']));
-            setcookie('login_me_cookie', $cookie_value, time() + (86400 * 30), "/", "", false, true); 
+            setcookie('login_me_cookie', $cookie_value, time() + (86400 * 30), "/", "", false, true);
         }
 
         header("Location: G3-1.php");
         exit();
-    }else{
-        $error_message = "パスワードが間違っています。";
+    } else {
+        $error_message = "ユーザー名、またはパスワードが間違っています。";
     }
 }
-
-
-
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="ja">
