@@ -106,8 +106,8 @@
     <br>
     <?php
         // term
-        $sql=$pdo->prepare("SELECT *, date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b FROM Plans WHERE user_id = date AND DATE_FORMAT(start_date, '%Y-%m-%d') <= date AND DATE_FORMAT(final_date, '%Y-%m-%d') >= ? AND todo_flg = 1");
-        $sql->execute([$user_id]);
+        $sql=$pdo->prepare("SELECT *, date_format(start_date, '%Y-%m-%d') as a, date_format(final_date, '%Y-%m-%d') as b FROM Plans WHERE user_id = ? AND DATE_FORMAT(start_date, '%Y-%m-%d') <= ? AND DATE_FORMAT(final_date, '%Y-%m-%d') >= ? AND todo_flg = 1");
+        $sql->execute([$user_id, $Date, $Date]);
         echo '
             <div class="term-container">
                 <div class="term-header" onclick="toggleTerm()">
